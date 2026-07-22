@@ -1,5 +1,10 @@
 = Changelog
+:toc:
 
-== Unreleased
+All notable changes to this project will be documented here.
 
-* Initial thesis docs: layers, Dev-Centr relationship, future topics; MIT.
+For longer narratives, see link:changelog-details/[changelog-details/] (when present).
+
+== Timeline
+
+* 2026-07-22 — Initial repository scaffold (thesis docs, stance, future topics).

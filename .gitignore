@@ -1,8 +1,11 @@
+# Allow-list: ignore everything, then un-ignore tracked paths.
 *
 !.gitignore
-!README.adoc
-!README.md
-!CHANGELOG.adoc
 !LICENSE
+!README.md
+!README.adoc
+!CHANGELOG.adoc
 !docs/
 !docs/**
+!changelog-details/
+!changelog-details/**
