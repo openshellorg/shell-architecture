@@ -15,10 +15,13 @@ Standards and explanation for OpenShellOrg's **structured-shell** direction — 
 == Documents
 
 * link:docs/THESIS.adoc[Thesis] — structured pipelines vs byte streams
+* link:docs/LAYERS.adoc[Layers] — SOS / data model / terminal presentation stack
 * link:docs/SOS-AND-STRUCTURED-SHELLS.adoc[SOS and structured shells] — complementary layers
-* link:docs/DEVCENTR-AND-OPENSHELLORG.adoc[DevCentr and OpenShellOrg] — who does what
+* link:docs/DEVCENTR.adoc[Dev-Centr] — alignment without merging orgs
+* link:docs/DEVCENTR-AND-OPENSHELLORG.adoc[DevCentr and OpenShellOrg] — who does what (detail)
 * link:docs/STANCE.adoc[Stance] — do not reinvent Nushell
-* link:docs/topics/FUTURE.adoc[Future topics] — display/transport, terminals, TUI, fonts
+* link:docs/FUTURE.adoc[Future topics] — TUI vs stdout, mixed fonts
+* link:docs/topics/FUTURE.adoc[Future topics (expanded)] — display/transport, terminals, TUI, fonts
 
 == Related projects
 
