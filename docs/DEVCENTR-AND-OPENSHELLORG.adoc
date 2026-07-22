@@ -1,0 +1,13 @@
+= DevCentr and OpenShellOrg
+:toc: preamble
+
+== Division of labor
+
+| Actor | Role |
+|---|---|
+| **DevCentr** | Recommends and configures developer environments — including recommending Nushell where structured pipelines matter. |
+| **OpenShellOrg** | Standardizes (SOS) and builds companion tooling / explanation (this repo, `nu-require`, etc.). |
+
+== Collaboration, not duplication
+
+DevCentr should not fork or reimplement Nushell. OpenShellOrg should not become a second DevCentr. Docs and recommendations can cross-link: DevCentr points practitioners at Nushell and SOS; OpenShellOrg documents the architectural thesis and ships small libs that make that thesis usable.

@@ -1,0 +1,18 @@
+= SOS and structured shells
+:toc: preamble
+
+== Two layers
+
+**SOS** (Standardized Operations Syntax), developed in https://github.com/openshellorg/open-shell-org[open-shell-org], addresses *how flags and options are spelled and discovered* — clarity and consistency at the CLI surface.
+
+**Structured shells** address *how data moves between programs* — typed pipelines instead of scraping stdout text.
+
+These are complementary:
+
+* A SOS-compliant tool can still emit byte streams for maximum portability.
+* A Nushell-tailored tool can still adopt SOS flag conventions for human-friendly options.
+* Neither replaces the other.
+
+== Certification vs host requirement
+
+SOS certification remains OpenShellOrg's flag-syntax track. Requiring Nushell (via `nu-require` or equivalent) is a separate, optional product decision for tools that need structured pipelines. Mixing the two is encouraged when it helps users; conflating them is not.

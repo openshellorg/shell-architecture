@@ -1,0 +1,16 @@
+= Stance: do not reinvent Nushell
+:toc: preamble
+
+== Explicit non-goal
+
+OpenShellOrg will **not** invent a competing structured shell. Nushell already exists as a strong Unix-centric implementation of the model we want to promote.
+
+== What we will do instead
+
+* **Advocate** Nushell for structured pipelines in docs and standards notes.
+* **Contribute upstream** when fixes or features help the ecosystem (optional, case-by-case).
+* **Build companion libraries** — e.g. https://github.com/openshellorg/nu-require[nu-require] — that make Nushell-tailored apps clearer and safer without replacing the shell.
+
+== Historical credit
+
+PowerShell proved object pipelines at scale. We acknowledge that history while recommending Nushell for OpenShellOrg's Unix-centric direction.

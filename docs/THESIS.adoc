@@ -1,0 +1,19 @@
+= Thesis: replace the dual-role stdout compromise
+
+Standard UNIX shells bind **data transport** and **visual presentation** to the same byte stream. That forces a choice:
+
+* Keep piping → lose semantic layout
+* Take over the screen (TUI) → lose clean composability
+
+== Shell-level fix (preferred path)
+
+Structured shells pass typed tables/records through the pipeline. The shell renders only when data hits the user's screen. Pipe to another command → no layout step.
+
+* PowerShell pioneered object streams.
+* **Nushell** is the Unix-centric, cross-platform implementation we endorse.
+
+OpenShellOrg's job is not to ship a new shell language. It is to **advocate**, **document**, and **tool** around that model (and certify CLI flag hygiene via SOS).
+
+== Terminal-protocol fix (orthogonal)
+
+Modern terminals (Ghostty, Kitty, WezTerm, …) add protocols for richer, sometimes reflowable output without a structured shell. Useful—especially for classical tools—but not a substitute for typed pipelines.

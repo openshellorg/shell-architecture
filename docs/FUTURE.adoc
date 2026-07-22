@@ -1,0 +1,19 @@
+= Future topics
+
+Speculative or deferred work. None of this requires reinventing Nushell.
+
+== Have your stdout and eat it too
+
+TUIs often abandon stdout for layout control. Research directions:
+
+* Shell-owned layout with structured payloads (Nushell path)
+* Hidden machine-readable stream alongside human view (agent/automation)
+* Terminal protocols that reflow without the child process redrawing
+
+== Mixed fonts in terminal output
+
+Explore whether shell or terminal protocol can mark spans with font roles (for example monospace vs sans) in one output stream for readability—without breaking pipes. Likely needs terminal-emulator cooperation; fish/Nushell hacks alone are insufficient long-term.
+
+== Upstream contribution
+
+Prefer patches and plugins for Nushell / terminals over greenfield shells unless a concrete gap cannot be fixed upstream.

@@ -1,0 +1,8 @@
+*
+!.gitignore
+!README.adoc
+!README.md
+!CHANGELOG.adoc
+!LICENSE
+!docs/
+!docs/**

@@ -1,0 +1,21 @@
+= Future topics
+:toc: preamble
+:status: speculative
+
+Notes for later exploration — not commitments.
+
+== Display vs transport decoupling
+
+Push further on separating "what the pipeline carries" from "what the terminal shows." Structured shells already help; terminal and protocol work can reinforce the split.
+
+== Terminal protocol notes
+
+Modern terminals (Ghostty, Kitty, WezTerm, and peers) expose richer protocols than classic VT. Document how those interact with structured stdout, images, and progress without collapsing display back into the data channel.
+
+== TUI vs structured stdout ("have your stdout and eat it too")
+
+Interactive TUIs and machine-readable pipelines often fight for the same fd. Research patterns where tools can offer both: structured data for scripts, rich UI when a human is present — without lying about which mode is active.
+
+== Mixed fonts (speculative)
+
+Exploratory only: whether mixed typography in the terminal can improve scanning of structured output without breaking copy/paste or accessibility. No implementation planned here.

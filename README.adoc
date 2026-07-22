@@ -1,0 +1,30 @@
+= shell-architecture
+:toc:
+
+Open Shell Organization notes on **shell architecture**: structured data pipelines, display vs transport, and how that relates to SOS and Nushell.
+
+This is a standards / explanation repository—not a product runtime.
+
+== Stance
+
+* **Do not reinvent Nushell.** Endorse it as the cross-platform reference for structured pipelines. Optionally contribute upstream or build companion libraries (`nu-require`).
+* PowerShell pioneered object streams; we still **recommend Nushell** for OpenShellOrg / Dev-Centr defaults (syntax and trust model).
+* SOS (flag syntax + certification in `open-shell-org`) is a **complementary layer**, not a competing shell.
+
+== Docs
+
+* link:docs/THESIS.adoc[THESIS] — core argument
+* link:docs/LAYERS.adoc[LAYERS] — SOS vs structured I/O vs terminal protocols
+* link:docs/DEVCENTR.adoc[DEVCENTR] — relationship to Dev-Centr
+* link:docs/FUTURE.adoc[FUTURE] — terminal protocols, TUI/stdout, mixed fonts
+* link:CHANGELOG.adoc[CHANGELOG]
+
+== Related
+
+* https://github.com/openshellorg/nu-require
+* https://github.com/openshellorg/open-shell-org
+* https://www.nushell.sh/
+
+== License
+
+MIT (documentation and text)

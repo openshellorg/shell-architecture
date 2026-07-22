@@ -1,0 +1,18 @@
+= Relationship to Dev-Centr
+
+Dev-Centr and OpenShellOrg goals **overlap** and should stay **aligned**. They should not merge into one org.
+
+|===
+| Dev-Centr | OpenShellOrg
+
+| Recommends and configures Nushell for users
+| Advocates Nushell; builds standards and companion libs
+
+| Development Orchestration Suite product
+| CLI/shell standards + certification (SOS) + architecture docs
+
+| general-knowledge docs for developers
+| Ecosystem-facing specs anyone can implement
+|===
+
+Rule of thumb: if it is “what should my team run?”, it is Dev-Centr. If it is “what should CLI authors converge on?”, it is OpenShellOrg. Cross-link; do not duplicate governance.

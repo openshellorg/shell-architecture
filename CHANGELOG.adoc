@@ -1,0 +1,5 @@
+= Changelog
+
+== Unreleased
+
+* Initial thesis docs: layers, Dev-Centr relationship, future topics; MIT.

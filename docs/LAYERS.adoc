@@ -1,0 +1,24 @@
+= Layers
+
+Think in stacked concerns. Do not collapse them into one mega-project.
+
+[cols="1,2,2", options="header"]
+|===
+| Layer | Problem | OpenShellOrg home
+
+| Flag / invocation syntax
+| GNU vs BSD vs Windows CLI fracture
+| SOS in `open-shell-org` (+ certification)
+
+| Process data model
+| Byte streams as the only pipe currency
+| This repo + endorse Nushell; companions like `nu-require`
+
+| Terminal presentation protocol
+| ANSI grid vs reflowable / semantic blocks
+| Notes here; implement in terminal emulators upstream
+
+| Product environment orchestration
+| What a developer machine should install/configure
+| Dev-Centr (not OpenShellOrg)
+|===
