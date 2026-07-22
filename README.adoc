@@ -26,8 +26,11 @@ Standards and explanation for OpenShellOrg's **structured-shell** direction — 
 == Related projects
 
 * https://github.com/openshellorg/open-shell-org[open-shell-org] — SOS certification and flag syntax
-* https://github.com/openshellorg/nu-require[nu-require] — require Nushell for tailored CLIs
+* https://github.com/openshellorg/nu-require[nu-require] — require / relaunch under Nushell
+* https://github.com/openshellorg/nu-emit[nu-emit] — emit structured rows from C (and later other langs) without hand-JSON
 * https://www.nushell.sh/[Nushell]
+
+**Not** https://github.com/NVIDIA/OpenShell[NVIDIA OpenShell] — that is agent sandboxing. We care about structured pipes + CLI DevX. Both can coexist; they are different layers.
 
 == License
 
