@@ -1,0 +1,9 @@
+* xref:index.adoc[Overview]
+* xref:thesis.adoc[Thesis]
+* xref:layers.adoc[Layers]
+* xref:sos-and-structured.adoc[SOS and Structured Shells]
+* xref:stance.adoc[Stance]
+* Dev-Centr Alignment
+** xref:devcentr.adoc[Relationship]
+** xref:division-of-labor.adoc[Division of Labor]
+* xref:future.adoc[Future Topics]

@@ -1,0 +1,6 @@
+name: shell-architecture
+title: Shell Architecture
+version: ~
+start_page: ROOT:index.adoc
+nav:
+  - modules/ROOT/nav.adoc

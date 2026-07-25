@@ -9,3 +9,5 @@
 !docs/**
 !changelog-details/
 !changelog-details/**
+!.github/
+!.github/**

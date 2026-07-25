@@ -1,0 +1,34 @@
+= Shell Architecture
+:description: Standards and explanation for OpenShellOrg's structured-shell direction.
+
+Standards and explanation for OpenShellOrg's *structured-shell* direction — not a product repo (yet).
+
+== Thesis (short)
+
+. *Structured data pipelines* beat treating stdout as both data and display.
+  We endorse https://www.nushell.sh/[Nushell] as the Unix-centric reference implementation.
+  PowerShell pioneered object pipelines; we recommend Nushell going forward.
+. *SOS* (flag syntax) and structured shells are *complementary layers* — spelling options consistently does not replace typed pipelines, and vice versa.
+. *DevCentr* recommends and configures; *OpenShellOrg* standardizes and builds companion tooling.
+. Future topics include display vs transport decoupling, terminal protocol notes, TUI vs structured stdout, and speculative mixed-fonts research.
+. *Do not reinvent Nushell.* Advocate, optionally contribute upstream, and build companion libraries.
+
+== Documents
+
+* xref:thesis.adoc[Thesis] — structured pipelines vs byte streams
+* xref:layers.adoc[Layers] — SOS / data model / terminal presentation stack
+* xref:sos-and-structured.adoc[SOS and structured shells] — complementary layers
+* xref:devcentr.adoc[Dev-Centr] — alignment without merging orgs
+* xref:division-of-labor.adoc[DevCentr and OpenShellOrg] — who does what (detail)
+* xref:stance.adoc[Stance] — do not reinvent Nushell
+* xref:future.adoc[Future topics] — TUI vs stdout, mixed fonts
+
+== Related projects
+
+* xref:open-shell-org::index.adoc[open-shell-org] — SOS certification and flag syntax
+* xref:nu-require::index.adoc[nu-require] — require / relaunch under Nushell
+* xref:nu-emit::index.adoc[nu-emit] — emit structured rows from C without hand-JSON
+* https://www.nushell.sh/[Nushell]
+
+*Not* https://github.com/NVIDIA/OpenShell[NVIDIA OpenShell] — that is agent sandboxing.
+We care about structured pipes + CLI DevX.

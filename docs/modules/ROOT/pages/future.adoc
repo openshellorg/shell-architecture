@@ -1,0 +1,35 @@
+= Future topics
+:description: Speculative and deferred OpenShellOrg research topics.
+
+Speculative or deferred work. None of this requires reinventing Nushell.
+
+== Have your stdout and eat it too
+
+TUIs often abandon stdout for layout control. Research directions:
+
+* Shell-owned layout with structured payloads (Nushell path)
+* Hidden machine-readable stream alongside human view (agent/automation)
+* Terminal protocols that reflow without the child process redrawing
+
+Interactive TUIs and machine-readable pipelines often fight for the same fd.
+Research patterns where tools can offer both: structured data for scripts, rich UI when a human is present — without lying about which mode is active.
+
+== Display vs transport decoupling
+
+Push further on separating "what the pipeline carries" from "what the terminal shows."
+Structured shells already help; terminal and protocol work can reinforce the split.
+
+== Terminal protocol notes
+
+Modern terminals (Ghostty, Kitty, WezTerm, and peers) expose richer protocols than classic VT.
+Document how those interact with structured stdout, images, and progress without collapsing display back into the data channel.
+
+== Mixed fonts (speculative)
+
+Explore whether shell or terminal protocol can mark spans with font roles (for example monospace vs sans) in one output stream for readability—without breaking pipes.
+Likely needs terminal-emulator cooperation; fish/Nushell hacks alone are insufficient long-term.
+Exploratory only — no implementation planned here.
+
+== Upstream contribution
+
+Prefer patches and plugins for Nushell / terminals over greenfield shells unless a concrete gap cannot be fixed upstream.
