@@ -6,7 +6,7 @@
 | Actor | Role |
 |---|---|
 | **DevCentr** | Recommends and configures developer environments — including recommending Nushell where structured pipelines matter. Repo-browser terminal UX; prefers OpenShellOrg shell products when installed. |
-| **OpenShellOrg** | Standardizes (SOS) and builds companion tooling / explanation (this repo, `nu-require`, etc.). Owns durable **env-refresh** and **shell-host** for stale PATH/env (see xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]). |
+| **OpenShellOrg** | Standardizes (SOS) and builds companion tooling / explanation (this repo, `nu-require`, etc.). Owns durable **env-refresh** and the **Windows Terminal fork** (`openshellorg/terminal`) for stale PATH/env UX (see xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]). |
 
 == Collaboration, not duplication
 

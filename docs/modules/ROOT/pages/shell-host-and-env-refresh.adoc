@@ -1,15 +1,23 @@
 = Shell Host and Environment Refresh
 :navtitle: Shell Host and Env Refresh
-:description: Product plan for OpenShellOrg env-refresh CLI/Nu module and shell-host terminal app — fix stale PATH/env without waiting on VS Code.
+:description: Product plan for OpenShellOrg env-refresh CLI/Nu module and shell-host (Windows Terminal fork) — fix stale PATH/env without waiting on VS Code.
 
 Stale PATH and other environment variables after installs are a chronic shell and IDE pain. Host apps inherit a snapshot; "open a new terminal" often fails inside VS Code and Cursor; Chocolatey `refreshenv` is unreliable. Microsoft historically closed or dismissed PATH-reload requests; a concrete Refresh Environment button (link:https://github.com/microsoft/vscode/issues/299940[vscode#299940], link:https://github.com/microsoft/vscode/pull/299941[PR #299941]) should not be the only bet.
 
 **OpenShellOrg owns the reusable fix.** DevCentr consumes it and keeps a thin built-in inject stub until then.
 
-This page is the product plan for two planned repositories (not created yet):
+== Repositories
 
-* `openshellorg/env-refresh` — CLI + Nushell module
-* `openshellorg/shell-host` — terminal app with chrome outside the classical shell
+[cols="1,2", options="header"]
+|===
+| Repo | Role
+
+| `openshellorg/env-refresh` (planned)
+| CLI + Nushell module — working refresh command
+
+| `openshellorg/terminal` (fork of link:https://github.com/microsoft/terminal[microsoft/terminal])
+| **shell-host** product base — Windows Terminal fork where we add env-health chrome and inject UX. Local clone: `Z:\code\github.com\openshellorg\.forks\terminal`
+|===
 
 Practitioner background (Dev-Centr general-knowledge): https://github.com/dev-centr/general-knowledge[shell-env-refresh] (published under general-knowledge Antora when assembled).
 
@@ -29,11 +37,11 @@ Practitioner background (Dev-Centr general-knowledge): https://github.com/dev-ce
 | **OpenShellOrg `env-refresh`**
 | Correct per-shell (and Nu-first) reload of PATH and other system/user vars into the **current** process; structured output for hosts; short command users can type
 
-| **OpenShellOrg `shell-host`**
-| Full terminal product: monitor OS env, health light, notice outside shell canvas, Refresh with visible command, auto-run preference, PTY inject/submit
+| **OpenShellOrg `terminal` (shell-host)**
+| Windows Terminal fork: per-tab env health, desync banner between tab bar and shell, Fix / Insert command split control, PTY inject
 
 | **DevCentr**
-| Repo-scoped terminal now; prefer shell-host / `env-refresh` when installed; minimal built-in inject until then
+| Repo-scoped terminal now; prefer OpenShellOrg terminal / `env-refresh` when installed; minimal built-in inject until then
 |===
 
 See xref:division-of-labor.adoc[Division of Labor].
@@ -63,45 +71,72 @@ Repository (planned): `openshellorg/env-refresh`
 * Same command family works under Nushell first; documented recipes for pwsh/bash/fish/cmd.
 * Host apps can call it non-interactively and parse structured success/failure.
 
-== B. Planned product: `shell-host`
+== B. Product: `terminal` (shell-host) — Windows Terminal fork
 
-Repository (planned): `openshellorg/shell-host`
+Repository: `openshellorg/terminal` (fork of microsoft/terminal).
+
+We do **not** greenfield a terminal emulator. We fork Windows Terminal and insert OpenShellOrg env-refresh UX into its tab + content chrome.
 
 === Goals
 
-A real terminal / shell-host app (beyond DevCentr's repo-scoped pane) that treats env drift as product UI:
+* **Monitor** Machine/User env (Windows: registry / `WM_SETTINGCHANGE` where available).
+* **Per-tab health light** — small green/orange indicator **on each tab** (session-scoped drift: a tab that was refreshed can go green while others stay orange).
+* **Desync notification bar** — when PATH (or watched vars) desync for the active tab, show a bar **between the tab bar and the shell/PTY area** (outside scrollback).
+* **Split action control** on that bar:
+  ** Primary **Fix** — inject the shell-appropriate refresh command into the PTY **and submit** (auto-run) so power users are not stuck pressing Enter.
+  ** Dropdown / secondary **Insert command** — paste the exact command into the shell input **without** submitting, so users can read, edit, or learn it.
+* Show a short preview of the command on the bar (or in the dropdown header) so the action is never opaque.
+* Shell detection: Nushell, pwsh, cmd, bash/zsh, fish — prefer `env-refresh` when on `PATH`.
+* Preferential integration from **DevCentr** (Open external → this fork when installed).
 
-* **Monitor** Machine/User (Windows: registry / `WM_SETTINGCHANGE` where available) and best-effort Unix sources.
-* **Health light** — green when in sync; orange when drift detected.
-* **Notice** outside the classical shell area (not buried in scrollback).
-* **Refresh** shows the exact shell-specific command (learnability), then injects into PTY stdin.
-* **Auto-run setting** — inject and submit without requiring Enter (power-user default option); preview+confirm remains available for learners.
-* Shell detection: Nushell, pwsh, cmd, bash/zsh, fish — prefer calling `env-refresh` when on `PATH`.
-* Preferential integration from **DevCentr** (Open external / embed / "use OpenShellOrg shell-host").
-
-=== UX sketch
+=== UX layout (committed)
 
 ----
-[ env: green | orange ]  PATH changed — refresh this session?
-[ preview: env-refresh ]                    [ Refresh ]
-+----------------------------------------------------------+
-|  classical shell / PTY surface                           |
-|                                                          |
-+----------------------------------------------------------+
++-- tab bar ----------------------------------------------------------+
+| [● nu]  [● pwsh]  [● cmd]     <- health light inside each tab      |
++---------------------------------------------------------------------+
+| ! PATH changed on this session                                     |
+|   will run: env-refresh                         [ Fix | v ]        |
+|                                                 +----------------+ |
+|                                                 | Fix (run now)  | |
+|                                                 | Insert command | |
+|                                                 +----------------+ |
++-- notification bar (only when desync) ------------------------------+
+|                                                                     |
+|   classical shell / PTY surface                                     |
+|                                                                     |
++---------------------------------------------------------------------+
 ----
+
+Split control semantics:
+
+* **Fix (run now)** — primary: inject shell-appropriate refresh into the PTY **and submit**.
+* **Insert command** — dropdown: inject only (no submit) so the user can read, edit, or learn the command.
+
+Rules:
+
+* Health light is **per tab**, not global-only (window may still show aggregate if useful later).
+* Notification bar appears only for the **active** tab when that tab is desynced; dismissing without fix may leave the tab orange.
+* **Fix** = inject + submit. **Insert command** = inject only. Do not make "click Enter yourself" the only path.
+* Prefer calling `env-refresh` in the preview when installed; fall back to built-in shell recipes.
 
 === Non-goals (v1)
 
-* Multiplexing remote SSH farms
-* Replacing every terminal emulator protocol feature on day one
+* Multiplexing remote SSH farms beyond what upstream Terminal already does
 * Inventing a second structured shell language
+* Waiting on microsoft/vscode to merge env-refresh UI
+
+=== Upstream relationship
+
+* Track microsoft/terminal; keep OpenShellOrg changes in clearly named modules/files where practical.
+* Branding / package identity can diverge later (`shell-host` product name vs repo `terminal`); v1 identity is the fork repo.
 
 == C. Nushell ecosystem advocacy
 
 OpenShellOrg promotes Nushell as the default structured shell. PATH/env refresh pain must be a **non-issue** in that story:
 
 * First-class Nu module and docs for `env-refresh`
-* Host apps (shell-host, DevCentr) detect Nu and show Nu recipes, not only PowerShell one-liners
+* Host (this Terminal fork, DevCentr) detect Nu and show Nu recipes, not only PowerShell one-liners
 * Prefer upstream-friendly module shape; contribute patches upstream when that is better than a companion
 * Do not invent a rival shell to paper over Windows env quirks
 
@@ -113,15 +148,26 @@ We cite and learn from:
 * Closed / not-planned PATH reload threads (for example #159986, #168020)
 * Author proposal: link:https://github.com/microsoft/vscode/issues/299940[#299940] and link:https://github.com/microsoft/vscode/pull/299941[PR #299941] (inject shell-appropriate refresh into all terminals)
 
-**Product responsibility for a working solution is OpenShellOrg + DevCentr**, not waiting on microsoft/vscode merge outcomes.
+**Product responsibility for a working solution is OpenShellOrg + DevCentr**, not waiting on microsoft/vscode merge outcomes. Shipping in a Terminal fork is the chosen path.
 
-== Implementation sequence (suggested)
+== Implementation sequence
 
-. Spec and docs (this page + Dev-Centr general-knowledge / terminal spec) — current.
-. Scaffold `openshellorg/env-refresh` — Nu module + CLI, Windows PATH reload first, then other vars/shells.
-. Scaffold `openshellorg/shell-host` — PTY host + env chrome + inject/auto-run.
-. DevCentr: detect `env-refresh` / shell-host; upgrade repo terminal stub to full chrome per its spec.
+. Spec and docs (this page + Dev-Centr general-knowledge / terminal spec) — done; UX refined here.
+. Fork + clone `openshellorg/terminal` to `openshellorg/.forks/terminal` — **done** (https://github.com/openshellorg/terminal).
+. Spike in fork: per-tab health light, `EnvRefreshInfoBar` + Fix/Insert SplitButton, OS Path poll — **landed** (see `OPENSHELLORG.adoc` in the fork).
+. Scaffold `openshellorg/env-refresh` — Nu module + CLI; wire Terminal to prefer it.
+. Hook `WM_SETTINGCHANGE` (WindowEmperor already notes GH#15102); regenerate host process env for new tabs.
+. DevCentr: prefer this Terminal build for "Open external"; upgrade repo terminal stub to match Fix/Insert semantics.
 . Optional: upstream Nu docs/module coordination; keep SOS / nu-emit / nu-require as separate tracks.
+
+== Spike insertion points (fork)
+
+Already wired to upstream layout:
+
+* Tab light → `TabHeaderControl.xaml` + `TerminalTabStatus.IsEnvStale`
+* Banner → `TerminalPage.xaml` Row 1 `InfoBar` stack (same slot as keyboard/close-on-exit bars)
+* Inject → `TermControl.SendInput` (Fix appends `\r`)
+* Helpers → `EnvRefreshHelpers.cpp` (`til::env::regenerate` for OS Path)
 
 == Related
 
@@ -131,3 +177,4 @@ We cite and learn from:
 * xref:nu-require::index.adoc[nu-require]
 * xref:nu-emit::index.adoc[nu-emit]
 * https://github.com/dev-centr/devcentr[DevCentr] repository browser terminal (consumer)
+* https://github.com/microsoft/terminal[microsoft/terminal] (upstream)

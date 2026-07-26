@@ -4,6 +4,10 @@ Added a first-class product plan for OpenShellOrg to own stale PATH/environment 
 
 == What landed
 
-* Page: `docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc` — planned `openshellorg/env-refresh` and `openshellorg/shell-host`
-* Nav, index, README, division-of-labor, and future topics wired
+* Page: `docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc`
+* **shell-host base** = fork of microsoft/terminal → https://github.com/openshellorg/terminal (local: `openshellorg/.forks/terminal`)
+* UX lock-in: per-tab health light; notification bar between tab bar and PTY; split **Fix (run now)** / **Insert command**
+* **Spike code** in the fork: `IsEnvStale`, `EnvRefreshInfoBar` + SplitButton, `EnvRefreshHelpers`, 5s OS Path poll; see fork `OPENSHELLORG.adoc`
+* Planned companion: `openshellorg/env-refresh` (CLI + Nu module)
+* Nav, index, README, division-of-labor, future topics, ecosystem wired
 * Dev-Centr / general-knowledge companion docs describe the same ownership split
