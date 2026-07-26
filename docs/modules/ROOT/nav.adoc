@@ -6,4 +6,6 @@
 * Dev-Centr Alignment
 ** xref:devcentr.adoc[Relationship]
 ** xref:division-of-labor.adoc[Division of Labor]
+* Products (planned)
+** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 * xref:future.adoc[Future Topics]

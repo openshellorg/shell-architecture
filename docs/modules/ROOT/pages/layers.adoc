@@ -18,6 +18,10 @@ Think in stacked concerns. Do not collapse them into one mega-project.
 | ANSI grid vs reflowable / semantic blocks
 | Notes here; implement in terminal emulators upstream
 
+| Session env freshness
+| Stale PATH/env after installs; host inheritance; broken `refreshenv`
+| Planned `env-refresh` + `shell-host` (xref:shell-host-and-env-refresh.adoc[plan]); DevCentr consumes
+
 | Product environment orchestration
 | What a developer machine should install/configure
 | Dev-Centr (not OpenShellOrg)

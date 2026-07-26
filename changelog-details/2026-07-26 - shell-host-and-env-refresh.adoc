@@ -1,0 +1,9 @@
+= 2026-07-26 — Shell host and env refresh plan
+
+Added a first-class product plan for OpenShellOrg to own stale PATH/environment refresh instead of waiting on VS Code or Chocolatey `refreshenv`.
+
+== What landed
+
+* Page: `docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc` — planned `openshellorg/env-refresh` and `openshellorg/shell-host`
+* Nav, index, README, division-of-labor, and future topics wired
+* Dev-Centr / general-knowledge companion docs describe the same ownership split

@@ -5,9 +5,13 @@
 
 | Actor | Role |
 |---|---|
-| **DevCentr** | Recommends and configures developer environments — including recommending Nushell where structured pipelines matter. |
-| **OpenShellOrg** | Standardizes (SOS) and builds companion tooling / explanation (this repo, `nu-require`, etc.). |
+| **DevCentr** | Recommends and configures developer environments — including recommending Nushell where structured pipelines matter. Repo-browser terminal UX; prefers OpenShellOrg shell products when installed. |
+| **OpenShellOrg** | Standardizes (SOS) and builds companion tooling / explanation (this repo, `nu-require`, etc.). Owns durable **env-refresh** and **shell-host** for stale PATH/env (see xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]). |
 
 == Collaboration, not duplication
 
 DevCentr should not fork or reimplement Nushell. OpenShellOrg should not become a second DevCentr. Docs and recommendations can cross-link: DevCentr points practitioners at Nushell and SOS; OpenShellOrg documents the architectural thesis and ships small libs that make that thesis usable.
+
+== Environment refresh
+
+Stale PATH after installs is a shared pain. **OpenShellOrg** ships the reusable CLI and full terminal host; **DevCentr** orchestrates and embeds a minimal inject path until those products exist. Do not wait on VS Code. Details: xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh].

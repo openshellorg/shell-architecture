@@ -1,0 +1,133 @@
+= Shell Host and Environment Refresh
+:navtitle: Shell Host and Env Refresh
+:description: Product plan for OpenShellOrg env-refresh CLI/Nu module and shell-host terminal app — fix stale PATH/env without waiting on VS Code.
+
+Stale PATH and other environment variables after installs are a chronic shell and IDE pain. Host apps inherit a snapshot; "open a new terminal" often fails inside VS Code and Cursor; Chocolatey `refreshenv` is unreliable. Microsoft historically closed or dismissed PATH-reload requests; a concrete Refresh Environment button (link:https://github.com/microsoft/vscode/issues/299940[vscode#299940], link:https://github.com/microsoft/vscode/pull/299941[PR #299941]) should not be the only bet.
+
+**OpenShellOrg owns the reusable fix.** DevCentr consumes it and keeps a thin built-in inject stub until then.
+
+This page is the product plan for two planned repositories (not created yet):
+
+* `openshellorg/env-refresh` — CLI + Nushell module
+* `openshellorg/shell-host` — terminal app with chrome outside the classical shell
+
+Practitioner background (Dev-Centr general-knowledge): https://github.com/dev-centr/general-knowledge[shell-env-refresh] (published under general-knowledge Antora when assembled).
+
+== Problem summary
+
+* Processes get an environment block at start; installers update the **stored** Machine/User (or profile) environment.
+* New shells spawned by a stale **host** (editor, terminal emulator) inherit the stale block.
+* Chocolatey `refreshenv` is session-scoped, often missing outside Chocolatey PowerShell profiles, inconsistent across shells, and cannot fix host inheritance.
+* Nushell users hit the same Windows friction; promoting Nu without fixing PATH refresh leaves a gap in the ecosystem we advocate.
+
+== Ownership
+
+[cols="1,2", options="header"]
+|===
+| Actor | Role
+
+| **OpenShellOrg `env-refresh`**
+| Correct per-shell (and Nu-first) reload of PATH and other system/user vars into the **current** process; structured output for hosts; short command users can type
+
+| **OpenShellOrg `shell-host`**
+| Full terminal product: monitor OS env, health light, notice outside shell canvas, Refresh with visible command, auto-run preference, PTY inject/submit
+
+| **DevCentr**
+| Repo-scoped terminal now; prefer shell-host / `env-refresh` when installed; minimal built-in inject until then
+|===
+
+See xref:division-of-labor.adoc[Division of Labor].
+
+== A. Planned product: `env-refresh`
+
+Repository (planned): `openshellorg/env-refresh`
+
+=== Goals
+
+* One reliable command that reloads PATH and other system/user environment variables into the **current** process — and actually works.
+* **Nushell as primary interactive target** — ship a Nu module; document `$env` updates clearly.
+* Thin wrappers or documented aliases for PowerShell, bash/zsh, fish, and cmd so users can type something short (`env-refresh` or a blessed alias) in whichever shell they are in.
+* Explicitly **supersede reliance on Chocolatey `refreshenv`**.
+* Exit codes and **Nu-friendly structured output** (for example JSONL via patterns aligned with `nu-emit`) so host apps can confirm success and which keys changed.
+* Document the second layer honestly: refreshing the shell does not automatically refresh a parent IDE; hosts must reload their own block or inject into each session.
+
+=== Non-goals (v1)
+
+* Replacing package managers
+* Forking Nushell
+* Fixing every GUI app on the machine (focus: shells + cooperating hosts)
+
+=== Acceptance sketch
+
+* After a Machine/User PATH change, running `env-refresh` (or Nu module equivalent) in that session makes newly installed tools resolvable without restarting the shell process.
+* Same command family works under Nushell first; documented recipes for pwsh/bash/fish/cmd.
+* Host apps can call it non-interactively and parse structured success/failure.
+
+== B. Planned product: `shell-host`
+
+Repository (planned): `openshellorg/shell-host`
+
+=== Goals
+
+A real terminal / shell-host app (beyond DevCentr's repo-scoped pane) that treats env drift as product UI:
+
+* **Monitor** Machine/User (Windows: registry / `WM_SETTINGCHANGE` where available) and best-effort Unix sources.
+* **Health light** — green when in sync; orange when drift detected.
+* **Notice** outside the classical shell area (not buried in scrollback).
+* **Refresh** shows the exact shell-specific command (learnability), then injects into PTY stdin.
+* **Auto-run setting** — inject and submit without requiring Enter (power-user default option); preview+confirm remains available for learners.
+* Shell detection: Nushell, pwsh, cmd, bash/zsh, fish — prefer calling `env-refresh` when on `PATH`.
+* Preferential integration from **DevCentr** (Open external / embed / "use OpenShellOrg shell-host").
+
+=== UX sketch
+
+----
+[ env: green | orange ]  PATH changed — refresh this session?
+[ preview: env-refresh ]                    [ Refresh ]
++----------------------------------------------------------+
+|  classical shell / PTY surface                           |
+|                                                          |
++----------------------------------------------------------+
+----
+
+=== Non-goals (v1)
+
+* Multiplexing remote SSH farms
+* Replacing every terminal emulator protocol feature on day one
+* Inventing a second structured shell language
+
+== C. Nushell ecosystem advocacy
+
+OpenShellOrg promotes Nushell as the default structured shell. PATH/env refresh pain must be a **non-issue** in that story:
+
+* First-class Nu module and docs for `env-refresh`
+* Host apps (shell-host, DevCentr) detect Nu and show Nu recipes, not only PowerShell one-liners
+* Prefer upstream-friendly module shape; contribute patches upstream when that is better than a companion
+* Do not invent a rival shell to paper over Windows env quirks
+
+== Relation to VS Code
+
+We cite and learn from:
+
+* link:https://github.com/microsoft/vscode/issues/47816[vscode#47816], link:https://github.com/microsoft/vscode/issues/226510[#226510] — host inheritance
+* Closed / not-planned PATH reload threads (for example #159986, #168020)
+* Author proposal: link:https://github.com/microsoft/vscode/issues/299940[#299940] and link:https://github.com/microsoft/vscode/pull/299941[PR #299941] (inject shell-appropriate refresh into all terminals)
+
+**Product responsibility for a working solution is OpenShellOrg + DevCentr**, not waiting on microsoft/vscode merge outcomes.
+
+== Implementation sequence (suggested)
+
+. Spec and docs (this page + Dev-Centr general-knowledge / terminal spec) — current.
+. Scaffold `openshellorg/env-refresh` — Nu module + CLI, Windows PATH reload first, then other vars/shells.
+. Scaffold `openshellorg/shell-host` — PTY host + env chrome + inject/auto-run.
+. DevCentr: detect `env-refresh` / shell-host; upgrade repo terminal stub to full chrome per its spec.
+. Optional: upstream Nu docs/module coordination; keep SOS / nu-emit / nu-require as separate tracks.
+
+== Related
+
+* xref:division-of-labor.adoc[Division of Labor]
+* xref:future.adoc[Future topics]
+* xref:layers.adoc[Layers]
+* xref:nu-require::index.adoc[nu-require]
+* xref:nu-emit::index.adoc[nu-emit]
+* https://github.com/dev-centr/devcentr[DevCentr] repository browser terminal (consumer)

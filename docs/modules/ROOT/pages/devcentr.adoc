@@ -13,6 +13,11 @@ Dev-Centr and OpenShellOrg goals **overlap** and should stay **aligned**. They s
 
 | general-knowledge docs for developers
 | Ecosystem-facing specs anyone can implement
+
+| Repo terminal env inject / chrome; prefers our shell products
+| Own planned `env-refresh` + `shell-host` (xref:shell-host-and-env-refresh.adoc[plan])
 |===
 
 Rule of thumb: if it is “what should my team run?”, it is Dev-Centr. If it is “what should CLI authors converge on?”, it is OpenShellOrg. Cross-link; do not duplicate governance.
+
+Stale PATH/env after installs is a shared UX debt: OpenShellOrg ships the durable fix; DevCentr consumes it. See xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] and xref:division-of-labor.adoc[Division of Labor].

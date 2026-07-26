@@ -13,6 +13,7 @@ Published docs: https://openshellorg.github.io/open-shell-org/shell-architecture
 3. **DevCentr** recommends and configures; **OpenShellOrg** standardizes and builds companion tooling.
 4. Future topics include display vs transport decoupling, terminal protocol notes, TUI vs structured stdout, and speculative mixed-fonts research.
 5. **Do not reinvent Nushell.** Advocate, optionally contribute upstream, and build companion libraries.
+6. **Env refresh / shell-host** — planned products so stale PATH is a non-issue (especially for Nushell users); see shell-host-and-env-refresh.
 
 == Documents
 
@@ -23,6 +24,7 @@ Antora component under `docs/` (assembled into the org docs site):
 * link:docs/modules/ROOT/pages/sos-and-structured.adoc[SOS and structured shells]
 * link:docs/modules/ROOT/pages/devcentr.adoc[Dev-Centr]
 * link:docs/modules/ROOT/pages/division-of-labor.adoc[DevCentr and OpenShellOrg]
+* link:docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 * link:docs/modules/ROOT/pages/stance.adoc[Stance]
 * link:docs/modules/ROOT/pages/future.adoc[Future topics]
 
@@ -31,6 +33,7 @@ Antora component under `docs/` (assembled into the org docs site):
 * https://github.com/openshellorg/open-shell-org[open-shell-org] — SOS certification and flag syntax
 * https://github.com/openshellorg/nu-require[nu-require] — require / relaunch under Nushell
 * https://github.com/openshellorg/nu-emit[nu-emit] — emit structured rows from C without hand-JSON
+* Planned: `openshellorg/env-refresh`, `openshellorg/shell-host`
 * https://www.nushell.sh/[Nushell]
 
 **Not** https://github.com/NVIDIA/OpenShell[NVIDIA OpenShell] — that is agent sandboxing.

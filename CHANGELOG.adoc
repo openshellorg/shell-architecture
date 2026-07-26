@@ -7,4 +7,5 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-07-26 — Product plan: link:docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc[`env-refresh` + `shell-host`] (stale PATH/env, VS Code history, Nushell-first CLI, terminal chrome). Linked from division-of-labor, future, index, README. See link:changelog-details/2026-07-26 - shell-host-and-env-refresh.adoc[detailed changelog].
 * 2026-07-22 — Initial repository scaffold (thesis docs, stance, future topics).
