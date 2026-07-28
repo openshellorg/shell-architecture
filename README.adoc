@@ -33,9 +33,11 @@ Antora component under `docs/` (assembled into the org docs site):
 * https://github.com/openshellorg/open-shell-org[open-shell-org] — SOS certification and flag syntax
 * https://github.com/openshellorg/nu-require[nu-require] — require / relaunch under Nushell
 * https://github.com/openshellorg/nu-emit[nu-emit] — emit structured rows from C without hand-JSON
+* https://github.com/openshellorg/project-map[project-map] — project-type + file-role API; `lsgrouped` CLI
 * Planned: `openshellorg/env-refresh`
 * Forked: https://github.com/openshellorg/terminal[`openshellorg/terminal`] (Windows Terminal + env-refresh UX)
 * https://www.nushell.sh/[Nushell]
+* Public site domain: https://opensh.org/[opensh.org] (`{OSO} Certified - opensh.org`)
 
 **Not** https://github.com/NVIDIA/OpenShell[NVIDIA OpenShell] — that is agent sandboxing.
 
