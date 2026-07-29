@@ -3,6 +3,7 @@
 * xref:layers.adoc[Layers]
 * xref:sos-and-structured.adoc[SOS and Structured Shells]
 * xref:stance.adoc[Stance]
+* xref:entrypoint-dispatch.adoc[Entrypoint Dispatch]
 * Dev-Centr Alignment
 ** xref:devcentr.adoc[Relationship]
 ** xref:division-of-labor.adoc[Division of Labor]

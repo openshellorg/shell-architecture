@@ -1,0 +1,72 @@
+= Entrypoint Dispatch
+:navtitle: Entrypoint Dispatch
+:description: Why the shell entrypoint must auto-install and re-exec the correct host or toolchain version—without rewriting the machine default—and how that relates to DevCentr Toolchain Management.
+
+The pain always shows up at a **shell or CLI entrypoint**.
+
+You type `node`, `pnpm`, `flutter`, or an IDE launches an absolute path. The wrong major runs. Native modules explode. Tutorials tell you to install a tribal version manager *after* the fact. That is not a “learn your tools” tax. That is a broken **dispatch** story at the process boundary.
+
+This page owns the **shell-layer** slice of that problem for OpenShellOrg. The broader lifecycle philosophy — install, pin, health, repair, upgrade as an official **Toolchain Control Plane** — lives in DevCentr’s sibling docs (see <<Relation to DevCentr>>).
+
+== Declaration without dispatch
+
+Ecosystems love to *declare* requirements:
+
+* `engines.node` in `package.json`
+* `.node-version` / `.nvmrc`
+* SDK channel pins, “use Flutter 3.x”, and so on
+
+Then the default entrypoint cheerfully ignores them. Soft warnings (`EBADENGINE`) teach nobody. Rebuild folklore treats the symptom after the wrong ABI already compiled addons.
+
+**Declaration without dispatch is worse than no declaration.** It looks like a contract and behaves like decoration.
+
+== What “dispatch” means here
+
+When the invoked process is the wrong host or wrong version for the project, the entrypoint must, **on its own recognizance**:
+
+. **Resolve** the required version from the project’s pin / `engines` field
+. **Install** that version if it is not already cached (via a registered manager adapter, or first-party fetch)
+. **Re-exec** the same command under that version for *this* process tree only — without rewriting the machine’s global default toolchain
+
+The system default may stay on “latest.” Opening an older pinned project must not require the user to manually switch globals, learn nvm after a crash, or “rebuild better-sqlite3.”
+
+Hard refuse is only a **degraded fallback** when install/re-exec is impossible (no network, no registered manager, policy block). The product bar is **auto-install + run**, not “stop and lecture.”
+
+That is the shell’s job. Shell hooks (`nvm use` on `cd`) are a fragile approximation: they miss absolute-path launches, CI images, GUI terminals, and anyone who never joined the priesthood.
+
+OpenShellOrg’s https://github.com/openshellorg/nu-require[`nu-require`] is a worked example of re-exec for *host shell* mismatch (relaunch under Nushell, optionally offering install). The same pattern applies to *toolchain version* mismatch at `node` / SDK entrypoints.
+
+== Ownership split (do not merge the canons)
+
+[cols="1,2"]
+|===
+| Layer | Home
+
+| **Entrypoint / host / PATH / install+re-exec mechanics**
+| OpenShellOrg (this page; `nu-require`; planned `env-refresh` / shell-host)
+
+| **Toolchain Management Pattern → Protocol → Control Plane → Framework (TCF)**
+| DevCentr / general-knowledge — link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern]
+
+| **SOS flag-syntax certification**
+| xref:open-shell-org::index.adoc[open-shell-org] (complementary; not a substitute for dispatching entrypoints)
+|===
+
+Cross-link aggressively. Duplicate little. If you only remember one sentence: **DevCentr says what a complete toolchain entrypoint must own; OpenShellOrg says how shells and CLIs must behave at the moment of invocation — auto-install and run the right thing.**
+
+== Relation to DevCentr
+
+* link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern] (canonical philosophy)
+* link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-control-plane.html[Toolchain Control Plane]
+* link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/devcentr-and-openshellorg.html[Dev-Centr and OpenShellOrg]
+* xref:devcentr.adoc[Relationship] · xref:division-of-labor.adoc[Division of labor]
+* xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
+* xref:nu-require::index.adoc[nu-require]
+
+== Maintainer checklist (shell / CLI authors)
+
+* [ ] If you publish a pin file or `engines`-class field, the default entrypoint **installs (if needed) and re-execs** under that version for the current command
+* [ ] Global default toolchain may stay on “latest”; project runs must not require mutating it
+* [ ] Absolute-path and IDE launches get the same dispatch as interactive shells
+* [ ] Progress is visible: which pin was read, what is downloading, what version is executing
+* [ ] Hard fail only when install/re-exec cannot proceed — and then name the pin source, not “rebuild the native module”

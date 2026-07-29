@@ -21,3 +21,5 @@ Dev-Centr and OpenShellOrg goals **overlap** and should stay **aligned**. They s
 Rule of thumb: if it is “what should my team run?”, it is Dev-Centr. If it is “what should CLI authors converge on?”, it is OpenShellOrg. Cross-link; do not duplicate governance.
 
 Stale PATH/env after installs is a shared UX debt: OpenShellOrg ships the durable fix; DevCentr consumes it. See xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] and xref:division-of-labor.adoc[Division of Labor].
+
+Wrong-host / wrong-version execution is a **shell entrypoint** failure: OpenShellOrg owns xref:entrypoint-dispatch.adoc[Entrypoint Dispatch] (auto-install + re-exec; `nu-require` is the exemplar). DevCentr owns the broader link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern] (control plane / TCF).

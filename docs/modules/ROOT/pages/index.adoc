@@ -18,6 +18,7 @@ Standards and explanation for OpenShellOrg's *structured-shell* direction — no
 * xref:thesis.adoc[Thesis] — structured pipelines vs byte streams
 * xref:layers.adoc[Layers] — SOS / data model / terminal presentation stack
 * xref:sos-and-structured.adoc[SOS and structured shells] — complementary layers
+* xref:entrypoint-dispatch.adoc[Entrypoint Dispatch] — auto-install + re-exec at the shell boundary (pairs with DevCentr Toolchain Management)
 * xref:devcentr.adoc[Dev-Centr] — alignment without merging orgs
 * xref:division-of-labor.adoc[DevCentr and OpenShellOrg] — who does what (detail)
 * xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] — planned `env-refresh` + `shell-host` products
@@ -29,6 +30,7 @@ Standards and explanation for OpenShellOrg's *structured-shell* direction — no
 * xref:open-shell-org::index.adoc[open-shell-org] — SOS certification and flag syntax
 * xref:nu-require::index.adoc[nu-require] — require / relaunch under Nushell
 * xref:nu-emit::index.adoc[nu-emit] — emit structured rows from C without hand-JSON
+* link:https://devcentr.org[DevCentr] · link:https://docs.devcentr.org[docs.devcentr.org] — toolchain orchestration + Toolchain Management Pattern
 * Planned: `openshellorg/env-refresh`; forked: https://github.com/openshellorg/terminal[`openshellorg/terminal`] (see xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh])
 * https://www.nushell.sh/[Nushell]
 
