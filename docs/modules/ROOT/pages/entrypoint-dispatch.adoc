@@ -20,6 +20,17 @@ Then the default entrypoint cheerfully ignores them. Soft warnings (`EBADENGINE`
 
 **Declaration without dispatch is worse than no declaration.** It looks like a contract and behaves like decoration.
 
+.Declaration without dispatch
+[source,mermaid]
+----
+flowchart LR
+  Pin[engines / .node-version] -.->|ignored| Wrong[Wrong major on PATH]
+  User[User / IDE / CI] --> Wrong
+  Wrong --> Native[Compile / load native addon]
+  Native --> Boom[ABI crash]
+  Boom --> Folklore[Rebuild folklore / install nvm]
+----
+
 == What “dispatch” means here
 
 When the invoked process is the wrong host or wrong version for the project, the entrypoint must, **on its own recognizance**:
@@ -27,6 +38,29 @@ When the invoked process is the wrong host or wrong version for the project, the
 . **Resolve** the required version from the project’s pin / `engines` field
 . **Install** that version if it is not already cached (via a registered manager adapter, or first-party fetch)
 . **Re-exec** the same command under that version for *this* process tree only — without rewriting the machine’s global default toolchain
+
+.Honest entrypoint dispatch
+[source,mermaid]
+----
+sequenceDiagram
+  participant U as User / IDE / CI
+  participant E as Entrypoint (wrong major)
+  participant P as Project pin
+  participant C as Version cache / adapter
+  participant R as Correct major
+
+  U->>E: invoke command
+  E->>P: read engines / .node-version
+  alt pin unsatisfied
+    E->>C: install if missing
+    C-->>E: ready
+    E->>R: re-exec same argv (this tree only)
+    R-->>U: run command
+  else pin satisfied
+    E-->>U: run command
+  end
+  Note over E,R: Global default unchanged
+----
 
 The system default may stay on “latest.” Opening an older pinned project must not require the user to manually switch globals, learn nvm after a crash, or “rebuild better-sqlite3.”
 
