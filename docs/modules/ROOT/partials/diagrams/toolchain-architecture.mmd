@@ -1,0 +1,35 @@
+%%{init: {"flowchart": {"htmlLabels": false}, "theme": "base"}}%%
+flowchart TB
+  subgraph actors [Actors]
+    U[Dev / IDE / CI]
+  end
+
+  subgraph pin [Project declares]
+    P[engines / pin file]
+  end
+
+  subgraph entry [Official entrypoint TCoP]
+    R[Resolve project pin]
+    I[Install if needed]
+    X[Re-exec]
+    L[Health / repair / upgrade]
+  end
+
+  subgraph runtime [Correct major for this tree]
+    S[Runtime / SDK]
+  end
+
+  subgraph machine [Machine default]
+    M[May stay on latest - not mutated]
+  end
+
+  App[Project / app]
+
+  U --> R
+  P --> R
+  R --> I
+  I --> X
+  X --> S
+  S --> App
+  L -.-> S
+  M -.->|left alone| S

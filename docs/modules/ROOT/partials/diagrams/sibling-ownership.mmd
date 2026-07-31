@@ -1,0 +1,19 @@
+%%{init: {"flowchart": {"htmlLabels": false}, "theme": "base"}}%%
+flowchart LR
+  subgraph dc [DevCentr]
+    TM[Toolchain Management]
+    PP[Pattern / Protocol / TCoP / TCF]
+    LC[Pin / health / repair / upgrade]
+    LO[Lifecycle ownership]
+    TM --> PP --> LC --> LO
+  end
+
+  subgraph oso [OpenShellOrg]
+    ED[Entrypoint Dispatch]
+    RI[Resolve / install / re-exec]
+    SB[Shell / CLI process boundary]
+    IH[Invocation honesty]
+    ED --> RI --> SB --> IH
+  end
+
+  dc ~~~ oso

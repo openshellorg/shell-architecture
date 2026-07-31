@@ -1,0 +1,7 @@
+%%{init: {"flowchart": {"htmlLabels": false}, "theme": "base"}}%%
+flowchart LR
+  Pin[engines / .node-version] -.->|ignored| Wrong[Wrong major on PATH]
+  User[User / IDE / CI] --> Wrong
+  Wrong --> Native[Compile / load native addon]
+  Native --> Boom[ABI crash]
+  Boom --> Folklore[Rebuild folklore / install nvm]

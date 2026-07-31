@@ -7,6 +7,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-07-30 — Mermaid diagrams are authoritative `.mmd` sources under `docs/modules/ROOT/partials/diagrams/`; entrypoint-dispatch includes them; opensh.org prerenders site figures via `@openshellorg/mermaid-svg-css-vars`.
 * 2026-07-28 — Added xref:entrypoint-dispatch.adoc[Entrypoint Dispatch] (auto-install + re-exec at the shell boundary) with Mermaid architecture diagrams; cross-linked DevCentr Toolchain Management; partnership news on openshellorg.github.io.
 * 2026-07-26 — Spike landed in https://github.com/openshellorg/terminal[`openshellorg/terminal`]: per-tab env light, Row-1 InfoBar, Fix/Insert SplitButton, OS Path poll (`OPENSHELLORG.adoc` in fork). Plan page updated.
 * 2026-07-26 — Product plan refined: link:docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc[`env-refresh` + Windows Terminal fork]. Fork at https://github.com/openshellorg/terminal; clone `openshellorg/.forks/terminal`. UX: per-tab health light, desync bar between tabs and shell, Fix (run) / Insert command split. See link:changelog-details/2026-07-26 - shell-host-and-env-refresh.adoc[detailed changelog].

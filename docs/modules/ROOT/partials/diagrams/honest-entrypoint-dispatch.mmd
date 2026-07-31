@@ -1,0 +1,18 @@
+sequenceDiagram
+  participant U as User / IDE / CI
+  participant E as Entrypoint (wrong major)
+  participant P as Project pin
+  participant C as Version cache / adapter
+  participant R as Correct major
+
+  U->>E: invoke command
+  E->>P: read engines / .node-version
+  alt pin unsatisfied
+    E->>C: install if missing
+    C-->>E: ready
+    E->>R: re-exec same argv (this tree only)
+    R-->>U: run command
+  else pin satisfied
+    E-->>U: run command
+  end
+  Note over E,R: Global default unchanged
