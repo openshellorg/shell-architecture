@@ -3,7 +3,7 @@
 
 == Two layers
 
-**SOS** (Standardized Operations Syntax), developed in https://github.com/openshellorg/open-shell-org[open-shell-org], addresses *how flags and options are spelled and discovered* — clarity and consistency at the CLI surface.
+**SOS** (Standardized Operations Syntax), developed in https://github.com/openshellorg/docs[docs], addresses *how flags and options are spelled and discovered* — clarity and consistency at the CLI surface.
 
 **Structured shells** address *how data moves between programs* — typed pipelines instead of scraping stdout text.
 

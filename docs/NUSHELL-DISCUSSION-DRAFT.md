@@ -17,7 +17,7 @@ Nushell already fixed the important part: **tables in the pipeline, render at th
 | [openshellorg/nu-require](https://github.com/openshellorg/nu-require) | Nu-tailored CLIs call `validate()` early. If you're not in Nu but `nu` is on PATH → tell the user and **relaunch inside Nu**. If Nu is missing → clear error + homepage (+ optional install hint). |
 | [openshellorg/nu-emit](https://github.com/openshellorg/nu-emit) | C-first library: build a row in memory, emit JSONL correctly. So people stop hand-`fprintf`ing JSON. Later: more languages; plugin-protocol path for folks who need typed *input*. |
 | [openshellorg/shell-architecture](https://github.com/openshellorg/shell-architecture) | Written thesis / layers (SOS flag syntax vs structured I/O vs terminal protocols). |
-| [openshellorg/open-shell-org](https://github.com/openshellorg/open-shell-org) | Separate track: Standardized Operations Syntax (flag consistency / certification). Complementary, not a Nu replacement. |
+| [openshellorg/docs](https://github.com/openshellorg/docs) | Separate track: Standardized Operations Syntax (flag consistency / certification). Complementary, not a Nu replacement. |
 
 Dev-Centr docs (in progress locally): recommend Nu on every OS; explain the above; call out the NVIDIA name collision (below).
 
