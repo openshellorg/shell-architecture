@@ -1,12 +1,39 @@
-= shell-architecture
+ifndef::env-github[:icons: font]
 :toc: preamble
-:icons: font
+:toclevels: 2
+:sectanchors:
+
+ifndef::env-github[]
+image:https://img.shields.io/github/contributors/openshellorg/shell-architecture.svg?style=for-the-badge[Contributors,link=https://github.com/openshellorg/shell-architecture/graphs/contributors]
+image:https://img.shields.io/github/forks/openshellorg/shell-architecture.svg?style=for-the-badge[Forks,link=https://github.com/openshellorg/shell-architecture/network/members]
+image:https://img.shields.io/github/stars/openshellorg/shell-architecture.svg?style=for-the-badge[Stars,link=https://github.com/openshellorg/shell-architecture/stargazers]
+image:https://img.shields.io/github/issues/openshellorg/shell-architecture.svg?style=for-the-badge[Issues,link=https://github.com/openshellorg/shell-architecture/issues]
+image:https://img.shields.io/github/license/openshellorg/shell-architecture.svg?style=for-the-badge[License,link=https://github.com/openshellorg/shell-architecture/blob/main/LICENSE]
+endif::[]
+
+ifdef::env-github[]
+image:https://img.shields.io/github/contributors/openshellorg/shell-architecture.svg?style=for-the-badge[Contributors]
+image:https://img.shields.io/github/forks/openshellorg/shell-architecture.svg?style=for-the-badge[Forks]
+image:https://img.shields.io/github/stars/openshellorg/shell-architecture.svg?style=for-the-badge[Stars]
+image:https://img.shields.io/github/issues/openshellorg/shell-architecture.svg?style=for-the-badge[Issues]
+image:https://img.shields.io/github/license/openshellorg/shell-architecture.svg?style=for-the-badge[License]
+endif::[]
+
+= shell-architecture
+
+OpenShellOrg thesis: structured shell pipelines, SOS relationship, Nushell advocacy.
+
+link:https://openshellorg.github.io/docs/shell-architecture/[Explore the docs] ·
+link:https://github.com/openshellorg/shell-architecture/issues[Report Bug] ·
+link:https://github.com/openshellorg/shell-architecture/issues[Request Feature]
+
+== About The Project
 
 Standards and explanation for OpenShellOrg's **structured-shell** direction — not a product repo (yet).
 
 Published docs: https://openshellorg.github.io/docs/shell-architecture/
 
-== Thesis (short)
+=== Thesis (short)
 
 1. **Structured data pipelines** beat treating stdout as both data and display. We endorse https://www.nushell.sh/[Nushell] as the Unix-centric reference implementation. PowerShell pioneered object pipelines; we recommend Nushell going forward.
 2. **SOS** (flag syntax) and structured shells are *complementary layers* — spelling options consistently does not replace typed pipelines, and vice versa.
@@ -15,7 +42,9 @@ Published docs: https://openshellorg.github.io/docs/shell-architecture/
 5. **Do not reinvent Nushell.** Advocate, optionally contribute upstream, and build companion libraries.
 6. **Env refresh / shell-host** — planned products so stale PATH is a non-issue (especially for Nushell users); see shell-host-and-env-refresh.
 
-== Documents
+== Usage
+
+=== Documents
 
 Antora component under `docs/` (assembled into the org docs site):
 
@@ -28,7 +57,7 @@ Antora component under `docs/` (assembled into the org docs site):
 * link:docs/modules/ROOT/pages/stance.adoc[Stance]
 * link:docs/modules/ROOT/pages/future.adoc[Future topics]
 
-== Related projects
+=== Related projects
 
 * https://github.com/openshellorg/docs[docs] — SOS certification and flag syntax
 * https://github.com/openshellorg/nu-require[nu-require] — require / relaunch under Nushell
@@ -44,3 +73,10 @@ Antora component under `docs/` (assembled into the org docs site):
 == License
 
 MIT — see link:LICENSE[]
+
+== Contact
+
+Open Shell Org — openshell@devcentr.org
+
+* Project: https://github.com/openshellorg/shell-architecture
+* Site: https://openshellorg.github.io
