@@ -3,21 +3,12 @@ ifndef::env-github[:icons: font]
 :toclevels: 2
 :sectanchors:
 
-ifndef::env-github[]
+[[readme-top]]
 image:https://img.shields.io/github/contributors/openshellorg/shell-architecture.svg?style=for-the-badge[Contributors,link=https://github.com/openshellorg/shell-architecture/graphs/contributors]
 image:https://img.shields.io/github/forks/openshellorg/shell-architecture.svg?style=for-the-badge[Forks,link=https://github.com/openshellorg/shell-architecture/network/members]
 image:https://img.shields.io/github/stars/openshellorg/shell-architecture.svg?style=for-the-badge[Stars,link=https://github.com/openshellorg/shell-architecture/stargazers]
 image:https://img.shields.io/github/issues/openshellorg/shell-architecture.svg?style=for-the-badge[Issues,link=https://github.com/openshellorg/shell-architecture/issues]
 image:https://img.shields.io/github/license/openshellorg/shell-architecture.svg?style=for-the-badge[License,link=https://github.com/openshellorg/shell-architecture/blob/main/LICENSE]
-endif::[]
-
-ifdef::env-github[]
-image:https://img.shields.io/github/contributors/openshellorg/shell-architecture.svg?style=for-the-badge[Contributors]
-image:https://img.shields.io/github/forks/openshellorg/shell-architecture.svg?style=for-the-badge[Forks]
-image:https://img.shields.io/github/stars/openshellorg/shell-architecture.svg?style=for-the-badge[Stars]
-image:https://img.shields.io/github/issues/openshellorg/shell-architecture.svg?style=for-the-badge[Issues]
-image:https://img.shields.io/github/license/openshellorg/shell-architecture.svg?style=for-the-badge[License]
-endif::[]
 
 = shell-architecture
 
@@ -41,6 +32,8 @@ Published docs: https://openshellorg.github.io/docs/shell-architecture/
 4. Future topics include display vs transport decoupling, terminal protocol notes, TUI vs structured stdout, and speculative mixed-fonts research.
 5. **Do not reinvent Nushell.** Advocate, optionally contribute upstream, and build companion libraries.
 6. **Env refresh / shell-host** — planned products so stale PATH is a non-issue (especially for Nushell users); see shell-host-and-env-refresh.
+
+link:#readme-top[back to top]
 
 == Usage
 
@@ -70,9 +63,13 @@ Antora component under `docs/` (assembled into the org docs site):
 
 **Not** https://github.com/NVIDIA/OpenShell[NVIDIA OpenShell] — that is agent sandboxing.
 
+link:#readme-top[back to top]
+
 == License
 
 MIT — see link:LICENSE[]
+
+link:#readme-top[back to top]
 
 == Contact
 
@@ -80,3 +77,5 @@ Open Shell Org — openshell@devcentr.org
 
 * Project: https://github.com/openshellorg/shell-architecture
 * Site: https://openshellorg.github.io
+
+link:#readme-top[back to top]
