@@ -3,7 +3,30 @@ ifndef::env-github[:icons: font]
 :toclevels: 2
 :sectanchors:
 
-[[readme-top]]
+ifdef::env-github[]
+++++
+<a id="readme-top"></a>
+<div align="center">
+<a href="https://github.com/openshellorg/shell-architecture/graphs/contributors"><img src="https://img.shields.io/github/contributors/openshellorg/shell-architecture.svg?style=for-the-badge" alt="Contributors"></a>
+<a href="https://github.com/openshellorg/shell-architecture/network/members"><img src="https://img.shields.io/github/forks/openshellorg/shell-architecture.svg?style=for-the-badge" alt="Forks"></a>
+<a href="https://github.com/openshellorg/shell-architecture/stargazers"><img src="https://img.shields.io/github/stars/openshellorg/shell-architecture.svg?style=for-the-badge" alt="Stars"></a>
+<a href="https://github.com/openshellorg/shell-architecture/issues"><img src="https://img.shields.io/github/issues/openshellorg/shell-architecture.svg?style=for-the-badge" alt="Issues"></a>
+<a href="https://github.com/openshellorg/shell-architecture/blob/main/LICENSE"><img src="https://img.shields.io/github/license/openshellorg/shell-architecture.svg?style=for-the-badge" alt="License"></a>
+<br />
+<h3 align="center">shell-architecture</h3>
+<p align="center">
+OpenShellOrg thesis: structured shell pipelines, SOS relationship, Nushell advocacy.<br />
+<a href="https://openshellorg.github.io/docs/shell-architecture/">Explore the docs</a><br />
+<br />
+<a href="https://github.com/openshellorg/shell-architecture/issues">Report Bug</a>
+&middot;
+<a href="https://github.com/openshellorg/shell-architecture/issues">Request Feature</a>
+</p>
+</div>
+++++
+endif::[]
+
+ifndef::env-github[]
 image:https://img.shields.io/github/contributors/openshellorg/shell-architecture.svg?style=for-the-badge[Contributors,link=https://github.com/openshellorg/shell-architecture/graphs/contributors]
 image:https://img.shields.io/github/forks/openshellorg/shell-architecture.svg?style=for-the-badge[Forks,link=https://github.com/openshellorg/shell-architecture/network/members]
 image:https://img.shields.io/github/stars/openshellorg/shell-architecture.svg?style=for-the-badge[Stars,link=https://github.com/openshellorg/shell-architecture/stargazers]
@@ -17,6 +40,7 @@ OpenShellOrg thesis: structured shell pipelines, SOS relationship, Nushell advoc
 link:https://openshellorg.github.io/docs/shell-architecture/[Explore the docs] ·
 link:https://github.com/openshellorg/shell-architecture/issues[Report Bug] ·
 link:https://github.com/openshellorg/shell-architecture/issues[Request Feature]
+endif::[]
 
 == About The Project
 
@@ -33,8 +57,9 @@ Published docs: https://openshellorg.github.io/docs/shell-architecture/
 5. **Do not reinvent Nushell.** Advocate, optionally contribute upstream, and build companion libraries.
 6. **Env refresh / shell-host** — planned products so stale PATH is a non-issue (especially for Nushell users); see shell-host-and-env-refresh.
 
-link:#readme-top[back to top]
-
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
 == Usage
 
 === Documents
@@ -63,14 +88,16 @@ Antora component under `docs/` (assembled into the org docs site):
 
 **Not** https://github.com/NVIDIA/OpenShell[NVIDIA OpenShell] — that is agent sandboxing.
 
-link:#readme-top[back to top]
-
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
 == License
 
 MIT — see link:LICENSE[]
 
-link:#readme-top[back to top]
-
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
 == Contact
 
 Open Shell Org — openshell@devcentr.org
@@ -78,4 +105,6 @@ Open Shell Org — openshell@devcentr.org
 * Project: https://github.com/openshellorg/shell-architecture
 * Site: https://openshellorg.github.io
 
-link:#readme-top[back to top]
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
