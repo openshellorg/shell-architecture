@@ -35,6 +35,10 @@ Explore whether shell or terminal protocol can mark spans with font roles (for e
 Likely needs terminal-emulator cooperation; fish/Nushell hacks alone are insufficient long-term.
 Exploratory only — no implementation planned here.
 
+== PlayTime (not speculative, not ours to build)
+
+A document runner that spawns argv without a shell already has a home in Dev-Centr `scriptbook`. Stance essays: xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary], xref:argv-as-execution-currency.adoc[Argv as execution currency], xref:host-identity-contract.adoc[Host identity as a contract]. Do not start a second engine here.
+
 == Upstream contribution
 
 Prefer patches and plugins for Nushell / terminals over greenfield shells unless a concrete gap cannot be fixed upstream.

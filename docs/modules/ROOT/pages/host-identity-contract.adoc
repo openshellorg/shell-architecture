@@ -1,0 +1,49 @@
+= Host identity as a contract
+:navtitle: Host identity as a contract
+:description: There is no world get_os(). A small Host Identity Record plus baked probe kinds is the bootstrap contract. Equivalence Engine must not answer "what OS am I?" in order to start.
+
+Write this so someone with no background can follow.
+
+== What do I need?
+
+A computer. The wish that every OS had agreed on one API call. They did not. Cousins exist.
+
+== The missing `get_os()`
+
+POSIX `uname`. Freedesktop `/etc/os-release` (`ID`, `ID_LIKE`, `VERSION_ID`). Windows `RtlGetVersion`. Darwin `sw_vers`.
+
+That is already more agreement than people remember. What nobody shipped is one struct every tool can fill.
+
+Dev-Centr calls the framework **Host Awareness** and the struct a **Host Identity Record**:
+
+`family`, `distro`, `like[]`, `version`, `arch`, `overlays[]`, `caps` (shells, package managers, formats).
+
+A new OS is first-class when a probe can fill that record. Microsoft will not file a PR. A hobby kernel can ship an os-release-shaped file.
+
+This is an OpenShellOrg-shaped contract (host honesty at the boundary) implemented today inside PlayTime. Canonical page: link:https://github.com/dev-centr/scriptbook/blob/main/spec/host-awareness.adoc[scriptbook Host Awareness].
+
+== Bootstrap is not an intent
+
+If you ask Equivalence Engine "what OS am I?" so that it can pick the method for "what OS am I?", the run never starts.
+
+PlayTime is a compiled binary. It already knows NT vs POSIX. It walks a **baked** probe cascade (file/API first; `command` is the escape hatch). It freezes the record. *Then* catalogs may run.
+
+PowerShell-on-Linux does not save that first step. `$IsLinux` works only inside pwsh. The engine is not inside pwsh.
+
+.Snapshot, then dereference
+image::playtime-bootstrap.svg[alt="Deadlock crossed out; snapshot then bind"]
+
+== Overlays, not planets
+
+WSL is Linux plus overlay `wsl`. Cygwin/MSYS are Windows plus a POSIX hat. A container is an overlay on whatever family. Caps and format filters read the stickers. Do not invent a new `family` for each hat.
+
+.Overlays are stickers
+image::playtime-overlays.svg[alt="Family circles with wsl, cygwin, container stickers"]
+
+== Bake loop, not a runtime cycle
+
+Shared probe tables can be read by Equivalence Engine (for `family` / inherit) and copied into PlayTime at **CI** time. Runtime PlayTime must not call the engine to learn `family`. Empty-engine-plus-network-rules would fail on a plane and recreate the deadlock.
+
+A new Unix-like distro that speaks os-release is data. A kernel that is neither NT nor POSIX is a new probe *kind* (code), then a table row.
+
+See xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary] for why this engine still lives in Dev-Centr while it is being built.

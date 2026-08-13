@@ -9,4 +9,8 @@
 ** xref:division-of-labor.adoc[Division of Labor]
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
+* PlayTime (cousin in Dev-Centr)
+** xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary]
+** xref:argv-as-execution-currency.adoc[Argv as execution currency]
+** xref:host-identity-contract.adoc[Host identity as a contract]
 * xref:future.adoc[Future Topics]

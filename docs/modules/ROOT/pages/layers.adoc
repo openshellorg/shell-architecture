@@ -25,4 +25,8 @@ Think in stacked concerns. Do not collapse them into one mega-project.
 | Product environment orchestration
 | What a developer machine should install/configure
 | Dev-Centr (not OpenShellOrg)
+
+| Document play / argv spawn
+| Play a procedure without wrapping every command in a shell dialect
+| Cousin: Dev-Centr PlayTime (xref:playtime-at-the-shell-boundary.adoc[essay]). Stance (argv vs shell) is ours to document. Engine stays in `scriptbook` while it is built.
 |===

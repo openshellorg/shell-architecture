@@ -1,0 +1,67 @@
+= PlayTime at the shell boundary
+:navtitle: PlayTime at the shell boundary
+:description: A document runner that spawns argv without a shell is a shell-boundary idea. It currently lives in Dev-Centr scriptbook. Do not move it yet.
+
+Write this so someone with no background can follow.
+
+== What do I need?
+
+Curiosity about where a "play the document" engine belongs. You do not need to install Scriptbook to read this.
+
+== The cousin
+
+OpenShellOrg cares what happens at `argv[0]`. Entrypoint Dispatch: the process you launched should be the right host and version, or it should stop. SOS: flags should not lie. Structured pipelines: stdout should not have to be both a pipe and a canvas.
+
+**PlayTime** is a Dev-Centr engine that *plays* a CentrMark playbook. It detects the host, asks Equivalence Engine to bind an intent to a command, and **spawns argv with no shell** unless the catalog row is honestly a script.
+
+That last sentence is a shell-boundary sentence.
+
+.Cookbook, kitchen, waiter -- the kitchen is the boundary
+image::playtime-layers.svg[alt="CentrMark book, PlayTime stage, Scriptbook app"]
+
+== Why it sounds like us
+
+[cols="1,2", options="header"]
+|===
+| OpenShellOrg concern | PlayTime rhyme
+
+| Do not wrap a program in a lying shell string
+| Install methods are argv. No bash coat, no pwsh coat.
+
+| Host / version honesty at the process boundary
+| Host Awareness snapshot *before* any catalog lookup
+
+| Do not invent a new shell language
+| Glue may be Nushell. Intents are not a dialect translator.
+
+| Standards and small engines, not a mega-orchestrator
+| PlayTime must not own package catalogs or a GUI
+|===
+
+.One suitcase, no costumes
+image::playtime-argv.svg[alt="argv box; dashed shell coats are not needed"]
+
+A questionnaire that asks "MSI or bash?" collapses a package format and a parser into one hallway. We refuse that here too. See xref:argv-as-execution-currency.adoc[Argv as execution currency].
+
+== Why it is not here yet
+
+Dev-Centr owns the practitioner document: Scriptbook the app, the `.cmk` playbook, the sidecar weave, the DevCentr GUI later. Equivalence Engine owns the catalog of intents. PlayTime is the kitchen between those two.
+
+Moving the kitchen while dinner is on the stove would split the build. The library is `scriptbook` today. The binary stays `scriptbook`. Spec says do not fork a repo yet.
+
+.Aligned, not moved
+image::playtime-sibling-home.svg[alt="PlayTime in the Dev-Centr workshop; dotted maybe-later path to OpenShellOrg"]
+
+Rule of thumb, same as xref:division-of-labor.adoc[division of labor]:
+
+* "What should my team run?" -- Dev-Centr (the book, the waiter, the catalog of *tools*).
+* "What should a runner believe about argv and host identity?" -- OpenShellOrg-shaped. Cross-link. Do not duplicate the engine.
+
+If PlayTime ever moves, Host Awareness and argv-spawn should move with it. Equivalence Engine catalogs and the Scriptbook GUI should not.
+
+== What to read
+
+* Dev-Centr encyclopedia: link:https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/abstract-playbooks.html[Abstract playbooks]
+* Essay: link:https://devcentr.org/news/2026-08-13-intents-not-shell-translation[Intents, not shell translation]
+* Contract: link:https://github.com/dev-centr/scriptbook/blob/main/spec/playtime.adoc[PlayTime spec]
+* xref:host-identity-contract.adoc[Host identity as a contract]

@@ -7,6 +7,8 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-08-13 -- Cousin essays: xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary], xref:argv-as-execution-currency.adoc[Argv as execution currency], xref:host-identity-contract.adoc[Host identity as a contract]. PlayTime stays in Dev-Centr `scriptbook` while it is built. Illustrated. See link:changelog-details/2026-08-13 - playtime-cousin.adoc[detailed changelog].
+
 * 2026-07-30 — Mermaid diagrams are authoritative `.mmd` sources under `docs/modules/ROOT/partials/diagrams/`; entrypoint-dispatch includes them; opensh.org prerenders site figures via `@openshellorg/mermaid-svg-css-vars`.
 * 2026-07-28 — Added xref:entrypoint-dispatch.adoc[Entrypoint Dispatch] (auto-install + re-exec at the shell boundary) with Mermaid architecture diagrams; cross-linked DevCentr Toolchain Management; partnership news on openshellorg.github.io.
 * 2026-07-26 — Spike landed in https://github.com/openshellorg/terminal[`openshellorg/terminal`]: per-tab env light, Row-1 InfoBar, Fix/Insert SplitButton, OS Path poll (`OPENSHELLORG.adoc` in fork). Plan page updated.

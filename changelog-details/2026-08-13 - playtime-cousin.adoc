@@ -1,0 +1,5 @@
+= 2026-08-13 -- PlayTime as a shell-boundary cousin
+
+Documented why a document runner that spawns argv (no shell costume) rhymes with
+OpenShellOrg, and why the engine is not moving out of Dev-Centr `scriptbook`
+while it is being built. Stance pages: format vs shell, Host Identity Record.

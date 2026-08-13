@@ -23,7 +23,10 @@ Standards and explanation for OpenShellOrg's *structured-shell* direction — no
 * xref:division-of-labor.adoc[DevCentr and OpenShellOrg] — who does what (detail)
 * xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] — planned `env-refresh` + `shell-host` products
 * xref:stance.adoc[Stance] — do not reinvent Nushell
-* xref:future.adoc[Future topics] — TUI vs stdout, mixed fonts
+* xref:future.adoc[Future topics] -- TUI vs stdout, mixed fonts
+* xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary] -- Dev-Centr cousin; argv runner; not moved yet
+* xref:argv-as-execution-currency.adoc[Argv as execution currency]
+* xref:host-identity-contract.adoc[Host identity as a contract]
 
 == Related projects
 

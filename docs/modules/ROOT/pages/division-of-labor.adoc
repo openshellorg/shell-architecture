@@ -12,7 +12,9 @@
 
 DevCentr should not fork or reimplement Nushell. OpenShellOrg should not become a second DevCentr. DevCentr consumes **project-map** for stack recognition; OpenShellOrg ships `lsgrouped` and the profile corpus. Docs and recommendations can cross-link: DevCentr points practitioners at Nushell and OSO certification; OpenShellOrg documents the architectural thesis and ships small libs that make that thesis usable.
 
-**Toolchain vs entrypoint:** DevCentr keeps the lifecycle canon (link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern]). OpenShellOrg keeps the shell-boundary canon (xref:entrypoint-dispatch.adoc[Entrypoint Dispatch]). Same pathology, two altitudes — cross-link, do not fork competing essays.
+**Toolchain vs entrypoint:** DevCentr keeps the lifecycle canon (link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern]). OpenShellOrg keeps the shell-boundary canon (xref:entrypoint-dispatch.adoc[Entrypoint Dispatch]). Same pathology, two altitudes -- cross-link, do not fork competing essays.
+
+**PlayTime:** a document runner that spawns argv is a shell-boundary rhyme (xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary]). The engine stays in Dev-Centr `scriptbook` while it is being built. Do not move it. Do not reimplement it here.
 
 == Environment refresh
 

@@ -18,7 +18,9 @@ Dev-Centr and OpenShellOrg goals **overlap** and should stay **aligned**. They s
 | Own planned `env-refresh` + `shell-host` (xref:shell-host-and-env-refresh.adoc[plan])
 |===
 
-Rule of thumb: if it is “what should my team run?”, it is Dev-Centr. If it is “what should CLI authors converge on?”, it is OpenShellOrg. Cross-link; do not duplicate governance.
+Rule of thumb: if it is "what should my team run?", it is Dev-Centr. If it is "what should CLI authors converge on?", it is OpenShellOrg. Cross-link; do not duplicate governance.
+
+PlayTime (play a `.cmk` by binding intents to argv) is currently Dev-Centr. The *stance* (argv not shell costumes; host snapshot before catalog) is documented here so CLI authors do not have to spelunk. See xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary].
 
 Stale PATH/env after installs is a shared UX debt: OpenShellOrg ships the durable fix; DevCentr consumes it. See xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] and xref:division-of-labor.adoc[Division of Labor].
 

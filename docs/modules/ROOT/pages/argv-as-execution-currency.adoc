@@ -1,0 +1,52 @@
+= Argv as execution currency
+:navtitle: Argv as execution currency
+:description: A package format is not a shell. Spawn install methods as argv. Do not tensor format and shell into graph nodes.
+
+Write this so someone with no background can follow.
+
+== What do I need?
+
+A picture of how commands actually start on a computer. No Equivalence Engine install required.
+
+== Two facts that are not one hallway
+
+**Format** -- which artifact you acquire (msi, deb, flatpak, winget, AppImage, …).
+
+**Shell** -- how a *string* would be parsed if you passed it to bash or PowerShell.
+
+A GUI "Install" button does not pick a shell. It calls `CreateProcess` / `execve` with a program and arguments. That bag is **argv**.
+
+`winget install GitHub.cli` is argv. It is not a bash program. It is not a pwsh program. Any shell *can* spawn it. Prefer spawning it with no shell.
+
+.One suitcase, no costumes
+image::playtime-argv.svg[alt="argv box for winget install; dashed bash, pwsh, and nu coats are not needed"]
+
+== The koan
+
+The student asked: MSI or bash?
+
+Those are not alternatives. One is a package. One is a parser. A questionnaire that offers both is lying about the universe.
+
+.Two doors is not a questionnaire
+image::playtime-two-doors.svg[alt="Doors labeled MSI and bash"]
+
+**Runtime** is the rare honest exception: this method *is* a script (`curl | bash`). Then `runtime bash` is a constraint on the row. Filter it out if bash is missing. Do not multiply it by format. You still never ask "MSI or bash?"
+
+== Why this would break a graph engine
+
+Dev-Centr's Equivalence Engine has a `code` domain that *is* a path (version hops). Its `cli` domain is already a catalog lookup. If `shell` joined the context path (`windows/pwsh/msi`), lookup would become a lattice of `(format x shell)` nodes. That is a tensor product, not equivalence.
+
+.Columns, not a cube
+image::playtime-facets-not-lattice.svg[alt="Catalog table versus a forbidden path-segment lattice"]
+
+OpenShellOrg's job here is the stance, not the catalog:
+
+* Tools should expose argv.
+* Wrapping argv in a shell string is how quoting bugs are born.
+* `ls` ↔ `Get-ChildItem` is command-family equivalence -- a *different* domain, never crossed with `.deb` vs `.msi`.
+
+PlayTime (in Dev-Centr scriptbook today) is the runner that takes this stance. See xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary].
+
+== Glue vs identity
+
+Narrative glue in a playbook may still say `shell=nu`. That is the document picking a language for `echo` and verify steps. Package identity is not a language. Mixing those is how you get three winget rows and a compiler nobody wrote.
