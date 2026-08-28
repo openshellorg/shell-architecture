@@ -178,3 +178,10 @@ Already wired to upstream layout:
 * xref:nu-emit::index.adoc[nu-emit]
 * https://github.com/dev-centr/devcentr[DevCentr] repository browser terminal (consumer)
 * https://github.com/microsoft/terminal[microsoft/terminal] (upstream)
+
+== Top context bar (sibling chrome)
+
+The same `openshellorg/terminal` fork is the **first-class host** for xref:host-chrome-negotiation.adoc[host chrome negotiation] — mounting Open Shell's top context bar (line mode, arrow mode) in native UI chrome.
+Env-refresh widgets and the top context bar share the host integration surface; they are different chrome widgets.
+When the host rejects or is unknown, Open Shell falls back to display-overlay (see xref:shell-display-layers.adoc[display layers]).
+

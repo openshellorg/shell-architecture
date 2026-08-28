@@ -132,3 +132,9 @@ Rust remains fine for **nu-emit** C API and small native tools; the **shell REPL
 * xref:shell-landscape.adoc[Shell landscape]
 * xref:shell-keybindings.adoc[Keybindings comparison]
 * xref:stance.adoc[Stance]
+
+== Prompt and host chrome
+
+* xref:prompt-spatial-layout.adoc[Prompt spatial layout] — line mode and arrow/`▶` mode
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation] — mode-engaged top bar; overlay fallback
+
