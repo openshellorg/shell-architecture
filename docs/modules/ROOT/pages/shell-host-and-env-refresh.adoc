@@ -79,9 +79,9 @@ We do **not** greenfield a terminal emulator. We fork Windows Terminal and inser
 
 === Related stack (inventory — not a product flip)
 
-Hive audit (2026-08-28): dlang-supplemental already has a **2D GPU** path (ello-d / Vello+wgpu) and a **retained-mode GUI** (dew + app-kit dui), plus alternate desktop bindings (valonia-d) and in-terminal TUI bindings (opentui-d). Still **missing** for a greenfield terminal app: ConPTY/PTY host, VT/emulation surface, and **whole-UI DPI/scale** helpers.
+Hive audit (2026-08-28, DPI note updated same day): dlang-supplemental already has a **2D GPU** path (vello-d / Vello+wgpu) and a **retained-mode GUI** (dew + app-kit dui), plus alternate desktop bindings (avalonia-d) and in-terminal TUI bindings (opentui-d). **Whole-UI DPI/content scale** now lives in link:https://github.com/dlang-supplemental/dew[`dew.scale`] / `App.contentScale` (logical layout → scaled display list; GLFW + Win32 DPI probes). Still **missing** for a greenfield terminal app: ConPTY/PTY host and VT/emulation surface.
 
-Windows Terminal Ctrl+= zooms shell contents only — inferior if the goal is consistent scale of chrome + PTY together. That tension is **recorded**, not resolved: committed shell-host remains the WT fork; dew/vello are enabling tech if a later decision needs D-hosted chrome or whole-UI scale. Do not start a D terminal emulator until PTY + scale are scoped.
+Windows Terminal Ctrl+= zooms shell contents only — inferior if the goal is consistent scale of chrome + PTY together. That tension is **recorded**, not resolved: committed shell-host remains the WT fork; dew/vello are enabling tech if a later decision needs D-hosted chrome or whole-UI scale. Do not start a D terminal emulator until PTY/VT are scoped (DPI/scale foundation is in dew).
 
 === Goals
 

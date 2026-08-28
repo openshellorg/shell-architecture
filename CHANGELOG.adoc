@@ -1,4 +1,8 @@
 = Changelog
+
+== 2026-08-28 - DPI slice cross-link
+
+* Related-stack inventory: whole-UI DPI/content scale marked addressed in dew (`dew.scale`).
 :toc:
 
 All notable changes to this project will be documented here.
