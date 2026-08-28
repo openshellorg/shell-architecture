@@ -81,6 +81,20 @@ Closest cousins (different products): `Desktop-Tooling/activity-map-shell` and `
 
 **Ready to spike a pane.** Not prime-time to replace WT. See link:https://github.com/openshellorg/open-terminal/blob/main/docs/READINESS.adoc[READINESS.adoc].
 
+== Layout mode demos
+
+Interactive suite:
+link:https://hci-nerdz.github.io/shell-context-demo/[shell-context-demo]
+(routes: `#/standalone`, `#/decoupled`, `#/manager`, `#/zones`, `#/association`).
+
+image::open-terminal/layout-standalone.png[Standalone layout demo with top tabs,width=100%]
+
+image::open-terminal/layout-decoupled.png[Decoupled index with separate session windows,width=100%]
+
+image::open-terminal/layout-project-grouped-manager.png[projectGroupedManager beside DevCentr grid,width=100%]
+
+image::open-terminal/layout-nested-zones.png[Nested zones contained tiling demo,width=100%]
+
 == Related
 
 * xref:session-association.adoc[Session association and thumbnails]

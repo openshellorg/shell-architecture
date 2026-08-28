@@ -107,6 +107,13 @@ SessionRegistration
 * Permission UX: per-subscriber opt-in vs session-global offer.
 * Fallback if session cannot produce thumbs (DWM capture? subscriber capture?).
 
+== Demo
+
+Interactive mock:
+link:https://hci-nerdz.github.io/shell-context-demo/#/association[shell-context-demo · Association].
+
+image::open-terminal/session-association.png[Session association demo: session cards and subscriber list,width=100%]
+
 == Related
 
 * Host product: link:https://github.com/openshellorg/open-terminal/blob/main/docs/PRODUCT-MODEL.adoc[PRODUCT-MODEL.adoc]

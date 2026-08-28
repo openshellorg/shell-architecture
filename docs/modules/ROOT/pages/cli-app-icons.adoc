@@ -135,6 +135,13 @@ Do **not** require SOS for icons to work. SOS remains the flag-syntax track (xre
 * Full prohelp schema patch in this repo (proposal; implement in `openshellorg/prohelp` when ready)
 * Generating icons from argv screenshots
 
+== Demo (tab chrome)
+
+CLI icon badges on project-grouped manager tabs (mock discovery):
+link:https://hci-nerdz.github.io/shell-context-demo/#/manager[shell-context-demo · Project manager].
+
+image::open-terminal/cli-icons-on-manager.png[CLI app icons on vertical tab chrome in projectGroupedManager,width=100%]
+
 == Related
 
 * xref:devcentr-terminal-manager.adoc[DevCentr terminal manager]

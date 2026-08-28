@@ -110,6 +110,13 @@ Full handshake remains xref:session-association.adoc[session association]; zone 
 * Move DevCentr's project grid into the tiling surface
 * Require nested zones for every Open Terminal launch (optional)
 
+== Demo
+
+Interactive mock (HCI-Nerdz):
+link:https://hci-nerdz.github.io/shell-context-demo/#/zones[shell-context-demo · Nested zones].
+
+image::open-terminal/layout-nested-zones.png[Contained tiling zones demo: populated monitor zone and faded empty zone,width=100%]
+
 == Related
 
 * HCI pattern: link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/contained-tiling.adoc[contained-tiling]

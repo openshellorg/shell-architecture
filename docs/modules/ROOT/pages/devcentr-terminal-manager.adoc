@@ -139,6 +139,13 @@ Full handshake: xref:session-association.adoc[Session association].
 * Full UI implementation (spec only)
 * OS-level tiling WM replacement (nested zones stay inside the dedicated UI)
 
+== Demo
+
+Interactive mock (manager + DevCentr grid highlight/dull):
+link:https://hci-nerdz.github.io/shell-context-demo/#/manager[shell-context-demo · Project manager].
+
+image::open-terminal/layout-project-grouped-manager.png[projectGroupedManager with vertical tabs and highlighted DevCentr grid cell,width=100%]
+
 == Related
 
 * xref:cli-app-icons.adoc[CLI app icons]
