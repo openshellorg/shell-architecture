@@ -1,0 +1,224 @@
+= Host native widgets
+:navtitle: Host Native Widgets
+:description: Structured host widget channel for CLI apps — stacked app top bars and hover overlays (color picker, GUI editor, file upload) beyond the shell top context bar.
+
+Write this so someone with no background can follow.
+
+== Why this page exists
+
+xref:host-chrome-negotiation.adoc[Host chrome negotiation] settles **one** affordance: the Open Shell **top context bar**, **inserted** into parent terminal chrome (not hovered over the shell).
+
+CLI apps still need a broader toolkit: color pickers, real GUI text editors, file upload with size validation, and similar interactions that benefit from **host-owned GUI** rather than stdout or a full TUI rewrite.
+
+This page is that generalization — a structured **host widget channel**, not a pile of one-off dialogs.
+
+== Taxonomy
+
+[cols="1,2,1,2"]
+|===
+| Kind | Placement | Owner | Example
+
+| **Shell top bar**
+| **Inserted** into host chrome (preferred; never "hover the shell" for this job)
+| Open Shell session
+| Line mode, arrow/`▶` mode
+
+| **App top bar**
+| **Stacked under** the shell top bar
+| Active CLI / toolkit
+| `gcloud` tool chrome while that CLI owns the prompt
+
+| **Hover widget**
+| **Floats** over terminal content (modal-ish overlay owned by the host, not stdout)
+| Host, invoked by CLI (or shell on behalf of a tool)
+| Color picker, in-place GUI text editor, file upload with `maxBytes` returning a blob/handle
+|===
+
+[IMPORTANT]
+====
+**Settled for shell top bar:** prefer **inserting** a top bar into the parent terminal UI.
+Hovering a shell-owned bar over the terminal content for that use case is **inferior**.
+Keep that choice in xref:host-chrome-negotiation.adoc[host chrome negotiation]; do not re-litigate it here.
+====
+
+Hover widgets are a **different kind**: they intentionally float because the interaction is transient and modal-ish (pick a color, edit a blob, choose a file). They are not a substitute for inserted session chrome.
+
+== Relationship to terminal-gui-prompts
+
+https://github.com/openshellorg/terminal-gui-prompts[`openshellorg/terminal-gui-prompts`] already promotes **confirm** and **text** prompts to native OS dialogs when a desktop is present, while still echoing the question to stdout for pipes/AI.
+
+That library is the **narrow precursor**:
+
+* *Today:* fixed prompt kinds (confirm / text) → OS dialog or TTY fallback
+* *Here:* open-ended **widget types** on a host channel (picker, editor, upload, app chrome strip, …)
+
+Treat terminal-gui-prompts as a **compatible fallback and early adopter path** for simple dialogs, not as the whole product.
+When a capable Open Shell / `openshellorg/terminal` host is present, the same toolkit should prefer the **host widget channel**; otherwise fall back to terminal-gui-prompts, a TUI, or a classic terminal prompt.
+
+== Negotiation (capability probe)
+
+Same shape as host chrome negotiation, widened to a capability catalog:
+
+[source]
+----
+probe  →  identify host + desktop/GUI presence
+offer  →  CLI/shell advertises WidgetRequest kinds + constraints
+accept →  host mounts widget (chrome insert, stacked bar, or float)
+reject →  fallback chain (see below)
+----
+
+[cols="1,2"]
+|===
+| Step | Detail
+
+| **Probe**
+| Host identity (xref:host-chrome-negotiation.adoc[host chrome negotiation] matrix) plus "can float overlays?" / "can stack app chrome?" / "can return binary blobs?"
+
+| **Offer**
+| Structured capability or per-request record (JSONL sketch below). Align with nu-emit / shell-context JSONL style where possible.
+
+| **Accept**
+| Host owns pixels and modal focus; CLI owns domain state and how the returned value is used.
+
+| **Reject / timeout / unsupported**
+| Fallback without retry spam. Optional re-probe on host attach.
+|===
+
+=== Fallback ladder (by kind)
+
+[cols="1,2"]
+|===
+| Kind | Typical fallbacks (first available)
+
+| Shell top bar
+| Display-overlay TUI bar inside Open Shell (never stdout) — see xref:shell-display-layers.adoc[display layers]
+
+| App top bar
+| In-process TUI strip on display-overlay; or omit chrome and use stdout banners only as last resort (discouraged)
+
+| Hover widget
+| terminal-gui-prompts / native OS dialog (confirm, text, file picker); else TUI overlay; else classic stdin prompt
+|===
+
+== Protocol sketch (JSONL)
+
+Illustrative only — wire format TBD. One request object per line on a control channel (not mixed into stdout data):
+
+[source,json]
+----
+{
+  "v": 1,
+  "op": "widget.request",
+  "id": "req-9f3c",
+  "type": "file.upload",
+  "placement": "hover",
+  "constraints": {
+    "maxBytes": 10485760,
+    "accept": ["image/png", "image/jpeg", ".svg"]
+  },
+  "return": {
+    "channel": "blob",
+    "encoding": "handle"
+  }
+}
+----
+
+[cols="1,2"]
+|===
+| Field | Intent
+
+| `type`
+| Widget kind: `color.picker`, `text.editor`, `file.upload`, `confirm`, `app.topbar`, …
+
+| `placement`
+| Hint: `insert` (shell chrome), `stack` (app top bar under shell bar), `hover` (float over content). Host may reject illegal placements (e.g. shell bar as hover).
+
+| `constraints`
+| Type-specific limits — e.g. `maxBytes`, MIME/`accept`, editor language mode, palette swatches.
+
+| `return.channel`
+| How the result comes back: `json` (small values), `blob` / `handle` (large binary via side channel or fd), `cancel`.
+
+| `id`
+| Correlate request ↔ response; support cancel and timeout.
+|===
+
+=== Example types (v0 catalog)
+
+[cols="1,1,2"]
+|===
+| `type` | Default placement | Notes
+
+| `shell.topbar` (session)
+| `insert`
+| Owned by Open Shell; see host-chrome-negotiation — not a random CLI request
+
+| `app.topbar`
+| `stack`
+| Active CLI registers chrome while it owns the interaction
+
+| `color.picker`
+| `hover`
+| Returns `#rrggbb` / structured color
+
+| `text.editor`
+| `hover`
+| Real GUI editor; returns final text or cancel
+
+| `file.upload`
+| `hover`
+| Host validates size/MIME; returns blob handle to the app
+
+| `confirm` / `text.prompt`
+| `hover` or OS dialog
+| Overlaps terminal-gui-prompts; prefer host channel when present
+|===
+
+== Who owns what
+
+[cols="1,2,2"]
+|===
+| Concern | Owner | Notes
+
+| Host protocol + pixel ownership
+| Terminal application — **first-class:** `openshellorg/terminal`
+| Same integration surface as env-refresh and shell top bar
+
+| Widget request API / toolkit bindings
+| Language SDKs + optional promotion layer (evolve terminal-gui-prompts)
+| CLIs should not each invent OSC spam
+
+| Overlay / TUI fallback
+| Open Shell runtime display-overlay (xref:shell-display-layers.adoc[display layers])
+| Never stdout for chrome or modal frames
+
+| Domain result handling
+| Calling CLI / shell feature
+| Host returns value; app decides semantics
+|===
+
+== Non-goals
+
+* Replacing every TUI — this channel is for interactions that **benefit from real GUI**
+* Polluting stdout/scrollback with widget frames or base64 blobs
+* Using hover overlays as the primary home for always-on session chrome (shell top bar stays **inserted**)
+* Requiring every terminal to implement the full catalog before shipping (fallbacks keep CLIs usable)
+
+== Open questions (protocol)
+
+. **Transport:** dedicated fd / Unix domain socket / named pipe vs multiplexed control plane next to shell-context JSONL?
+. **Blob return:** opaque host handle + streaming read vs temp file path vs base64 (discourage for large payloads)?
+. **Focus / cancel:** Esc and Ctrl+C ownership when a hover widget is open — host chrome vs control plane?
+. **App top bar lifetime:** auto-dismiss on prompt return vs explicit unregister; stacking multiple CLIs in a pipeline?
+. **Security:** which processes may request `file.upload` / editor; sandbox path allow-lists?
+. **Capability advertisement:** probe once per session vs per widget type; versioning of the catalog?
+. **SSH / remote:** local host GUI for remote CLI (agent forwarding style) vs always TUI fallback?
+
+== Related
+
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation]
+* xref:shell-display-layers.adoc[Display and control layers]
+* xref:shell-host-and-env-refresh.adoc[Shell host and env refresh]
+* xref:open-shell.adoc[Open Shell]
+* link:https://github.com/openshellorg/terminal-gui-prompts[terminal-gui-prompts]
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-layer-chrome.html[Shell layer chrome @ HCI Nerdz]

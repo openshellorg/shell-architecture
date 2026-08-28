@@ -259,13 +259,16 @@ Same fork strategy as xref:persistent-shell-context.adoc[persistent shell contex
 
 == Top context bar placement (mode-engaged)
 
-The always-on **top context bar** prefers **native host chrome** when the parent terminal accepts it.
+The always-on **top context bar** prefers **native host chrome** when the parent terminal accepts it — **inserted** into host chrome, not hovered over the shell.
 Otherwise it renders on this page's **display overlay** stack.
-See xref:host-chrome-negotiation.adoc[host chrome negotiation] (probe → offer → accept/reject → render).
+See xref:host-chrome-negotiation.adoc[host chrome negotiation] (probe / offer / accept/reject / render).
+
+App top bars and hover widgets (color picker, GUI editor, file upload, ...) are a separate channel: xref:host-native-widgets.adoc[host native widgets].
 
 == Related
 
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation]
+* xref:host-native-widgets.adoc[Host native widgets]
 
 * xref:prompt-spatial-layout.adoc[Prompt spatial layout]
 * xref:prohelp-gutter.adoc[Prohelp and prompt gutter]

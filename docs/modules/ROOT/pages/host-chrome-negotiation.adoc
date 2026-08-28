@@ -12,6 +12,10 @@ The **TUI top context bar** (line mode, arrow/`▶` mode, theme / syntax hooks) 
 . **Negotiate** to instantiate the bar in the **parent terminal UI chrome** (native host chrome — **not** scrollback, **not** stdout).
 . If discovery fails, the protocol is unsupported, or the host **rejects** the offer → **fallback**: render the same bar as a **display-overlay** layer inside the shell (existing overlay stack).
 
+**Settled placement:** **insert** the top context bar into the parent terminal UI chrome.
+Hovering a shell-owned bar over the terminal content for this use case is **inferior** — do not treat hover as the preferred path for always-on session chrome.
+(Hover overlays remain valid for a different job: transient host widgets — see xref:host-native-widgets.adoc[host native widgets].)
+
 Do **not** permanently assume overlay-only when a capable host is available.
 Users should barely notice the switch except that native host chrome feels more "app-like."
 
@@ -116,10 +120,17 @@ Keep (already planned):
 * Hard-coding overlay-only forever
 * Requiring every terminal to implement the protocol before shipping Open Shell (overlay keeps the product usable)
 
+== Broader toolkit
+
+App top bars (stacked under this bar) and hover widgets (color picker, GUI editor, file upload, ...) are specified on xref:host-native-widgets.adoc[host native widgets].
+This page stays focused on the **shell** top context bar.
+
 == Related
 
+* xref:host-native-widgets.adoc[Host native widgets]
 * xref:shell-display-layers.adoc[Display and Control Layers]
 * xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 * xref:prompt-spatial-layout.adoc[Prompt Spatial Layout]
 * xref:open-shell.adoc[Open Shell]
 * xref:prohelp-gutter.adoc[Prohelp and Prompt Gutter]
+* link:https://github.com/openshellorg/terminal-gui-prompts[terminal-gui-prompts]

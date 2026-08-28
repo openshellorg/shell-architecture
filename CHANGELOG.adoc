@@ -7,6 +7,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-08-28 — xref:host-native-widgets.adoc[Host native widgets]: taxonomy (shell top bar inserted, app top bar stacked, hover widgets); JSONL sketch; relates terminal-gui-prompts as dialog precursor; open protocol questions.
 * 2026-08-28 — xref:host-chrome-negotiation.adoc[Host chrome negotiation]: mode-engaged top context bar (probe/offer/accept → native chrome; reject → overlay); OSO terminal fork first-class host; ties to env-refresh.
 * 2026-08-28 — xref:prompt-spatial-layout.adoc[Prompt spatial layout]: 1-line/2-line modes; gutter holds `▶`; arrow mode ephemeral|persist with copy folded in; 2-line preferred default.
 * 2026-08-28 — xref:prohelp-gutter.adoc[Prohelp and prompt gutter]: auto-detect help affordance, gutter zone on display overlay, SDL field names, context-row integration. Updates to xref:persistent-shell-context.adoc[persistent context], xref:shell-display-layers.adoc[display layers], xref:open-shell.adoc[Open Shell].

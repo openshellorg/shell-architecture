@@ -22,6 +22,8 @@ Standards and explanation for OpenShellOrg's *structured-shell* direction — no
 * xref:devcentr.adoc[Dev-Centr] — alignment without merging orgs
 * xref:division-of-labor.adoc[DevCentr and OpenShellOrg] — who does what (detail)
 * xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] — planned `env-refresh` + `shell-host` products
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation] — insert top context bar into host chrome
+* xref:host-native-widgets.adoc[Host native widgets] — app top bars + hover GUI channel
 * xref:stance.adoc[Stance] — do not reinvent Nushell
 * xref:future.adoc[Future topics] -- TUI vs stdout, mixed fonts
 * xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary] -- Dev-Centr cousin; argv runner; not moved yet

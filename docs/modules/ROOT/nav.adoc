@@ -10,6 +10,7 @@
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 ** xref:host-chrome-negotiation.adoc[Host Chrome Negotiation]
+** xref:host-native-widgets.adoc[Host Native Widgets]
 ** xref:open-shell.adoc[Open Shell]
 ** xref:persistent-shell-context.adoc[Persistent Shell Context]
 ** xref:shell-display-layers.adoc[Display and Control Layers]
