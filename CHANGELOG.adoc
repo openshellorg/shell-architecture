@@ -1,11 +1,8 @@
 = Changelog
 
-== 2026-08-28 - ConPTY binding on DUB
+== 2026-08-28 — VT/PTY library inventory
 
-* Related-stack inventory: ConPTY/PTY **bindings** marked addressed via `dlang-supplemental/pty-d` on DUB; VT/emulation surface still missing.
-== 2026-08-28 - DPI slice cross-link
-
-* Related-stack inventory: whole-UI DPI/content scale marked addressed in dew (`dew.scale`).
+* Related-stack inventory: `vt-d` (VT cell surface) + `pty-d` (ConPTY/PTY) noted as landed libraries; host wiring (ConPTY + vt-d + dew) still open.
 :toc:
 
 All notable changes to this project will be documented here.
@@ -14,19 +11,19 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
-* 2026-08-28 -- xref:shell-host-and-env-refresh.adoc[Shell host]: ConPTY/PTY bindings addressed (`pty-d` on DUB); VT surface still missing.
-
+* 2026-08-28 — xref:typography.adoc[Typography]: **Consolas** as curated default terminal/cell monospace; override allowed; fallback Consolas → Cascadia Mono → Courier New → monospace. Cross-links Open Shell, display layers, HCI shell-layer-chrome.
+* 2026-08-28 — Related-stack inventory: whole-UI DPI/content scale marked addressed in dew (`dew.scale`).
 * 2026-08-28 — xref:shell-host-and-env-refresh.adoc[Shell host]: note dlang-supplemental dew/vello/dui inventory vs WT-fork commitment; whole-UI scale gap recorded (not a greenfield flip).
 * 2026-08-28 — xref:host-native-widgets.adoc[Host native widgets]: taxonomy (shell top bar inserted, app top bar stacked, hover widgets); JSONL sketch; relates terminal-gui-prompts as dialog precursor; open protocol questions.
 * 2026-08-28 — xref:host-chrome-negotiation.adoc[Host chrome negotiation]: mode-engaged top context bar (probe/offer/accept → native chrome; reject → overlay); OSO terminal fork first-class host; ties to env-refresh.
 * 2026-08-28 — xref:prompt-spatial-layout.adoc[Prompt spatial layout]: 1-line/2-line modes; gutter holds `▶`; arrow mode ephemeral|persist with copy folded in; 2-line preferred default.
 * 2026-08-28 — xref:prohelp-gutter.adoc[Prohelp and prompt gutter]: auto-detect help affordance, gutter zone on display overlay, SDL field names, context-row integration. Updates to xref:persistent-shell-context.adoc[persistent context], xref:shell-display-layers.adoc[display layers], xref:open-shell.adoc[Open Shell].
 * 2026-08-28 — xref:persistent-shell-context.adoc[Persistent Shell Context]: product spec for CLI ↔ shell context negotiation, prompt tokens, repo map, fork-not-rewrite stance. Promoted from future topics alongside env-refresh.
-* 2026-08-13 -- Cousin essays: xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary], xref:argv-as-execution-currency.adoc[Argv as execution currency], xref:host-identity-contract.adoc[Host identity as a contract]. PlayTime stays in Dev-Centr `scriptbook` while it is built. Illustrated. See link:changelog-details/2026-08-13 - playtime-cousin.adoc[detailed changelog].
+* 2026-08-13 — Cousin essays: xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary], xref:argv-as-execution-currency.adoc[Argv as execution currency], xref:host-identity-contract.adoc[Host identity as a contract]. PlayTime stays in Dev-Centr `scriptbook` while it is built. Illustrated. See link:changelog-details/2026-08-13 - playtime-cousin.adoc[detailed changelog].
 
-* 2026-07-30 â€” Mermaid diagrams are authoritative `.mmd` sources under `docs/modules/ROOT/partials/diagrams/`; entrypoint-dispatch includes them; opensh.org prerenders site figures via `@openshellorg/mermaid-svg-css-vars`.
-* 2026-07-28 â€” Added xref:entrypoint-dispatch.adoc[Entrypoint Dispatch] (auto-install + re-exec at the shell boundary) with Mermaid architecture diagrams; cross-linked DevCentr Toolchain Management; partnership news on openshellorg.github.io.
-* 2026-07-26 â€” Spike landed in https://github.com/openshellorg/terminal[`openshellorg/terminal`]: per-tab env light, Row-1 InfoBar, Fix/Insert SplitButton, OS Path poll (`OPENSHELLORG.adoc` in fork). Plan page updated.
-* 2026-07-26 â€” Product plan refined: link:docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc[`env-refresh` + Windows Terminal fork]. Fork at https://github.com/openshellorg/terminal; clone `openshellorg/.forks/terminal`. UX: per-tab health light, desync bar between tabs and shell, Fix (run) / Insert command split. See link:changelog-details/2026-07-26 - shell-host-and-env-refresh.adoc[detailed changelog].
-* 2026-07-26 â€” Initial product plan: `env-refresh` + `shell-host` (superseded by Terminal-fork approach above).
-* 2026-07-22 â€” Initial repository scaffold (thesis docs, stance, future topics).
+* 2026-07-30 — Mermaid diagrams are authoritative `.mmd` sources under `docs/modules/ROOT/partials/diagrams/`; entrypoint-dispatch includes them; opensh.org prerenders site figures via `@openshellorg/mermaid-svg-css-vars`.
+* 2026-07-28 — Added xref:entrypoint-dispatch.adoc[Entrypoint Dispatch] (auto-install + re-exec at the shell boundary) with Mermaid architecture diagrams; cross-linked DevCentr Toolchain Management; partnership news on openshellorg.github.io.
+* 2026-07-26 — Spike landed in https://github.com/openshellorg/terminal[`openshellorg/terminal`]: per-tab env light, Row-1 InfoBar, Fix/Insert SplitButton, OS Path poll (`OPENSHELLORG.adoc` in fork). Plan page updated.
+* 2026-07-26 — Product plan refined: link:docs/modules/ROOT/pages/shell-host-and-env-refresh.adoc[`env-refresh` + Windows Terminal fork]. Fork at https://github.com/openshellorg/terminal; clone `openshellorg/.forks/terminal`. UX: per-tab health light, desync bar between tabs and shell, Fix (run) / Insert command split. See link:changelog-details/2026-07-26 - shell-host-and-env-refresh.adoc[detailed changelog].
+* 2026-07-26 — Initial product plan: `env-refresh` + `shell-host` (superseded by Terminal-fork approach above).
+* 2026-07-22 — Initial repository scaffold (thesis docs, stance, future topics).
