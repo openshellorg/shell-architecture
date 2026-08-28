@@ -1,4 +1,4 @@
-﻿= Shell display and control layers
+= Shell display and control layers
 :navtitle: Display and Control Layers
 :description: Layered shell UI — paste preview, TUI chrome, startup layout, input routing, and syntax mode swap without polluting stdout.
 
@@ -142,28 +142,41 @@ Keys -> Control plane -> { overlay focus | prompt token | base input | mode togg
 
 This replaces the false choice between shell mode and REPL owns stdin.
 
-== Syntax mode swap (UNIX vs Nushell)
+== Syntax modes (default + compatibility)
 
-Open Shell keeps **one session** and swaps the **parser/evaluator mode**:
+Open Shell (xref:open-shell.adoc[Dlang runtime]) keeps **one session** and swaps **syntax mode** — not separate shell processes.
 
-[cols="1,2"]
+[cols="1,2,2", options="header"]
 |===
-| Mode | Accepts
+| Mode | Accepts | Default?
 
-| *UNIX* (POSIX-ish)
-| Pipes, `$VAR`, `&&`, heredocs, classical syntax — eval path similar to bash/fish shim
+| *`oso`*
+| Open Shell native syntax, structured pipelines, OSO layers/context
+| **Yes** — session starts here
 
-| *Structured* (Nushell + OSO)
-| Nu tables, `$env`, OSO context tokens, structured pipelines
+| *`nu`*
+| Nushell compatibility (reproduced baseline in D)
+| No — explicit switch
+
+| *`bash`*
+| Classical pipes, `$VAR`, `&&`, heredocs (bash-ish)
+| No — explicit switch
+
+| *`fish`*, *`zsh`* (planned)
+| Additional compatibility parsers
+| No
 |===
 
-Swap without spawning a nested shell in another PTY:
+UI labels use concrete names (*bash*, *nu*, *oso*) — not vague *UNIX*.
 
-* **UI:** always-on toggle in host chrome — single control (dropdown) in the `Ctrl+1` slot, not two adjacent mystery buttons
-* **Keyboard:** `Ctrl+PgUp` / `Ctrl+PgDn` cycle modes (PgUp/PgDn alone reserved for overlay scroll)
-* Mode indicator in prompt context zone (grey token: `mode: nu` / `mode: unix`)
+Swap without nested PTY:
 
-Rationale for **collapsed toggle** vs `Ctrl+1`/`Ctrl+2` side by side: two adjacent mode keys imply parity weight; a selector communicates one session, one parser active.
+* **UI:** mode selector (dropdown) in `Ctrl+1` slot
+* **Keyboard:** `Ctrl+PgUp` / `Ctrl+PgDn` cycle modes
+* Prompt grey token: `mode: oso` / `mode: nu` / `mode: bash`
+
+See xref:open-shell.adoc[Open Shell] for baseline vs default formatting rules.
+
 
 == Reserved always-on chords (OSO defaults)
 
@@ -220,7 +233,7 @@ Open Shell does **not** require prohelp (degraded `help` falls back to man).
 
 Same fork strategy as xref:persistent-shell-context.adoc[persistent shell context]:
 
-* `openshellorg/nushell` — layers, control plane, paste preview, mode swap
+* `openshellorg/open-shell` — Dlang runtime: layers, control plane, paste preview, syntax modes
 * `openshellorg/terminal` — host chrome for toggles and GUI promotion
 * HCI Nerdz demo — overlay interaction mockups
 

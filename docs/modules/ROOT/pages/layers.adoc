@@ -1,4 +1,4 @@
-﻿= Layers
+= Layers
 
 Think in stacked concerns. Do not collapse them into one mega-project.
 

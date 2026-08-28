@@ -1,0 +1,133 @@
+= Open Shell (Dlang runtime)
+:navtitle: Open Shell
+:description: OpenShellOrg structured shell in D — default OSO syntax mode plus compatibility modes (nu, bash, …) reproduced from Nushell as baseline.
+
+Write this so someone with no background can follow.
+
+== Stance pivot
+
+OpenShellOrg previously documented *advocate Nushell, do not reinvent*.
+That stance applied while the gap was **standards and companion libraries**.
+
+The gap is now **session context, display layers, control plane, and syntax modes in one runtime** — large enough to ship **Open Shell** as our shell in **Dlang**, with Nushell preserved as a **compatibility mode baseline**, not as the implementation host.
+
+Nushell (Rust) remains credited and recommended for users who want upstream Nu only.
+Open Shell is for users who want OSO layers, context chrome, and room to improve formatting without waiting on upstream.
+
+== Repository
+
+**Primary:** `openshellorg/open-shell` (planned) — Dlang, `dub.sdl`, `{OSO} Certified` target.
+
+**Not** `openshellorg/nushell` fork as runtime (archived direction). Rust Nushell source tree is a **reference corpus** for `nu` mode parity.
+
+Companion repos unchanged: `shell-context`, `terminal` (shell-host), `prohelp`, `nu-emit`, `project-map`.
+
+== Syntax modes (one session, swappable parser)
+
+[cols="1,2,2", options="header"]
+|===
+| Mode id | Role | Notes
+
+| *`oso`* (default)
+| Open Shell native syntax + structured pipelines + OSO display/context layers
+| **Product default.** Formatting and UX may diverge from Nushell where we improve clarity
+
+| *`nu`*
+| Nushell compatibility
+| Reproduce upstream behavior/format as baseline; parity tests against Nushell releases
+
+| *`bash`*
+| POSIX/bash-ish classical syntax
+| Pipes, `$VAR`, `&&`, heredocs — eval shim; label in UI may say *bash* not *UNIX*
+
+| *`fish`* (planned)
+| fish-style friendly syntax subset
+| Later; same compatibility pattern
+
+| *`zsh`* (planned)
+| zsh extensions where distinct from bash mode
+| Later; avoid pretending one mode covers all POSIX dialects
+|===
+
+Session stores `$syntax-mode` (name TBD). Prompt token shows mode: grey `mode: oso` / `mode: nu` / `mode: bash`.
+
+Swap: xref:shell-display-layers.adoc[display layers] — `Ctrl+PgUp`/`Ctrl+PgDn`, mode selector on `Ctrl+1`.
+
+== Default vs compatibility (critical)
+
+**Default `oso` mode is not “Nushell with patches.”**
+
+It is the syntax and rendering we own — informed by Nushell’s structured pipeline model but free to change:
+
+* Table/list formatting and width rules
+* Error message shape and context hints
+* Literal syntax where OSO clarity wins
+* Integration with context tokens and overlay layers (first-class)
+
+**`nu` mode** exists so scripts, docs, and muscle memory transfer.
+Implement by porting/reproducing Nushell semantics in D against upstream fixtures — not by shelling out to `nu` binary (except optional escape hatch for parity debugging).
+
+== Nushell as baseline (how)
+
+[cols="1,2"]
+|===
+| Artifact | Use
+
+| Nushell Rust repo @ pinned tag
+| Reference for parser/eval behavior in `nu` mode
+
+| Upstream test corpus / recorded sessions
+| Parity oracles (subset initially)
+
+| Open Shell `oso` mode
+| New tests; no requirement to match Nu output byte-for-byte
+
+| Display golden files
+| Separate per mode — `nu` mode tracks Nu; `oso` mode tracks OSO spec
+|===
+
+Phase 0: document mode matrix + fixture layout in `open-shell/tests/parity/nu/`.
+Phase 1: minimal `oso` parser + pipeline + one builtin; stub `nu` mode parser fed by fixtures.
+Phase 2: context + layers in runtime (link xref:shell-display-layers.adoc[display layers]).
+
+== Dlang why
+
+* Consistent with link:https://github.com/openshellorg/project-map[project-map] and OSO D libraries
+* Single language for shell runtime + `shell-context` + terminal protocol experiments (via dlang-supplemental interaction mods)
+* Long-running process + typed pipelines fit D well
+
+Rust remains fine for **nu-emit** C API and small native tools; the **shell REPL** is D.
+
+== Relationship to other OSO products
+
+[cols="1,2"]
+|===
+| Product | Relationship
+
+| xref:shell-display-layers.adoc[Display layers]
+| Implemented inside `open-shell` + `terminal` host
+
+| xref:persistent-shell-context.adoc[Persistent context]
+| Session `$context` in `open-shell`; libs in `shell-context`
+
+| prohelp
+| Optional; shell-agnostic; integrates when installed
+
+| xref:thesis.adoc[Thesis]
+| Still true: separate transport from presentation — Open Shell is how we ship that
+|===
+
+== Non-goals (v0)
+
+* 100% Nushell language coverage on day one
+* Replacing every bashism in v1 bash mode
+* Bundling prohelp or Composio
+* Calling `nu` subprocess as the default execution path
+
+== Related
+
+* xref:shell-display-layers.adoc[Display and control layers]
+* xref:persistent-shell-context.adoc[Persistent shell context]
+* xref:shell-landscape.adoc[Shell landscape]
+* xref:shell-keybindings.adoc[Keybindings comparison]
+* xref:stance.adoc[Stance]

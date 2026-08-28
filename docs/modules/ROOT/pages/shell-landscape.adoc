@@ -1,4 +1,4 @@
-﻿= Shell landscape
+= Shell landscape
 :navtitle: Shell Landscape
 :description: Taxonomy of major interactive shells — categories, data models, and when each fits.
 
@@ -44,9 +44,9 @@ Not a popularity contest — a map for practitioners choosing or integrating she
 | .NET objects
 | Windows-native; cross-platform pwsh
 
-| Open Shell (OSO fork)
-| Nu tables + OSO layers/context
-| Nushell fork — xref:shell-display-layers.adoc[display layers], xref:persistent-shell-context.adoc[context]
+| Open Shell (`open-shell`)
+| Default `oso` mode + compatibility (`nu`, `bash`, …)
+| Dlang runtime — xref:open-shell.adoc[Open Shell], xref:shell-display-layers.adoc[display layers]
 |===
 
 === Hybrid / experimental
@@ -105,7 +105,7 @@ Use these when xref:shell-keybindings.adoc[keybindings] or architecture docs ref
 == OSO stance
 
 * **Recommend Nushell** for structured pipelines — xref:thesis.adoc[thesis]
-* **Do not reinvent** — fork for layers/context, contribute upstream when generic
+* **Open Shell in D** — default OSO mode; Nushell as `nu` mode baseline; contribute upstream when generic
 * **Certify CLIs** via SOS regardless of host shell
 
 == Related

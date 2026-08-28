@@ -1,4 +1,4 @@
-﻿* xref:index.adoc[Overview]
+* xref:index.adoc[Overview]
 * xref:thesis.adoc[Thesis]
 * xref:layers.adoc[Layers]
 * xref:sos-and-structured.adoc[SOS and Structured Shells]
@@ -9,6 +9,7 @@
 ** xref:division-of-labor.adoc[Division of Labor]
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
+** xref:open-shell.adoc[Open Shell]
 ** xref:persistent-shell-context.adoc[Persistent Shell Context]
 ** xref:shell-display-layers.adoc[Display and Control Layers]
 * Reference

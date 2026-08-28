@@ -1,4 +1,4 @@
-﻿= Future topics
+= Future topics
 :description: Speculative and deferred OpenShellOrg research topics.
 
 Speculative or deferred work. None of this requires reinventing Nushell.

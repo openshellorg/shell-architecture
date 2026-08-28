@@ -1,16 +1,26 @@
-= Stance: do not reinvent Nushell
+= Stance: Open Shell in D, Nushell as reference
+:navtitle: Stance
 :toc: preamble
 
-== Explicit non-goal
+== What changed
 
-OpenShellOrg will **not** invent a competing structured shell. Nushell already exists as a strong Unix-centric implementation of the model we want to promote.
+We **do** ship a structured shell: link:xref:open-shell.adoc[Open Shell] in **Dlang**.
 
-== What we will do instead
+We **do not** claim Nushell is wrong — it proved the model. Upstream Nu remains the reference for **`nu` compatibility mode** and for users who want vanilla Nushell.
 
-* **Advocate** Nushell for structured pipelines in docs and standards notes.
-* **Contribute upstream** when fixes or features help the ecosystem (optional, case-by-case).
-* **Build companion libraries** — e.g. https://github.com/openshellorg/nu-require[nu-require] — that make Nushell-tailored apps clearer and safer without replacing the shell.
+The old one-liner *do not reinvent Nushell* meant *do not silently duplicate without cause*.
+Cause arrived: context chrome, overlay layers, control plane, and a default syntax mode we can evolve.
 
-== Historical credit
+== What we will do
 
-PowerShell proved object pipelines at scale. We acknowledge that history while recommending Nushell for OpenShellOrg's Unix-centric direction.
+* **Ship** `openshellorg/open-shell` — default `oso` mode + compatibility modes (`nu`, `bash`, …)
+* **Reproduce** Nushell behavior in D for `nu` mode baseline (parity tests), not as the default UX
+* **Advocate** structured pipelines in docs; credit PowerShell history, Nushell as reference implementation
+* **Build companion libraries** (`nu-require`, `shell-context`, `nu-emit`, …) — usable from any mode where applicable
+* **Contribute upstream** when a fix helps everyone and is not OSO-specific chrome
+
+== What we will not do
+
+* Imply prohelp requires Open Shell (see xref:shell-display-layers.adoc#_naming_proshell_vs_alternatives[naming note])
+* Pretend `bash` mode covers zsh/fish/oil on day one — add modes explicitly
+* Shell out to `nu` binary as the primary execution strategy
