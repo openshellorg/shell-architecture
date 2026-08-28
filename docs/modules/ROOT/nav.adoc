@@ -12,6 +12,7 @@
 ** xref:open-shell.adoc[Open Shell]
 ** xref:persistent-shell-context.adoc[Persistent Shell Context]
 ** xref:shell-display-layers.adoc[Display and Control Layers]
+** xref:prohelp-gutter.adoc[Prohelp and Prompt Gutter]
 * Reference
 ** xref:shell-landscape.adoc[Shell Landscape]
 ** xref:shell-keybindings.adoc[Keybindings Comparison]

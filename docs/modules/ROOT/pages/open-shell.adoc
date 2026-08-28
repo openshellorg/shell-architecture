@@ -62,7 +62,7 @@ It is the syntax and rendering we own — informed by Nushell’s structured pip
 * Table/list formatting and width rules
 * Error message shape and context hints
 * Literal syntax where OSO clarity wins
-* Integration with context tokens and overlay layers (first-class)
+* Integration with context tokens, xref:prohelp-gutter.adoc[prompt gutter], and overlay layers (first-class)
 
 **`nu` mode** exists so scripts, docs, and muscle memory transfer.
 Implement by porting/reproducing Nushell semantics in D against upstream fixtures — not by shelling out to `nu` binary (except optional escape hatch for parity debugging).
@@ -111,7 +111,7 @@ Rust remains fine for **nu-emit** C API and small native tools; the **shell REPL
 | Session `$context` in `open-shell`; libs in `shell-context`
 
 | prohelp
-| Optional; shell-agnostic; integrates when installed
+| Optional; shell-agnostic sibling — auto-detect help in xref:prohelp-gutter.adoc[prompt gutter] when installed (not bundled)
 
 | xref:thesis.adoc[Thesis]
 | Still true: separate transport from presentation — Open Shell is how we ship that
@@ -127,6 +127,7 @@ Rust remains fine for **nu-emit** C API and small native tools; the **shell REPL
 == Related
 
 * xref:shell-display-layers.adoc[Display and control layers]
+* xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
 * xref:persistent-shell-context.adoc[Persistent shell context]
 * xref:shell-landscape.adoc[Shell landscape]
 * xref:shell-keybindings.adoc[Keybindings comparison]

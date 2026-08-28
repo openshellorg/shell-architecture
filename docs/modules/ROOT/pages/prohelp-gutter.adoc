@@ -1,0 +1,241 @@
+= Prohelp and the prompt gutter
+:navtitle: Prohelp Gutter
+:description: Automatic prohelp affordance, prompt gutter zone, and context-button integration â display overlay only, never stdout.
+
+Write this so someone with no background can follow.
+
+== Stance
+
+link:https://github.com/openshellorg/prohelp[Prohelp] is a **shell-agnostic sibling product** â not bundled with Open Shell.
+When prohelp is installed, Open Shell *may* surface help without the user typing `--help` or `help`.
+
+All gutter chrome renders on the xref:shell-display-layers.adoc[display overlay] layer.
+Nothing in this page prints to stdout or pollutes the pipeline record.
+
+== Automatic help affordance
+
+When the current input buffer matches a prohelp entry, the shell shows an **interactive help control** immediately â no `--help` typing required.
+
+This builds trust: users see help *appear* when the shell recognizes the command, instead of guessing whether documentation exists.
+
+=== Detection
+
+Open Shell evaluates the input buffer on each edit (debounced):
+
+. Match the first argv token (or full prefix) against prohelp SDL `detectPattern` / `matchPrefix`
+. On match, activate the help affordance for that topic id
+. On no match, hide the affordance (do not leave a stale `?`)
+
+Complex matchers stay in prohelp SDL; the shell only runs the cheap prefix/regex pass and asks prohelp whether a topic exists.
+
+== Placement (primary and secondary)
+
+=== Primary â prompt gutter (recommended)
+
+Reserve a **gutter band** at the left edge of the prompt row â black or terminal-background space *before* context tokens.
+
+When prohelp recognizes the command, the **`?` help button** is the **first context affordance** in that band (leftmost clickable/highlight target before `[gcloud: â¦]` tokens).
+
+[source]
+----
+[?] [gcloud: ftn ▾] [py: .venv ▾]  rjamd@desk:~/code › kubectl get
+ ^ gutter                          ^ input buffer (matched)
+----
+
+* Gutter sits on the display overlay â not part of the editable input string
+* Click, Enter-on-focus, or bound key opens prohelp scoped to the matched topic
+* When context chrome is on a separate row, gutter `?` leads that row (see <<front-context>>)
+
+=== Secondary â inline ghost (optional theme)
+
+When gutter is disabled or the terminal is too narrow:
+
+* Show a **ghost/hover `?`** immediately after the last character of the matched command prefix on the input line
+* Lower contrast until hover/focus; same prohelp route as gutter
+* Themes may enable both; default is gutter-only
+
+== Help icon (glyph policy)
+
+[cols="1,2"]
+|===
+| Glyph | Verdict
+
+| U+2370 (`⍰`)
+| **Rejected** â monospace fonts render it poorly; visibility inconsistent
+
+| Raw `?` (U+003F)
+| **Acceptable fallback** â readable everywhere
+
+| Custom TUI glyph
+| **v1 target** â drawn in overlay layer (not stdout/stdin); theme pack id e.g. `oso.help-icon`
+|===
+
+Ship `?` first; swap to custom overlay glyph when terminal host supports styled overlay cells without touching the byte stream.
+
+== Prompt gutter zone (shell-owned chrome)
+
+The gutter is a **reserved left band** on the prompt/display overlay:
+
+* Prevents command prompts from lining up flush against the terminal left wall
+* Owns basic CLI UX chrome so tools stop printing ad-hoc `>` arrows and bullet lists to stdout
+
+=== Gutter width (sketch)
+
+[cols="1,3"]
+|===
+| Profile | Columns (monospace cells)
+
+| Minimal (help only)
+| **2** â one `?` + 1sp padding
+
+| Standard
+| **3** â optional `▶` grabber + `?`
+
+| Choice menu
+| **4â6** â marker column + help; list markers may extend row below
+|===
+
+Width is **fixed per theme** (`gutterWidthHint` in prohelp/SDL theme packs), not computed from stdout.
+
+=== Dynamic gutter content (overlay only)
+
+All glyphs render on the display overlay â **never stdout**:
+
+[cols="1,2,2"]
+|===
+| Glyph / pattern | Role | Notes
+
+| `▶` (U+25B6) or custom graphic
+| Line emphasis, input grabber
+| Replaces programmer-printed `>` prompt arrows
+
+| `▪` (U+25AA)
+| Compact bullet for equal-option lists
+| Shell-owned list chrome
+
+| `A`â`Z` / `0`â`9`
+| Simple choice menu markers
+| Pairs with overlay list; not Readline key spam
+
+| `?`
+| Prohelp entry when topic matches
+| First affordance when prohelp detects command
+|===
+
+**Scope:** "good enough" basic CLI UX.
+Rich layouts (multi-pane help, search, pagination) stay in prohelp TUI and framework overlays.
+
+**Deprecated pattern:** printf-style ad-hoc formatting in command output for prompts, arrows, and menus â prefer shell-owned gutter + xref:shell-display-layers.adoc[display overlay].
+
+[[front-context]]
+== Front context integration
+
+When xref:persistent-shell-context.adoc[persistent shell context] is active (e.g. gcloud configuration token focused, or namespace loaded):
+
+* Prohelp **scopes** to that namespace â `requiresContext` keys filter topics
+* Gutter **`?` appears at the start of the persistent context row** (not only on the input line)
+* Invoking help while a context token is focused passes namespace + key values to prohelp
+
+[source]
+----
+[?] [gcloud: ftn ▾] [py: .venv ▾]     ← context row (gutter ? scopes to gcloud)
+                              rjamd@desk:~/code › gcloud compute instances list
+----
+
+If both input-buffer match *and* focused context apply, **context scope wins** for topic filtering; input match still controls whether `?` is visible.
+
+== Prohelp SDL extension fields (recommended)
+
+Prohelp topic SDL (names tentative â implement in `openshellorg/prohelp` schema):
+
+[cols="1,2,2"]
+|===
+| Field | Type | Purpose
+
+| `detectPattern`
+| string (regex) or array
+| Match against input buffer for auto-help (primary)
+
+| `matchPrefix`
+| string
+| Cheaper alternative to regex â literal prefix e.g. `kubectl`, `gcloud`
+
+| `detectMode`
+| enum
+| `argv0`, `prefix`, or `regex` â how shell applies detect fields
+
+| `autoHelp`
+| boolean (default true when detect fields present)
+| Whether to show gutter/ghost affordance without user typing help
+
+| `requiresContext`
+| string[]
+| Context keys required; scopes help when token focused (existing field)
+
+| `scopeNamespace`
+| string
+| Default namespace for context-row help (e.g. `gcloud`)
+
+| `gutterPlacement`
+| enum
+| `primary-gutter` (default), `inline-ghost`, or `both`
+
+| `gutterIcon`
+| string
+| `?` or theme glyph id (default `?`; v1 custom TUI id)
+
+| `gutterWidthHint`
+| integer
+| Theme hint for reserved gutter columns (default 2)
+
+| `gutterPriority`
+| integer
+| When multiple topics match, lower number wins
+|===
+
+Example fragment:
+
+[source,yaml]
+----
+topic: gcloud-compute-instances-list
+matchPrefix: gcloud compute instances list
+autoHelp: true
+requiresContext: [gcloud.configuration, gcloud.project]
+scopeNamespace: gcloud
+gutterPlacement: primary-gutter
+gutterIcon: ?
+gutterWidthHint: 3
+----
+
+== Layer placement
+
+[cols="1,2"]
+|===
+| Layer | Prohelp + gutter
+
+| Display overlay
+| Gutter band, `?`, `▶`, list markers â all transient chrome
+
+| Context chrome
+| Context-row gutter `?`; token focus scopes prohelp
+
+| Control plane
+| Routes focus: gutter `?` → prohelp overlay; does not insert `?` into input buffer
+
+| Base (stdout)
+| **Never** â pipeline record stays clean
+|===
+
+== Non-goals
+
+* Bundling prohelp with Open Shell
+* Requiring prohelp for shell startup
+* Replacing prohelp TUI with gutter alone â gutter is discoverability, not the help viewer
+
+== Related
+
+* xref:open-shell.adoc[Open Shell]
+* xref:persistent-shell-context.adoc[Persistent shell context]
+* xref:shell-display-layers.adoc[Display and control layers]
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-context-chrome.html[Shell context chrome @ HCI Nerdz]
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-layer-chrome.html[Shell layer chrome @ HCI Nerdz]

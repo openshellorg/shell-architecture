@@ -7,7 +7,8 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
-* 2026-08-28 — xref:persistent-shell-context.adoc[Persistent Shell Context]: product spec for CLI ? shell context negotiation, prompt tokens, repo map, fork-not-rewrite stance. Promoted from future topics alongside env-refresh.
+* 2026-08-28 — xref:prohelp-gutter.adoc[Prohelp and prompt gutter]: auto-detect help affordance, gutter zone on display overlay, SDL field names, context-row integration. Updates to xref:persistent-shell-context.adoc[persistent context], xref:shell-display-layers.adoc[display layers], xref:open-shell.adoc[Open Shell].
+* 2026-08-28 — xref:persistent-shell-context.adoc[Persistent Shell Context]: product spec for CLI ↔ shell context negotiation, prompt tokens, repo map, fork-not-rewrite stance. Promoted from future topics alongside env-refresh.
 * 2026-08-13 -- Cousin essays: xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary], xref:argv-as-execution-currency.adoc[Argv as execution currency], xref:host-identity-contract.adoc[Host identity as a contract]. PlayTime stays in Dev-Centr `scriptbook` while it is built. Illustrated. See link:changelog-details/2026-08-13 - playtime-cousin.adoc[detailed changelog].
 
 * 2026-07-30 â€” Mermaid diagrams are authoritative `.mmd` sources under `docs/modules/ROOT/partials/diagrams/`; entrypoint-dispatch includes them; opensh.org prerenders site figures via `@openshellorg/mermaid-svg-css-vars`.

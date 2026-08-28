@@ -90,6 +90,24 @@ Invocation: users can still type `nu` or `open-shell` (TBD); no need for a new f
 Child processes write to base layer only unless they explicitly request an overlay (future protocol).
 Overlays **never** append to the pipe when the user pipes output to a file.
 
+
+== Prompt gutter (display overlay)
+
+The xref:prohelp-gutter.adoc[prompt gutter] is part of the *display overlay* â a reserved left band before context tokens:
+
+* Renders on overlay cells, **not stdout**
+* Default width **2â3** monospace columns (`gutterWidthHint` per theme)
+* Shell-owned chrome for `?` (prohelp), `â¶` (line grabber), `âª` / `A`â`Z` (simple choice lists)
+
+[source]
+----
+[?] [gcloud: ftn â¾]  user@host:path âº
+ ^ gutter (overlay)
+----
+
+**Deprecated:** tools printing `>`, bullets, or menu markers via printf when the shell can own gutter content instead.
+Complex formatting stays in prohelp TUI and framework overlays.
+
 == Paste preview overlay
 
 === Motivation
@@ -221,10 +239,11 @@ Profile scripts still run for side effects (PATH, env); layout doc is **presenta
 
 == Relationship to prohelp
 
-Prohelp integrates at the **base + context** layers:
+Prohelp integrates at the **gutter + context + overlay** layers (see xref:prohelp-gutter.adoc[Prohelp and prompt gutter]):
 
-* `help` / `?` routes through prohelp for PATH topics
-* Context token focused → prohelp scopes help to that namespace
+* **Auto-detect:** input buffer match → gutter `?` appears (no `--help` typing)
+* **Manual:** `help` / `?` routes through prohelp for PATH topics
+* **Context token focused** → prohelp scopes help to that namespace; gutter `?` on context row
 
 Prohelp does **not** require Open Shell.
 Open Shell does **not** require prohelp (degraded `help` falls back to man).
@@ -239,6 +258,7 @@ Same fork strategy as xref:persistent-shell-context.adoc[persistent shell contex
 
 == Related
 
+* xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
 * xref:persistent-shell-context.adoc[Persistent shell context]
 * xref:shell-keybindings.adoc[Shell keybindings comparison]
 * xref:shell-landscape.adoc[Shell landscape]

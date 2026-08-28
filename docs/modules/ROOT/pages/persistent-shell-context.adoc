@@ -46,7 +46,7 @@ Cross-link both ways; do not fork competing essays.
 
 [source]
 ----
-[gcloud: ftn 뻂崥 嬀瀀礀㨀 ⸀瘀攀渀瘀 숀▾]  rjamd@desk:~/code ›
+[gcloud: ftn ▾] [py: .venv ▾]  rjamd@desk:~/code ›
 ----
 
 [cols="1,3"]
@@ -157,10 +157,25 @@ u mode — parity fixtures, display formatting reference — not the runtime for
 
 == Prohelp integration
 
-link:https://github.com/openshellorg/prohelp[Prohelp] help SDL can declare requiresContext: [gcloud.configuration, gcloud.project].
-When the user selects a context token and presses ? or invokes help, prohelp shows topic help scoped to that namespace.
+link:https://github.com/openshellorg/prohelp[Prohelp] is shell-agnostic — not bundled with Open Shell.
+See xref:prohelp-gutter.adoc[Prohelp and prompt gutter] for the full integration model.
 
-Ship prohelp integration in the Nushell fork first; extend the shell help wrapper docs afterward.
+=== Automatic help (input buffer)
+
+When the input buffer matches a prohelp topic (`matchPrefix` / `detectPattern`), Open Shell shows a gutter **`?`** on the display overlay — no `--help` typing required.
+This is the primary trust affordance: help appears when the shell recognizes the command.
+
+=== Context-scoped help (tokens)
+
+Help SDL may declare `requiresContext: [gcloud.configuration, gcloud.project]`.
+When the user focuses a context token and invokes help (`?`, gutter button, or bound key), prohelp scopes topics to that namespace.
+
+=== Context-row gutter
+
+When persistent context is visible on its own row, gutter **`?` leads that row** — same overlay rules as the input-line gutter.
+Focused context wins for topic scope; input match controls visibility.
+
+Ship gutter auto-detect in Open Shell first; extend the standalone prohelp wrapper docs afterward.
 
 == Reference adapters (v1 targets)
 
@@ -189,4 +204,5 @@ Ship prohelp integration in the Nushell fork first; extend the shell help wrappe
 * xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 * xref:entrypoint-dispatch.adoc[Entrypoint Dispatch]
 * link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-context-chrome.html[Shell context chrome @ HCI Nerdz]
+* xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
 * link:https://hci-nerdz.github.io/docs/hci-nerdz/context-bound-settings.html[Context-bound settings] — same *dependent context* pattern for GUI admin surfaces
