@@ -10,6 +10,7 @@
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 ** xref:open-terminal-host.adoc[open-terminal Host]
+** xref:layout-demos.adoc[Layout demos]
 ** xref:session-association.adoc[Session Association]
 ** xref:devcentr-terminal-manager.adoc[DevCentr Terminal Manager]
 ** xref:cli-app-icons.adoc[CLI App Icons]

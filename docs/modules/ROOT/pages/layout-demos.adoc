@@ -1,0 +1,52 @@
+= Layout demos (try it)
+:navtitle: Layout demos
+:description: Interactive facsimile desks for Open Terminal layout modes — try the ideas before the native host.
+
+== Intent
+
+Open Terminal is a **multi-mode** host. The HCI-Nerdz
+link:https://hci-nerdz.github.io/shell-context-demo/[shell-context-demo]
+is a **facsimile desk** for those modes: enough chrome to feel the workflow, not a fake OS window manager.
+
+Real windowing stays in link:https://github.com/openshellorg/open-terminal[open-terminal] / dew.
+
+== Catalog
+
+[cols="1,2,1",options="header"]
+|===
+| Demo | How it fits a real workflow | Open
+
+| **Prompt desk**
+| You type; path / user / host / app tokens stay visible so you always know which project and machine you are on.
+| link:https://hci-nerdz.github.io/shell-context-demo/#/prompt[`#/prompt`]
+
+| **Standalone**
+| Classic Terminal-like: tabs and the live session share one window. Several shells for one job without scattering windows.
+| link:https://hci-nerdz.github.io/shell-context-demo/#/standalone[`#/standalone`]
+
+| **Decoupled index**
+| A calling window holds tabs and thumbnails; each live session is a separate window you focus and arrange. Launcher separate from the panes you watch.
+| link:https://hci-nerdz.github.io/shell-context-demo/#/decoupled[`#/decoupled`]
+
+| **Project manager**
+| Terminals spawned from DevCentr projects sit in a vertical, project-grouped manager. The DevCentr grid highlights the owning project and dulls the rest.
+| link:https://hci-nerdz.github.io/shell-context-demo/#/manager[`#/manager`]
+
+| **Nested zones**
+| Sessions tile inside zone windows that stay inside the app. Spawn or delete a zone; group membership stays stable when the display moves — contained tiling, not an OS WM.
+| link:https://hci-nerdz.github.io/shell-context-demo/#/zones[`#/zones`]
+
+| **Association**
+| A running session registers with another UI (index or manager) and can offer thumbnails. Re-associate supervision without killing the work.
+| link:https://hci-nerdz.github.io/shell-context-demo/#/association[`#/association`]
+|===
+
+Suite home: link:https://hci-nerdz.github.io/shell-context-demo/[shell-context-demo].
+
+== Related
+
+* xref:open-terminal-host.adoc[open-terminal host]
+* xref:nested-tiling-zones.adoc[Nested zones]
+* xref:devcentr-terminal-manager.adoc[DevCentr terminal manager]
+* xref:session-association.adoc[Session association]
+* Product model: link:https://github.com/openshellorg/open-terminal/blob/main/docs/PRODUCT-MODEL.adoc[PRODUCT-MODEL.adoc]

@@ -1,4 +1,6 @@
 = Changelog
+
+* 2026-08-28 -- xref:layout-demos.adoc[Layout demos] catalog (try-it index) linked from open-terminal-host.
 :toc:
 
 All notable changes to this project will be documented here.
