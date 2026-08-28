@@ -1,8 +1,4 @@
 = Changelog
-
-== 2026-08-28 — VT/PTY library inventory
-
-* Related-stack inventory: `vt-d` (VT cell surface) + `pty-d` (ConPTY/PTY) noted as landed libraries; host wiring (ConPTY + vt-d + dew) still open.
 :toc:
 
 All notable changes to this project will be documented here.
@@ -11,6 +7,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-08-28 — Related-stack inventory: link:https://github.com/dlang-supplemental/vt-d[`vt-d`] (VT/ANSI → cell grid, DUB) + `pty-d` landed as libraries; shell-host wiring (ConPTY + vt-d + dew) still open; WT fork remains committed host.
 * 2026-08-28 — xref:typography.adoc[Typography]: **Consolas** as curated default terminal/cell monospace; override allowed; fallback Consolas → Cascadia Mono → Courier New → monospace. Cross-links Open Shell, display layers, HCI shell-layer-chrome.
 * 2026-08-28 — Related-stack inventory: whole-UI DPI/content scale marked addressed in dew (`dew.scale`).
 * 2026-08-28 — xref:shell-host-and-env-refresh.adoc[Shell host]: note dlang-supplemental dew/vello/dui inventory vs WT-fork commitment; whole-UI scale gap recorded (not a greenfield flip).
