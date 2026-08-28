@@ -124,6 +124,12 @@ Rust remains fine for **nu-emit** C API and small native tools; the **shell REPL
 * Bundling prohelp or Composio
 * Calling `nu` subprocess as the default execution path
 
+
+== Typography
+
+Default terminal/cell font: **Consolas** (curated for OSO chrome visual language — not "any monospace").
+Users and host chrome may override; see xref:typography.adoc[typography] for fallback stack and rationale.
+
 == Related
 
 * xref:shell-display-layers.adoc[Display and control layers]
@@ -132,6 +138,8 @@ Rust remains fine for **nu-emit** C API and small native tools; the **shell REPL
 * xref:shell-landscape.adoc[Shell landscape]
 * xref:shell-keybindings.adoc[Keybindings comparison]
 * xref:stance.adoc[Stance]
+* xref:typography.adoc[Typography]
+
 
 == Prompt and host chrome
 

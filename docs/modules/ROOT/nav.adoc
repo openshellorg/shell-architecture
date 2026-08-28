@@ -15,6 +15,7 @@
 ** xref:persistent-shell-context.adoc[Persistent Shell Context]
 ** xref:shell-display-layers.adoc[Display and Control Layers]
 ** xref:prompt-spatial-layout.adoc[Prompt Spatial Layout]
+** xref:typography.adoc[Typography]
 ** xref:prohelp-gutter.adoc[Prohelp and Prompt Gutter]
 * Reference
 ** xref:shell-landscape.adoc[Shell Landscape]

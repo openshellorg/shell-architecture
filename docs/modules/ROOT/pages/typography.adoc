@@ -1,0 +1,56 @@
+= Typography (terminal cell font)
+:navtitle: Typography
+:description: Curated default monospace for Open Shell cells and prompt chrome — Consolas, with override and fallbacks.
+
+Write this so someone with no background can follow.
+
+== Default (curated)
+
+Open Shell's **default terminal / cell font** is **Consolas**.
+
+This is a **curated product default**, not "whatever monospace the OS picks."
+Monospace must fit the visual language of non-monospace OSO chrome — dew/host widgets, the context bar, and overlay TUIs — so the shell does not ship an arbitrary mono that fights that chrome.
+
+* **Do not bundle** Consolas (or any other proprietary face) in the distribution — reference the **system** font.
+* Windows usually includes Consolas; that is why it is the shipping default on the primary target platform.
+
+== Override
+
+Users (and host chrome) **may override** the cell font:
+
+* User setting in Open Shell config (placeholder: `font.monospace`)
+* Parent terminal / host profile when the host owns the cell face
+
+Curated default is not a locked face. Document overrides next to the setting so agents and humans know Consolas is the ship default, not a hard requirement.
+
+== Fallback stack
+
+When Consolas is missing (non-Windows, stripped images, or user-deleted face), resolve in order:
+
+. **Consolas** — curated default
+. **Cascadia Mono** — common on modern Windows / Windows Terminal installs
+. **Courier New** — widely available classic monospace
+. Platform generic **monospace** / UI monospace
+
+CSS / web mock equivalent:
+
+[source,css]
+----
+font-family: "Consolas", "Cascadia Mono", "Courier New", monospace;
+----
+
+Native hosts should mirror the same preference list when enumerating installed faces.
+
+== What this is not
+
+* Not a dew **global** default for every app — only Open Shell (and OSO shell-host) theme / cell config
+* Not a requirement to ship font files
+* Not a ban on ligature-friendly developer fonts — those remain **user overrides**
+
+== Related
+
+* xref:open-shell.adoc[Open Shell]
+* xref:shell-display-layers.adoc[Display and control layers]
+* xref:prompt-spatial-layout.adoc[Prompt spatial layout]
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation]
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-layer-chrome.html[Shell layer chrome @ HCI Nerdz]

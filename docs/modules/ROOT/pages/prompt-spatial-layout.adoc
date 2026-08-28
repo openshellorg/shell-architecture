@@ -189,6 +189,7 @@ Prefer wrapping one context surface.
 
 == Relationship
 
+* xref:typography.adoc[Typography]
 * xref:persistent-shell-context.adoc[Persistent shell context]
 * xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation]

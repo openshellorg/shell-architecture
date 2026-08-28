@@ -270,6 +270,7 @@ App top bars and hover widgets (color picker, GUI editor, file upload, ...) are 
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation]
 * xref:host-native-widgets.adoc[Host native widgets]
 
+* xref:typography.adoc[Typography]
 * xref:prompt-spatial-layout.adoc[Prompt spatial layout]
 * xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
 * xref:persistent-shell-context.adoc[Persistent shell context]
