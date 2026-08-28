@@ -6,7 +6,7 @@
 | Actor | Role |
 |---|---|
 | **DevCentr** | Recommends and configures developer environments — including recommending Nushell where structured pipelines matter. Owns **Toolchain Management** (pattern → protocol → control plane → TCF). Repo-browser terminal UX; prefers OpenShellOrg shell products when installed. |
-| **OpenShellOrg** | Standardizes (flag syntax / certification) and builds companion tooling (`nu-require`, `nu-emit`, **project-map** / **lsgrouped**, etc.). Owns **entrypoint dispatch** (xref:entrypoint-dispatch.adoc[Entrypoint Dispatch]), durable **env-refresh**, and the **Windows Terminal fork** (`openshellorg/terminal`) for stale PATH/env UX (see xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]). Contributes to Nushell (upstream + modules); does **not** fork Nu for directory mapping. |
+| **OpenShellOrg** | Standardizes (flag syntax / certification) and builds companion tooling (`nu-require`, `nu-emit`, **project-map** / **lsgrouped**, etc.). Owns **entrypoint dispatch** (xref:entrypoint-dispatch.adoc[Entrypoint Dispatch]), durable **env-refresh**, the **Windows Terminal fork** (`openshellorg/terminal`) for stale PATH/env UX (see xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]), and **persistent shell context** (xref:persistent-shell-context.adoc[Persistent Shell Context] — protocol, `shell-context` libs, Nushell fork for prompt tokens). Contributes to Nushell upstream when generic; does **not** rewrite Nu in another language. |
 
 == Collaboration, not duplication
 

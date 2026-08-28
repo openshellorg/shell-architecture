@@ -9,6 +9,7 @@
 ** xref:division-of-labor.adoc[Division of Labor]
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
+** xref:persistent-shell-context.adoc[Persistent Shell Context]
 * PlayTime (cousin in Dev-Centr)
 ** xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary]
 ** xref:argv-as-execution-currency.adoc[Argv as execution currency]

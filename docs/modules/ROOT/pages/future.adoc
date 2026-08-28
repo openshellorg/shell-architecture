@@ -5,7 +5,12 @@ Speculative or deferred work. None of this requires reinventing Nushell.
 
 [IMPORTANT]
 ====
-**Committed product plan (not speculative):** stale PATH/env refresh via planned `env-refresh` + `shell-host`. See xref:shell-host-and-env-refresh.adoc[Shell Host and Environment Refresh]. The sections below remain research / deferred topics.
+**Committed product plans (not speculative):**
+
+* Stale PATH/env refresh via planned `env-refresh` + `shell-host` — xref:shell-host-and-env-refresh.adoc[Shell Host and Environment Refresh]
+* Persistent session context (CLI ↔ shell negotiation, prompt tokens) — xref:persistent-shell-context.adoc[Persistent Shell Context]
+
+The sections below remain research / deferred topics.
 ====
 
 == Have your stdout and eat it too
