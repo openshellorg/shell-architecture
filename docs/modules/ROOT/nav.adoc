@@ -10,6 +10,7 @@
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 ** xref:open-terminal-host.adoc[open-terminal Host]
+** xref:session-association.adoc[Session Association]
 ** xref:host-chrome-negotiation.adoc[Host Chrome Negotiation]
 ** xref:host-native-widgets.adoc[Host Native Widgets]
 ** xref:open-shell.adoc[Open Shell]

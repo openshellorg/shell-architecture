@@ -1,0 +1,109 @@
+= Session association and thumbnails
+:navtitle: Session Association
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+Protocol sketch for **re-associating** Open Terminal sessions (or whole multi-tab UIs) with another process, and for **live thumbnail** subscription. Complements xref:open-terminal-host.adoc[open-terminal host] layout modes. **No full IPC in v0** -- types/stubs only in the host repo.
+
+== Layout modes (context)
+
+|===
+| Mode | Summary
+
+| **Standalone**
+| Classic Terminal-like; tabs top or left; tabs + surface may share one HWND.
+
+| **Decoupled index**
+| Index window holds tabs/thumbs; sessions in separate OS windows.
+
+| **Other**
+| Future OK; do not over-specify.
+|===
+
+Decoupled index is **one** mode. Re-association lets a standalone multi-tab UI (or individual sessions) join a subscriber later.
+
+== Roles
+
+|===
+| Role | Responsibility | v0
+
+| **Session process**
+| Owns PTY + paint surface; ideally **produces** thumbnail frames; remains its own OS process (taskbar-visible).
+| Required
+
+| **Subscriber**
+| Controller / index UI: receives registration (tabs, titles), may show thumbs, focus/spawn/close via association API. Not sole owner.
+| **Recommended.** Multiple subscribers allowed.
+
+| **Manager** (later)
+| Exclusive control: may hide sessions from taskbar, reject extra subscribers, own lifecycle tightly.
+| **Deferred.** Do not require exclusive manager in v0.
+|===
+
+== Handshake sketch
+
+=== Operations
+
+* `register` -- offer registration for one session **or** a multi-tab group (tab array + titles + layout hint).
+* `subscribe` / `unsubscribe` -- attach a subscriber UI; sessions keep running if all subscribers leave.
+* `focusSurface` -- activate a registered live window.
+* Thumbnail channel -- permission + producer role + optional **shared-memory address** for frames.
+
+=== Registration fields
+
+----
+SessionRegistration
+  groupId
+  sourceLayout          // standalone | decoupledIndex | other
+  tabs[]                // id, title, surfaceId
+  thumbnailPermission   // bool
+  thumbProducer         // sessionHost | subscriber | none
+  thumbnailShmAddress   // optional token / name
+----
+
+=== Thumbnail model (ideal)
+
+. Session/host **creates** thumbnails (producer).
+. Managing UI is a **subscriber** (consumer).
+. Prefer **shared-memory** thumbnail addresses so multiple subscribers can map without per-frame bitmap copies (taskbar-like realtime; watch CPU/GPU cost and refresh rate).
+
+== v0 association ASCII
+
+----
+  [ Session proc A ]--produces thumbs--> shm / notify
+  [ Session proc B ]--produces thumbs--> shm / notify
+           ^                ^
+           | register /     | subscribe (tabs, titles,
+           | focus/close    | thumb permission, shm addr)
+           |                |
+     +-----+----------------+-----+
+     |  Subscriber UI(s)          |
+     |  index tabs / thumb grid   |
+     |  (not exclusive owner)     |
+     +----------------------------+
+              ^
+              | optional Nth subscriber
+     +--------+-------------------+
+     |  Another subscriber UI     |
+     +----------------------------+
+----
+
+== Open questions
+
+* Shared-memory thumb **performance** and lifetime (map/unmap, refresh Hz, multi-subscriber contention, DPI/scale).
+* When to introduce exclusive **manager** (hide taskbar windows / reject subscribers).
+* Transport: named pipe, local socket, dew bus, other -- undecided.
+* Group vs per-session registration semantics when re-associating a whole standalone multi-tab UI.
+* Permission UX: per-subscriber opt-in vs session-global offer.
+* Fallback if session cannot produce thumbs (DWM capture? subscriber capture?).
+
+== Related
+
+* Host product: link:https://github.com/openshellorg/open-terminal/blob/main/docs/PRODUCT-MODEL.adoc[PRODUCT-MODEL.adoc]
+* Stub types: link:https://github.com/openshellorg/open-terminal/blob/main/source/openterminal/association.d[`association.d`]
+* xref:open-terminal-host.adoc[open-terminal Host]
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation]

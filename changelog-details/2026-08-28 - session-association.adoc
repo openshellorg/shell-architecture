@@ -1,0 +1,8 @@
+= 2026-08-28 -- session association
+
+Added xref:session-association.adoc[session association] protocol sketch and expanded xref:open-terminal-host.adoc[open-terminal host] for multi-mode layouts.
+
+* Layout modes: standalone, decoupled index, other (future OK).
+* Handshake: register / subscribe, tab array + titles, thumb permission / producer, optional shm address.
+* v0: subscriber + separate session processes; exclusive manager deferred.
+* Linked open-terminal PRODUCT-MODEL + association stubs.
