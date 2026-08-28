@@ -42,30 +42,42 @@ link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-context-chrome.html[HCI Ne
 
 Cross-link both ways; do not fork competing essays.
 
-== Prompt layout (recommended default)
+== Prompt layout (line modes)
+
+Open Shell supports **two first-class experimental line modes** (see xref:prompt-spatial-layout.adoc[prompt spatial layout]):
+
+* **2-line** (preferred default) — all contexts on line 1; gutter (with `▶`) + command on line 2
+* **1-line** — gutter (`▶`) + contexts + command on one row (muscle-memory / compare)
+
+Switcher lives in the **TUI top context bar**, not a buried settings page — alongside **arrow mode** (`ephemeral` / `persist`) for gutter `▶` lifetime and copy (see xref:prompt-spatial-layout.adoc[prompt spatial layout]).
 
 [source]
 ----
-[gcloud: ftn ▾] [py: .venv ▾]  rjamd@desk:~/code ›
+# 2-line (preferred)
+    [gcloud: ftn] [py: .venv]  rjamd@desk:~/code
+[▶] gcloud compute instances list
+
+
+# 1-line (compare)
+[?] [gcloud: ftn] [py: .venv] rjamd@desk:~/code ▶ gcloud compute instances list
 ----
 
 [cols="1,3"]
 |===
-| Zone | Tokens
+| Zone | Notes
 
-| *App context* (left, negotiable)
-| Tool-declared keys — grey boxed tokens by default (gcloud, aws, py, node, …)
+| *App context* (on the context surface)
+| Tool-declared keys — grey boxed tokens by default (`gcloud`, `aws`, `py`, node, …)
 
-| *Host context* (right of app zone, stable anchor)
+| *Host context* (stable anchor on the same surface)
 | Traditional user@host:path — blue boxed tokens by default
 
 | *Input*
-| Command entry after › (or $, %, …)
+| Command entry after `▶` only — do not mix `$`/`>` with tokens on the editor surface
 |===
 
-**Left-arrow at prompt start** cycles focus across tokens (right 胢↙ left): path 胢↙ user 胢↙ host 胢↙ … 胢↙ app tokens.
+*Left-arrow at prompt start* cycles focus across **context tokens only** (never the command buffer).
 Selected token opens inline editor (typeahead, dropdown, or click-to-expand when the terminal host supports it).
-
 Color schemes are theme packs — see HCI Nerdz shell-context-chrome.
 Default: host = blue subtle boxes; app = grey subtle boxes.
 Do not paint everything one hue; visual hierarchy must distinguish *where* from *as whom*.

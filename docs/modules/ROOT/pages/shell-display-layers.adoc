@@ -78,7 +78,7 @@ Invocation: users can still type `nu` or `open-shell` (TBD); no need for a new f
 | Key routing, mode swap, cancel/intercept, focus target (token vs input vs overlay)
 | N/A
 
-| *Context chrome* (prompt)
+| *Context chrome* (prompt; 1-line / 2-line modes)
 | Persistent context tokens — xref:persistent-shell-context.adoc[persistent shell context]
 | Prompt line only; not mixed into child stdout
 
@@ -256,8 +256,18 @@ Same fork strategy as xref:persistent-shell-context.adoc[persistent shell contex
 * `openshellorg/terminal` — host chrome for toggles and GUI promotion
 * HCI Nerdz demo — overlay interaction mockups
 
+
+== Top context bar placement (mode-engaged)
+
+The always-on **top context bar** prefers **native host chrome** when the parent terminal accepts it.
+Otherwise it renders on this page's **display overlay** stack.
+See xref:host-chrome-negotiation.adoc[host chrome negotiation] (probe → offer → accept/reject → render).
+
 == Related
 
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation]
+
+* xref:prompt-spatial-layout.adoc[Prompt spatial layout]
 * xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
 * xref:persistent-shell-context.adoc[Persistent shell context]
 * xref:shell-keybindings.adoc[Shell keybindings comparison]

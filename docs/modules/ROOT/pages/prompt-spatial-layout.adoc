@@ -1,0 +1,204 @@
+= Prompt spatial layout
+:navtitle: Prompt Spatial Layout
+:description: First-class 1-line/2-line layouts and ephemeral/persist gutter arrow modes — ▶ lives inside the gutter; prefer 2-line; keep 1-line for compare; TUI top-bar switcher.
+
+Write this so someone with no background can follow.
+
+== Thesis (2026-08-28)
+
+Putting app tokens, host identity, path, and the command on the **same line** clutters the place people type.
+Nobody sat down wanting to type *after their stuff* on that line.
+
+Prefer a **newline before prompt input**.
+The **gutter** is the left reserved band for shell-owned chrome markers.
+Its **primary** job on the input line is **`▶` (U+25B6)** — the type-here grabber.
+Do **not** draw `▶` as a separate token outside the gutter.
+
+Open Shell ships **both** layouts as first-class experimental modes.
+**2-line** is the preferred product default; **1-line** stays available for muscle memory and spatial compare.
+
+== Gutter owns `▶`
+
+The gutter is a reserved left band (display overlay — see xref:prohelp-gutter.adoc[prohelp gutter]):
+
+[cols="1,2"]
+|===
+| Role | Content
+
+| **Primary (input line)**
+| `▶` — canonical reason the input row has a gutter ("type here")
+
+| **Also allowed (same column(s))**
+| Auto-`?` (prohelp match), `▪` bullets, A–Z / 0–9 choice markers, emphasis arrows — dynamic shell-owned chrome
+
+| **Not**
+| Editable command text; context tokens; a second `▶` painted beside an empty gutter for "alignment only"
+|===
+
+Gutter width is theme-fixed (`GutterWidthHint`). Context rows in 2-line mode **indent** to that width so tokens align with the command text — the spacer is layout alignment of the context row, not an empty faux-gutter pretending to hold `▶`.
+
+When prohelp matches, `?` joins `▶` **inside** the gutter band (adjacent cells), e.g. `[?▶]` — still gutter, not a separate inline glyph after chrome.
+
+== Line modes (first-class)
+
+[cols="1,2,2"]
+|===
+| Mode | Layout | Role
+
+| **2-line** (preferred default)
+| Line 1: all contexts together (path, `user@host`, app/tool tokens). Line 2: **gutter (`▶` / `?▶` / …)** + command editor only.
+| Recommended Open Shell default.
+
+| **1-line** (legacy / compare)
+| Gutter (`▶`) + contexts + command on one row.
+| Muscle-memory escape hatch; spatial compare.
+|===
+
+=== ASCII — 2-line (corrected)
+
+[source]
+----
+    [gcloud: ftn] [py: .venv]  rjamd@desk:~/code
+[▶] gcloud compute instances list
+----
+
+With auto-help match:
+
+[source]
+----
+    [gcloud: ftn] [py: .venv]  rjamd@desk:~/code
+[?▶] gcloud compute instances list
+----
+
+Context row indented by gutter width (alignment only — no `▶` on that row).
+
+=== ASCII — 1-line
+
+[source]
+----
+[▶] [gcloud: ftn] [py: .venv] rjamd@desk:~/code  gcloud compute instances list
+----
+
+With help:
+
+[source]
+----
+[?▶] [gcloud: ftn] [py: .venv] rjamd@desk:~/code  gcloud compute instances list
+----
+
+**Concession:** still types after context chrome on the same line (but `▶` remains inside the gutter, not mixed into the token cluster as a fake prompt glyph).
+
+== Top-bar settings (line mode and arrow mode)
+
+The **TUI top context bar** (always-on; xref:host-chrome-negotiation.adoc[mode-engaged] — native host chrome when accepted, else overlay) exposes both — not buried in settings pages:
+
+[cols="1,2,2"]
+|===
+| Control | Values | Meaning
+
+| **Line mode**
+| `1-line` \| `2-line`
+| Spatial layout of context vs input (see above). Preferred product default: `2-line`.
+
+| **Arrow mode** (`▶` mode)
+| `ephemeral` \| `persist`
+| How long the gutter `▶` stays visible relative to editing vs history. Ambiguous UX — **user choice**, not hard-coded.
+|===
+
+=== Arrow mode behaviors
+
+==== Ephemeral / reticle (`ephemeral`)
+
+`▶` appears in the gutter **while the input line is live** (editing reticle).
+After the user **submits** the command, the committed history row **drops** `▶` — cleaner live feel; history looks like plain commands (plus any retained context chrome per theme).
+
+[source]
+----
+# live input (2-line)
+    [gcloud: ftn] [py: .venv]  rjamd@desk:~/code
+[▶] gcloud compute instances list
+
+# after submit — history row (no ▶)
+    [gcloud: ftn] [py: .venv]  rjamd@desk:~/code
+    gcloud compute instances list
+----
+
+==== Persist in history (`persist`)
+
+Leave `▶` on **committed** lines so scrollback is faster to scan (“where did I type”).
+
+[source]
+----
+# live input
+    [gcloud: ftn] [py: .venv]  rjamd@desk:~/code
+[▶] gcloud compute instances list
+
+# after submit — history still shows gutter ▶
+    [gcloud: ftn] [py: .venv]  rjamd@desk:~/code
+[▶] gcloud compute instances list
+----
+
+=== Copy / paste policy (folded into arrow mode)
+
+Simplest rule (v1 — prefer this):
+
+[cols="1,2"]
+|===
+| Arrow mode | Copy implication
+
+| `ephemeral`
+| `▶` is **never** in committed scrollback → **omit from copy**. Copied text is the command (and any context the theme baked into history), not the live reticle.
+
+| `persist`
+| `▶` is **visible in history** → **include in copy** when the user selects those rows (baked into the history line / scrollback record the terminal exposes).
+|===
+
+**Tension to document:** if `▶` lived only on the display overlay and never in stdout, copied scrollback would lack the arrow — that can *help* (clean paste into scripts) or *hurt* (lost scan markers). Folding copy into arrow mode avoids a third control for v1.
+
+**Advanced later (non-goal for v1):** `persist-overlay` — `▶` visible in the TUI history chrome but **stripped from copy**. Defer until users ask; do not ship a third top-bar control until needed.
+
+
+
+== Spatial play-out (both modes)
+
+[cols="1,2"]
+|===
+| Concern | Rule
+
+| Left-arrow token focus
+| Cycles **context tokens only** — never the command buffer and never the gutter `▶` cell (gutter is chrome, not a focusable context token).
+
+| Gutter
+| Input row band holding `▶` (primary) and optional `?` / list markers. Context row in 2-line indents to the same width.
+
+| Command to context injection
+| Typing a command that declares `requiresContext` injects tokens onto the **context surface** (2-line: context row; 1-line: token cluster right of gutter) — never into the command buffer or gutter.
+|===
+
+== Rejected multi-row splits (non-goals)
+
+Permanent 3+ row layouts that isolate path alone, or split host / apps / input by default, are **non-goals**.
+Prefer wrapping one context surface.
+
+== Concessions
+
+* **2-line** costs one scrollback row; buys an uncluttered editor.
+* **1-line** preserves classic muscle memory; reintroduces "type after chrome."
+* Narrow terminals: wrap the context surface; keep gutter + command as the typing locus.
+* Both modes must keep token focus, gutter `▶`/`?`, and injection working — the demo is the contract.
+
+== Relationship
+
+* xref:persistent-shell-context.adoc[Persistent shell context]
+* xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation]
+* xref:shell-display-layers.adoc[Display and control layers]
+* xref:open-shell.adoc[Open Shell]
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-context-chrome.html[Shell context chrome @ HCI Nerdz]
+* link:https://hci-nerdz.github.io/shell-context-demo/[shell-context-demo]
+
+== Related
+
+* xref:persistent-shell-context.adoc[Persistent Shell Context]
+* xref:prohelp-gutter.adoc[Prohelp and Prompt Gutter]
+* xref:shell-display-layers.adoc[Display and Control Layers]

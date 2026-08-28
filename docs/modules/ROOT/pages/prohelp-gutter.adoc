@@ -232,7 +232,44 @@ gutterWidthHint: 3
 * Requiring prohelp for shell startup
 * Replacing prohelp TUI with gutter alone â gutter is discoverability, not the help viewer
 
+
+
+== Input-line primary: `▶` in the gutter
+
+The gutter's **primary** job on the command input row is to hold **`▶`** — the type-here grabber.
+That is the canonical reason the input line has a gutter.
+
+* Draw `▶` **inside** the gutter band — not as a separate chevron after an empty gutter cell.
+* Auto-`?`, list markers (`▪`, A–Z), and emphasis arrows share the **same** gutter column(s) when active (e.g. `[?▶]`).
+* Context rows may indent to gutter width for alignment; they do not get a blank faux-gutter that pretends to own `▶`.
+
+See xref:prompt-spatial-layout.adoc[prompt spatial layout] for 1-line / 2-line placement.
+
+
+== Arrow mode (`▶` lifetime)
+
+`▶` in the input gutter is **not** a hard-coded always-on history glyph.
+Top-bar **arrow mode**:
+
+* `ephemeral` — reticle while editing; gone after submit; **never in copy**
+* `persist` — remains on committed history rows; **present in copy**
+
+Detail and ASCII: xref:prompt-spatial-layout.adoc[prompt spatial layout].
+Overlay-only persist (visible but stripped from copy) is **advanced later**.
+
+== Line modes and gutter
+
+With xref:prompt-spatial-layout.adoc[prompt spatial layout]:
+
+* **2-line:** gutter holds `▶` (and optional `?`) on the **input row only**; command editor to its right; context row indents to gutter width
+* **1-line:** gutter holds `▶` at the left of the single combined row
+
+Auto-`?` still appears when prohelp matches the input buffer — never inserted into the editable command string.
+Context-token focus may still scope help; see front-context integration above.
+
 == Related
+
+* xref:prompt-spatial-layout.adoc[Prompt spatial layout] — 1-line / 2-line modes; gutter on input row; `▶` as type-here marker
 
 * xref:open-shell.adoc[Open Shell]
 * xref:persistent-shell-context.adoc[Persistent shell context]

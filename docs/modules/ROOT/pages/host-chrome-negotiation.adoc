@@ -1,0 +1,125 @@
+= Host chrome negotiation
+:navtitle: Host Chrome Negotiation
+:description: Mode-engaged top context bar — discover terminal host, negotiate native chrome, fall back to display-overlay TUI when unsupported or rejected.
+
+Write this so someone with no background can follow.
+
+== Stance: mode-engaged
+
+The **TUI top context bar** (line mode, arrow/`▶` mode, theme / syntax hooks) is **mode-engaged**:
+
+. **Discover** which terminal/host is parenting the shell.
+. **Negotiate** to instantiate the bar in the **parent terminal UI chrome** (native host chrome — **not** scrollback, **not** stdout).
+. If discovery fails, the protocol is unsupported, or the host **rejects** the offer → **fallback**: render the same bar as a **display-overlay** layer inside the shell (existing overlay stack).
+
+Do **not** permanently assume overlay-only when a capable host is available.
+Users should barely notice the switch except that native host chrome feels more "app-like."
+
+== Negotiation sketch
+
+[source]
+----
+probe  →  identify host (WT / OSO terminal / WezTerm / Kitty / Ghostty / VS Code|Cursor / unknown)
+offer  →  shell advertises TopContextBar capability + widgets (line mode, arrow mode, …)
+accept →  host mounts bar in its chrome; shell binds controls via host protocol
+reject →  shell renders TopContextBar on display-overlay (no stdout pollution)
+----
+
+[cols="1,2"]
+|===
+| Step | Detail
+
+| **Probe**
+| Env hints, OSC/CSI queries, host-specific IPC, or OSO / terminal identity contracts (see xref:shell-host-and-env-refresh.adoc[shell host and env refresh]). Unknown → treat as unsupported.
+
+| **Offer**
+| Structured capability record: bar widgets, theme tokens, focus routing. Align with nu-emit / shell-context JSONL style where possible.
+
+| **Accept**
+| Host owns pixels for the bar; shell owns state (line mode, arrow mode values). Keystrokes for bar controls may route through host chrome or control plane.
+
+| **Reject / timeout / unsupported**
+| Immediate overlay fallback. Same widgets, same semantics. No retry spam — optional re-probe on host attach events.
+|===
+
+== Who owns what
+
+[cols="1,2,2"]
+|===
+| Concern | Owner | Notes
+
+| **Host protocol** (accept bar into native chrome)
+| Terminal application — **first-class:** `openshellorg/terminal` fork
+| Same fork as env-refresh / shell-host chrome (desync bar, Fix/Insert) — **different widget**, shared host integration surface.
+
+| **Shell overlay fallback**
+| Open Shell runtime (`openshellorg/open-shell`) display-overlay layer
+| xref:shell-display-layers.adoc[Display and control layers] — never stdout.
+
+| **Bar state** (line mode, arrow mode, …)
+| Shell session
+| Host is a view; shell is source of truth.
+
+| **HCI / demo simulation**
+| HCI Nerdz `shell-context-demo` + docs
+| Mock "Host chrome | Overlay" for review — not a real protocol.
+|===
+
+== Host matrix (illustrative)
+
+[cols="1,2,2"]
+|===
+| Host | Expectation (v1) | Fallback
+
+| OpenShellOrg `terminal` fork
+| **First-class** acceptor of top context bar
+| Overlay only if user disables host chrome
+
+| Windows Terminal (upstream)
+| Later / optional protocol growth
+| Overlay until supported
+
+| WezTerm, Kitty, Ghostty
+| Later if they expose a chrome extension surface
+| Overlay
+
+| VS Code / Cursor integrated terminal
+| Probe; often limited chrome APIs → likely overlay
+| Overlay
+
+| Unknown / SSH dumb pipe
+| No discovery
+| Overlay
+|===
+
+== Relationship to shell-host / env-refresh
+
+xref:shell-host-and-env-refresh.adoc[Shell host and env refresh] already plans host-level chrome on the `openshellorg/terminal` fork (per-tab health, desync bar, Fix/Insert).
+**Top context bar negotiation reuses that host relationship** — it is not a second fork or a competing product.
+
+* Env-refresh widgets: path / env health between tabs and shell
+* Top context bar: line mode, `▶` arrow mode, prompt chrome settings
+
+Both are **native chrome when engaged**; both fall back to in-shell overlay when the host cannot take them.
+
+== What lives in the bar
+
+Keep (already planned):
+
+* **Line mode** — `1-line` | `2-line` (xref:prompt-spatial-layout.adoc[prompt spatial layout])
+* **Arrow mode** — `ephemeral` | `persist` for gutter `▶`
+* Theme / syntax-mode hooks as appropriate
+
+== Non-goals
+
+* Polluting stdout or scrollback with the bar frame
+* Hard-coding overlay-only forever
+* Requiring every terminal to implement the protocol before shipping Open Shell (overlay keeps the product usable)
+
+== Related
+
+* xref:shell-display-layers.adoc[Display and Control Layers]
+* xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
+* xref:prompt-spatial-layout.adoc[Prompt Spatial Layout]
+* xref:open-shell.adoc[Open Shell]
+* xref:prohelp-gutter.adoc[Prohelp and Prompt Gutter]
