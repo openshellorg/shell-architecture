@@ -1,5 +1,8 @@
 = Changelog
 
+== 2026-08-28 - ConPTY binding on DUB
+
+* Related-stack inventory: ConPTY/PTY **bindings** marked addressed via `dlang-supplemental/pty-d` on DUB; VT/emulation surface still missing.
 == 2026-08-28 - DPI slice cross-link
 
 * Related-stack inventory: whole-UI DPI/content scale marked addressed in dew (`dew.scale`).
@@ -10,6 +13,8 @@ All notable changes to this project will be documented here.
 For longer narratives, see link:changelog-details/[changelog-details/] (when present).
 
 == Timeline
+
+* 2026-08-28 -- xref:shell-host-and-env-refresh.adoc[Shell host]: ConPTY/PTY bindings addressed (`pty-d` on DUB); VT surface still missing.
 
 * 2026-08-28 — xref:shell-host-and-env-refresh.adoc[Shell host]: note dlang-supplemental dew/vello/dui inventory vs WT-fork commitment; whole-UI scale gap recorded (not a greenfield flip).
 * 2026-08-28 — xref:host-native-widgets.adoc[Host native widgets]: taxonomy (shell top bar inserted, app top bar stacked, hover widgets); JSONL sketch; relates terminal-gui-prompts as dialog precursor; open protocol questions.
