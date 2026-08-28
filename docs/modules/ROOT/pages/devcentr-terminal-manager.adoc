@@ -1,0 +1,135 @@
+= DevCentr terminal manager
+:navtitle: DevCentr Terminal Manager
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+A **dedicated terminal manager UI** for sessions that DevCentr (or Open Terminal under DevCentr orchestration) spawned.
+It is a first-class Open Terminal **layout mode** -- not a relocation of DevCentr's project browser.
+
+**Recommended mode name:** **project-grouped manager** (`projectGroupedManager`).
+
+Leave the **grid-based project browser inside DevCentr**. Do not move the project grid into the terminal manager.
+
+== Layout mode
+
+|===
+| Mode | Summary
+
+| **Standalone**
+| Classic Terminal-like; tabs top or left; tabs + surface may share one HWND. See xref:open-terminal-host.adoc[open-terminal host].
+
+| **Decoupled index**
+| Index window holds tabs/thumbs; sessions in separate OS windows.
+
+| **Project-grouped manager** (this page)
+| Single dedicated manager window; **tabs grouped by the DevCentr project that spawned them**; **vertical tabs** are the ideal **default** (groups down the side). Live PTY surfaces remain session windows (or co-located panes) per association rules.
+
+| **Other**
+| Future OK; do not over-specify.
+|===
+
+Project-grouped manager is a **DevCentr-spawned specialization** of the subscriber/index idea in xref:session-association.adoc[session association]: DevCentr owns the project grid; Open Terminal owns the terminal chrome.
+
+== Division of surfaces
+
+|===
+| Surface | Owner | Job
+
+| Project grid / thumbnails
+| **DevCentr**
+| Browse projects; spawn and focus work; show project identity.
+
+| Terminal manager (vertical tab groups)
+| **Open Terminal** (host mode)
+| Organize live sessions by spawn-project; focus/close/spawn more terminals for a group.
+
+| Live PTY session windows
+| **Open Terminal** session processes
+| Paint cells; produce thumbs when associated; taskbar-visible in v0.
+|===
+
+Do **not** fold the DevCentr project grid into the manager window.
+Cross-link: xref:division-of-labor.adoc[Division of Labor], xref:devcentr.adoc[Relationship].
+
+== Vertical tabs (default)
+
+Ideal default chrome for this mode:
+
+----
++========+================================+
+| Group A|                                |
+|  tab   |                                |
+|  tab   |     focused PTY / session      |
+| Group B|     (or focus pointer to       |
+|  tab   |      separate session HWND)    |
+|  tab   |                                |
++========+================================+
+----
+
+* **Group** = project that spawned the session in DevCentr (`groupId` / project key from association registration).
+* Vertical rail is the default; top tabs remain available as a preference for users who want WT muscle memory inside the manager.
+* Last-used **CLI app icon** appears on session/tab chrome (see xref:cli-app-icons.adoc[CLI app icons]).
+
+== Linking manager focus to DevCentr grid
+
+When the user focuses a session in the manager, DevCentr should show **which project grid cell** that session belongs to. Two options:
+
+|===
+| Option | Mechanism | Verdict
+
+| **A -- visual pipe**
+| Draw a "pipe" / connector from the manager window edge into the matching grid item / thumbnail edge (spatial flourish).
+| Optional later; high polish cost; can feel noisy on multi-monitor or crowded grids. Cousin idea noted in open-terminal link:https://github.com/openshellorg/open-terminal/blob/main/docs/WINDOW-PIPING.adoc[WINDOW-PIPING.adoc] (prior art NOT FOUND).
+
+| **B -- highlight + dull** (preferred default)
+| **Highlight** the thumbnail's containing cell/tab in the DevCentr grid; **dull** other grid items. User swaps focus via the grid (click another project) or via manager tabs.
+| **Recommend as default.** Cleaner, cheaper, works when windows do not share an edge; matches selection-dimming patterns users already know.
+|===
+
+Document both. Ship **B** first. Treat **A** as an optional flourish once association + highlight are stable.
+
+HCI note (highlight vs pipe): link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/highlight-vs-pipe-linking.adoc[highlight-vs-pipe-linking] @ HCI-Nerdz.
+
+== Last-used CLI app icon
+
+On each session/tab in the manager:
+
+* Show the **last-used CLI app icon** (not only the shell binary).
+* Discovery: xref:cli-app-icons.adoc[CLI app icons] (`app.icon` / package assets).
+* Fallback: shell glyph, generic terminal icon, or first letter of argv0 if no icon resource.
+
+== Association payload hints
+
+Extend registration (sketch) so DevCentr can highlight the right cell:
+
+----
+SessionRegistration
+  groupId              // DevCentr project key / spawn group
+  sourceLayout         // projectGroupedManager | ...
+  spawnSource          // "devcentr" | other
+  tabs[]               // id, title, surfaceId, lastCliAppId?
+  lastCliAppId         // optional; for tab chrome icon
+  ...
+----
+
+Full handshake: xref:session-association.adoc[Session association].
+
+== Non-goals
+
+* Moving DevCentr's project grid into Open Terminal
+* Full visual-pipe implementation in v0
+* Exclusive manager role that hides all session taskbar windows (still deferred per session-association)
+* Full UI implementation (spec only)
+
+== Related
+
+* xref:cli-app-icons.adoc[CLI app icons]
+* xref:open-terminal-host.adoc[open-terminal Host]
+* xref:session-association.adoc[Session association]
+* Product model: link:https://github.com/openshellorg/open-terminal/blob/main/docs/PRODUCT-MODEL.adoc[PRODUCT-MODEL.adoc]
+* xref:division-of-labor.adoc[Division of Labor]
+* DevCentr toolchain-advisor / orchestration (consume; do not fork): practitioner docs remain in Dev-Centr

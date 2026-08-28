@@ -1,0 +1,144 @@
+= CLI app icons (OpenShellOrg)
+:navtitle: CLI App Icons
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+Propose that CLI apps ship **dedicated icon resources** as part of the OpenShellOrg / CLI framework -- not only OS installer branding.
+Hosts that need chrome (Open Terminal tab strips, DevCentr grid badges, taskbar overlays) should discover a **stable, package-local** icon without scraping screenshots or inventing per-app hardcodes.
+
+Spec only. No mandatory ship gate in v0.
+
+== Why
+
+* Terminal **tab chrome** and **project-grouped manager** tabs show *which CLI* last ran, not only which shell.
+* DevCentr **grid thumbnails** may badge the last-used tool for a project session.
+* Taskbar / jump-list style overlays benefit from the same asset set.
+* Today most CLI packages ship no icon; hosts fall back to generic glyphs.
+
+== Standard location and naming
+
+Prefer **package-adjacent** assets next to help metadata:
+
+|===
+| Path (sketch) | Role
+
+| `help.sdl` (or `docs/help.sdl`, package root)
+| Canonical progressive-help schema (prohelp). Add optional icon pointer field.
+
+| `assets/icon/` or `assets/app-icon/`
+| Dedicated icon tree beside help (recommended default directory).
+
+| `assets/icon/app.svg`
+| Preferred vector master (where SVG is acceptable).
+
+| `assets/icon/app-16.png` … `app-256.png`
+| Raster sizes for hosts that need bitmaps (see <<sizes>>).
+
+| `<cmd>.icon.svg` / `<cmd>.icon.png`
+| Alternate when a multi-command package publishes per-binary icons.
+|===
+
+Keep icons **inside the package** (or next to the installed binary's share tree) so PATH discovery can resolve them without a network round-trip.
+
+== Field in help.sdl (preferred discovery)
+
+Add an optional SDL field on the command / package root:
+
+----
+app.icon "assets/icon/app.svg"
+// or structured:
+app.icon {
+  svg "assets/icon/app.svg"
+  png16 "assets/icon/app-16.png"
+  png32 "assets/icon/app-32.png"
+  png256 "assets/icon/app-256.png"
+}
+----
+
+Notes:
+
+* Relative paths resolve from the `help.sdl` directory (same convention as other package-local refs).
+* Absolute `file:` / `https:` URLs are discouraged for default discovery; optional escape hatch for branded CDNs later.
+* If both SVG and PNG exist, hosts pick by surface (vector for dpi-aware chrome; PNG for Win32 HICON / taskbar).
+
+[[sizes]]
+== Formats and sizes
+
+|===
+| Surface | Preferred | Fallback sizes
+
+| Open Terminal / manager **tab chrome**
+| SVG or 16–24 px PNG (@1x/@2x)
+| 16, 20, 24, 32
+
+| DevCentr **grid thumb badge**
+| 24–32 px PNG or SVG
+| 24, 32, 48
+
+| OS **taskbar** / window icon
+| Platform norms (Windows multi-size ICO or PNG set; Linux theme sizes)
+| 16, 32, 48, 256
+
+| Store / docs hero (out of scope for host chrome)
+| Larger brand assets
+| Do not require for tab chrome
+|===
+
+Color: prefer a single **flat or two-tone** mark that remains legible at 16 px on light and dark chrome. Full marketing logos are optional extras, not the tab resource.
+
+== Discovery order (Open Terminal / DevCentr)
+
+Hosts resolve icons in this order (sketch):
+
+. **`app.icon` in help.sdl** (or equivalent frontmatter on `help.md` / `.adoc` / `.cmk`) for the matched command / package.
+. **Conventional paths** beside help: `assets/icon/app.svg`, `assets/icon/app-32.png`, `<cmd>.icon.svg`.
+. **Package metadata** (dub / npm / cargo / etc.) `icon` / `media.icon` fields when present -- map into the same cache.
+. **SOS / certification catalog** (later): published icon URL or content hash for `{OSO} Certified` packages.
+. **prohelp** topic cache: if prohelp already loaded the schema for gutter/`?`, reuse its resolved `app.icon` path (no second walk).
+. **Fallback:** generic terminal glyph, shell icon, or argv0 initial.
+
+Do **not** require SOS for icons to work. SOS remains the flag-syntax track (xref:sos-and-structured.adoc[SOS and structured shells]); icons are a **separate optional package asset**.
+
+== Certification (optional, later)
+
+`{OSO} Certified` (or SOS track extensions) **may** later list "ships discoverable app icon" as an **optional** criterion -- encourage polish, do not block certification of flag-compliant tools that lack chrome assets.
+
+== Cross-links (light)
+
+|===
+| Piece | Relationship
+
+| **prohelp**
+| Owns `help.sdl` authoring; natural home for `app.icon`. Shell-agnostic; not bundled into Open Shell.
+
+| **SOS**
+| Flag/options clarity track; optional future certification checkbox for icons -- do not conflate with structured shells.
+
+| **open-terminal**
+| Consumes icons for tab / project-grouped manager chrome. See xref:devcentr-terminal-manager.adoc[DevCentr terminal manager].
+
+| **DevCentr / toolchain-advisor**
+| May badge project grid cells and recommend packages that ship icons; does not own the icon standard.
+
+| **Persistent shell context**
+| Context tokens may eventually show the same icon next to app identity; defer wiring until context chrome needs it.
+|===
+
+== Non-goals
+
+* Replacing OS installer icons for GUI apps
+* Mandating SVG-only or PNG-only
+* Full prohelp schema patch in this repo (proposal; implement in `openshellorg/prohelp` when ready)
+* Generating icons from argv screenshots
+
+== Related
+
+* xref:devcentr-terminal-manager.adoc[DevCentr terminal manager]
+* xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
+* xref:sos-and-structured.adoc[SOS and structured shells]
+* xref:open-terminal-host.adoc[open-terminal Host]
+* xref:division-of-labor.adoc[Division of Labor]

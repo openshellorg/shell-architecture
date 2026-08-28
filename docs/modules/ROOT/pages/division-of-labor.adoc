@@ -16,6 +16,8 @@ DevCentr should not fork or reimplement Nushell. OpenShellOrg should not become 
 
 **PlayTime:** a document runner that spawns argv is a shell-boundary rhyme (xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary]). The engine stays in Dev-Centr `scriptbook` while it is being built. Do not move it. Do not reimplement it here.
 
+**Terminal manager vs project grid:** OpenShellOrg / open-terminal owns the xref:devcentr-terminal-manager.adoc[project-grouped manager] (vertical tabs by spawn-project). DevCentr keeps the **project grid** and highlights the active cell (default; pipe flourish optional). CLI icon assets are an OSO package standard (xref:cli-app-icons.adoc[CLI app icons]); DevCentr / toolchain-advisor may consume them, not redefine them.
+
 == Environment refresh
 
 Stale PATH after installs is a shared pain. **OpenShellOrg** ships the reusable CLI and full terminal host; **DevCentr** orchestrates and embeds a minimal inject path until those products exist. Do not wait on VS Code. Details: xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh].

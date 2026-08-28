@@ -1,0 +1,8 @@
+= 2026-08-28 -- project-grouped manager and CLI app icons
+
+Added product sketches:
+
+* xref:devcentr-terminal-manager.adoc[DevCentr terminal manager] -- layout mode **project-grouped manager** (`projectGroupedManager`); vertical tabs by DevCentr spawn-project; DevCentr keeps project grid; highlight+dull linking default (visual pipe optional later); last-used CLI icon on tab chrome.
+* xref:cli-app-icons.adoc[CLI app icons] -- package `assets/icon/` + optional `app.icon` in help.sdl; discovery order for Open Terminal / DevCentr; optional `{OSO} Certified` criterion later.
+
+Cross-links: open-terminal-host, session-association, division-of-labor; open-terminal PRODUCT-MODEL; HCI highlight-vs-pipe note.

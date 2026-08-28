@@ -18,6 +18,9 @@ https://github.com/openshellorg/open-terminal[`openshellorg/open-terminal`] is t
 | **Decoupled index**
 | Calling/index window holds tabs and/or thumbnail grid; live sessions in **separate OS windows**. Tabs not glued to PTY chrome.
 
+| **Project-grouped manager**
+| Dedicated manager UI; tabs **grouped by DevCentr spawn-project**; **vertical tabs** default. DevCentr keeps its project grid. See xref:devcentr-terminal-manager.adoc[DevCentr terminal manager].
+
 | **Other**
 | Future compositions OK -- do not over-specify in v0.
 |===
@@ -78,6 +81,8 @@ Closest cousins (different products): `Desktop-Tooling/activity-map-shell` and `
 == Related
 
 * xref:session-association.adoc[Session association and thumbnails]
+* xref:devcentr-terminal-manager.adoc[DevCentr terminal manager]
+* xref:cli-app-icons.adoc[CLI app icons]
 * xref:shell-host-and-env-refresh.adoc[Shell host and env refresh] (committed WT fork)
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation]
 * xref:typography.adoc[Typography]
