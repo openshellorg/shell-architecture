@@ -1,0 +1,94 @@
+﻿= Shell keybindings comparison
+:navtitle: Keybindings Comparison
+:description: Cross-shell default chords — common ground, exceptions, and OSO Open Shell reservations.
+
+Living reference. Expand as we verify defaults on bash 5.x, zsh, fish, Nushell, PowerShell 7, and cmd.
+Pair with xref:shell-landscape.adoc[Shell landscape] for shell taxonomy.
+
+== How to read this page
+
+[cols="1,3"]
+|===
+| Column | Meaning
+
+| *Common*
+| Same or near-same default across POSIX-ish and modern shells
+
+| *Exception*
+| Shell-specific default that breaks the common pattern
+
+| *OSO reserved*
+| Open Shell assigns when default is unused — xref:shell-display-layers.adoc[display layers]
+|===
+
+Corporate-only or terminal-emulator-specific bindings (tmux prefix, IDE capture) are out of scope unless they collide with shell defaults.
+
+== Editing and line input
+
+[cols="2,1,1,1,1,1,1", options="header"]
+|===
+| Action | bash | zsh | fish | Nushell | pwsh | OSO note
+
+| Beginning of line | `Ctrl+A` | `Ctrl+A` | `Ctrl+A` | `Ctrl+A` / Home | `Home` | Common
+| End of line | `Ctrl+E` | `Ctrl+E` | `Ctrl+E` | `Ctrl+E` / End | `End` | Common
+| Delete char forward | `Ctrl+D` (EOF at EOL) | `Ctrl+D` | `Ctrl+D` | `Delete` | `Delete` | Exception: EOF semantics
+| Kill to EOL | `Ctrl+K` | `Ctrl+K` | `Ctrl+K` | varies | — | Mostly common
+| Clear screen | `Ctrl+L` | `Ctrl+L` | `Ctrl+L` | `Ctrl+L` | `Clear-Host` | Common
+| Search history | `Ctrl+R` | `Ctrl+R` | `Ctrl+R` | `Ctrl+R` | `F8`/PSReadLine | Common-ish
+| Insert line above (multiline) | `Ctrl+Enter` (terminal) | — | — | no-op (today) | — | OSO reclaims in structured mode
+|===
+
+== Process control
+
+[cols="2,1,1,1,1,1", options="header"]
+|===
+| Action | bash | zsh | fish | Nushell | pwsh
+
+| Interrupt | `Ctrl+C` | `Ctrl+C` | `Ctrl+C` | `Ctrl+C` | `Ctrl+C`
+| Suspend | `Ctrl+Z` | `Ctrl+Z` | — | — | —
+| EOF / exit | `Ctrl+D` | `Ctrl+D` | `Ctrl+D` | `Ctrl+D` | `Ctrl+D`/`exit`
+|===
+
+== Navigation keys often unused by shells
+
+[cols="2,4", options="header"]
+|===
+| Key | Typical shell default
+
+| `PgUp` / `PgDn` | Passed to terminal scrollback — **not** used by bash/zsh/fish/nu for editing
+| `Ctrl+PgUp` / `Ctrl+PgDn` | Usually unbound at shell level
+| `Ctrl+1` … `Ctrl+9`, `Ctrl+0` | Usually unbound at shell level (terminal may change tabs)
+| `Ctrl+/` | Often unbound; PSReadLine may bind undo in some configs
+| `Ctrl+` + backtick | Usually unbound at shell level
+|===
+
+Open Shell reservations: xref:shell-display-layers.adoc#_reserved_always_on_chords_oso_defaults[OSO default chords].
+
+== Mode and session (OSO Open Shell)
+
+[cols="2,3", options="header"]
+|===
+| Chord | Open Shell action
+
+| `Ctrl+PgUp` / `Ctrl+PgDn` | Cycle UNIX vs structured syntax mode
+| `Ctrl+1` | Mode selector (dropdown / click)
+| `Ctrl+2`–`Ctrl+0` | Reserved always-on toggles
+| `Ctrl+` + backtick | Return cwd to session home
+| `Ctrl+/` | Command palette / chord help
+| `PgUp`/`PgDn` (paste overlay) | Scroll paste preview
+|===
+
+== Terminal vs shell
+
+Many `Ctrl+number` chords are captured by **Windows Terminal** (tab switch) or **iTerm2** before they reach the shell.
+Open Shell + shell-host documents host-level passthrough or rebinding — see xref:shell-host-and-env-refresh.adoc[shell-host].
+
+== Contributing
+
+Verify bindings against shipped defaults; cite version in PR.
+Track gaps in https://github.com/openshellorg/shell-architecture/issues[issues].
+
+== Related
+
+* xref:shell-landscape.adoc[Shell landscape]
+* xref:shell-display-layers.adoc[Display and control layers]

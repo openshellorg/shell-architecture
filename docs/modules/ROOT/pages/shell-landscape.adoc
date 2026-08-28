@@ -1,0 +1,116 @@
+﻿= Shell landscape
+:navtitle: Shell Landscape
+:description: Taxonomy of major interactive shells — categories, data models, and when each fits.
+
+Companion to xref:shell-keybindings.adoc[keybindings comparison].
+Not a popularity contest — a map for practitioners choosing or integrating shells.
+
+== Categories
+
+=== POSIX / word languages
+
+[cols="1,2,2"]
+|===
+| Shell | Pipe currency | Notes
+
+| sh / dash
+| Byte streams, exit codes
+| Minimal scripting; often `/bin/sh`
+
+| bash
+| Byte streams + `$()` + arrays
+| Default on many Linux distros; rich history/editing
+
+| zsh
+| Like bash + globbing, modules
+| macOS default since Catalina
+
+| fish
+| Byte streams; structured autosuggest
+| Friendly defaults; not POSIX by default
+|===
+
+=== Structured / object pipelines
+
+[cols="1,2,2"]
+|===
+| Shell | Pipe currency | Notes
+
+| Nushell
+| Typed tables/records
+| Unix-centric structured shell — OSO reference implementation
+
+| PowerShell
+| .NET objects
+| Windows-native; cross-platform pwsh
+
+| Open Shell (OSO fork)
+| Nu tables + OSO layers/context
+| Nushell fork — xref:shell-display-layers.adoc[display layers], xref:persistent-shell-context.adoc[context]
+|===
+
+=== Hybrid / experimental
+
+[cols="1,2"]
+|===
+| Shell | Notes
+
+| xonsh
+| Python syntax in shell
+
+| Elvish
+| Built-in data structures, pipelines
+
+| Oil
+| OSH + ysh migration path
+|===
+
+=== Legacy
+
+[cols="1,2"]
+|===
+| Shell | Notes
+
+| cmd.exe
+| Windows batch; no POSIX; different console API
+
+| Windows PowerShell 5.1
+| Windows-only; prefer pwsh 7+ for new work
+|===
+
+== Comparison axes
+
+Use these when xref:shell-keybindings.adoc[keybindings] or architecture docs refer to "kinds" of shell:
+
+[cols="1,2"]
+|===
+| Axis | Question
+
+| Pipe currency
+| Bytes, text lines, objects, or typed tables?
+
+| Context model
+| cwd-only vs session env vs explicit context tokens
+
+| Presentation
+| stdout-only vs layered overlays
+
+| Syntax modes
+| Single parser vs swappable (Open Shell UNIX vs structured)
+
+| Help surface
+| man vs `--help` vs prohelp progressive
+|===
+
+== OSO stance
+
+* **Recommend Nushell** for structured pipelines — xref:thesis.adoc[thesis]
+* **Do not reinvent** — fork for layers/context, contribute upstream when generic
+* **Certify CLIs** via SOS regardless of host shell
+
+== Related
+
+* xref:shell-keybindings.adoc[Shell keybindings comparison]
+* xref:thesis.adoc[Thesis]
+* xref:layers.adoc[Layers]
+* xref:shell-display-layers.adoc[Display and control layers]

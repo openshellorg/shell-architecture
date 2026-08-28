@@ -1,0 +1,234 @@
+﻿= Shell display and control layers
+:navtitle: Display and Control Layers
+:description: Layered shell UI — paste preview, TUI chrome, startup layout, input routing, and syntax mode swap without polluting stdout.
+
+Write this so someone with no background can follow.
+
+== The problem
+
+Classic shells multiplex everything onto one byte stream:
+
+* *stdout* carries both pipeline data and incidental UI
+* *stdin* is either shell input or a child REPL — no middle ground
+* Pasted multi-line instructions run blind; partial failure leaves the session poisoned
+* Startup motd is hacked together from profile scripts with no layout model
+* Switching UNIX syntax vs structured-shell syntax means spawning another process in another tab
+
+The thesis page already argues for separating transport from presentation.
+This page commits the *product plan*: a **layered shell host** where TUIs render on overlays that do not become part of the stdout record.
+
+== Naming (proshell vs alternatives)
+
+[IMPORTANT]
+====
+**Do not ship `proshell` as the product name.**
+
+link:https://github.com/openshellorg/prohelp[Prohelp] is intentionally **shell-agnostic** — it installs a `help` wrapper for bash, zsh, fish, Nushell, and PowerShell.
+Naming the enhanced shell `proshell` invites the false belief that prohelp only works there, which **shrinks prohelp adoption** and **shrinks shell adoption** at the same time.
+
+Prohelp and the layered shell are **sibling OSO products**, not a bundle.
+====
+
+[cols="1,2,2"]
+|===
+| Name | Use | Verdict
+
+| *Open Shell* (runtime)
+| User-facing name on opensh.org; the Nushell fork + terminal host experience
+| **Preferred** public name
+
+| `openshellorg/nushell` (fork)
+| Implementation repo — same pattern as `openshellorg/terminal`
+| **Preferred** engineering home
+
+| *ctxshell* / `shell-context`
+| Internal name for context-token + session-bind features
+| Good for libraries and code; narrow scope
+
+| *preshell*
+| Essay/concept label — ideas that should have predated the REPL-as-default shell
+| Good for HCI writing; not a binary name
+
+| *proshell* / *prosh*
+| Sounds like prohelp sibling bundle
+| **Avoid** as product name
+
+| `nu` (upstream binary)
+| When running vanilla Nushell without OSO layers
+| Keep distinct from Open Shell fork
+|===
+
+Invocation: users can still type `nu` or `open-shell` (TBD); no need for a new four-letter command unless marketing demands it.
+
+== Layer stack (bottom to top)
+
+[cols="1,2,2"]
+|===
+| Layer | Owns | stdout record?
+
+| *Base* (command line + job output)
+| Parsed input, pipeline execution, structured rows to screen
+| Yes — this is the audit trail
+
+| *Display overlay*
+| Paste preview, startup layout, progress/checklist for multi-step paste, transient TUI chrome
+| **No** — ephemeral; captured separately if user opts in
+
+| *Control plane* (invisible)
+| Key routing, mode swap, cancel/intercept, focus target (token vs input vs overlay)
+| N/A
+
+| *Context chrome* (prompt)
+| Persistent context tokens — xref:persistent-shell-context.adoc[persistent shell context]
+| Prompt line only; not mixed into child stdout
+
+| *Host chrome* (terminal fork)
+| GUI promotion for dropdowns — xref:shell-host-and-env-refresh.adoc[shell-host]
+| N/A
+|===
+
+Child processes write to base layer only unless they explicitly request an overlay (future protocol).
+Overlays **never** append to the pipe when the user pipes output to a file.
+
+== Paste preview overlay
+
+=== Motivation
+
+Pasting a multi-line script into Nushell (or bash) often:
+
+* Parses slowly with no feedback
+* Runs line-by-line with silent failure mid-sequence
+* Leaves partial side effects when the user aborts late
+
+A warning line is not enough. Users need to **see the block** before it executes.
+
+=== Behavior
+
+When the input buffer detects a paste (bracketed paste or heuristic newline burst):
+
+. **Display overlay** opens at the top of the pane (not stdout)
+. Shows up to **5 visible lines** of the pasted block inside a TUI outline/frame
+. **PgUp / PgDn** scroll the preview (unused by default in most shells — reclaim here)
+. User confirms (`Enter`) or rejects (`Esc` / dedicated cancel)
+. On confirm, base layer receives the block as input; overlay closes
+
+During execution of a confirmed multi-line block:
+
+. Overlay may shrink to a **step tracker** — lines check off as they complete
+. Failures highlight the failing step without erasing prior output on base layer
+. Cancel (`Ctrl+C`) routes through control plane — see <<cancel-semantics>>
+
+[[cancel-semantics]]
+=== Cancel semantics
+
+`Ctrl+C` during preview → discard entire paste; base layer untouched.
+
+`Ctrl+C` during stepped execution → control plane asks: abort remaining steps only, or roll back (when tools expose undo hooks)?
+Default v1: **abort remaining**; document which side effects may remain (honest messaging).
+
+== Control plane (input routing)
+
+The control plane sits **above** consumer layers:
+
+[source]
+----
+Keys -> Control plane -> { overlay focus | prompt token | base input | mode toggle }
+----
+
+* When overlay is open, keystrokes go to overlay first (scroll, confirm, cancel)
+* When a context token is focused, keys edit the token (xref:persistent-shell-context.adoc[context chrome])
+* Otherwise keys go to base command input
+* Global chords bypass focus when marked *always-on* (mode swap, home)
+
+This replaces the false choice between shell mode and REPL owns stdin.
+
+== Syntax mode swap (UNIX vs Nushell)
+
+Open Shell keeps **one session** and swaps the **parser/evaluator mode**:
+
+[cols="1,2"]
+|===
+| Mode | Accepts
+
+| *UNIX* (POSIX-ish)
+| Pipes, `$VAR`, `&&`, heredocs, classical syntax — eval path similar to bash/fish shim
+
+| *Structured* (Nushell + OSO)
+| Nu tables, `$env`, OSO context tokens, structured pipelines
+|===
+
+Swap without spawning a nested shell in another PTY:
+
+* **UI:** always-on toggle in host chrome — single control (dropdown) in the `Ctrl+1` slot, not two adjacent mystery buttons
+* **Keyboard:** `Ctrl+PgUp` / `Ctrl+PgDn` cycle modes (PgUp/PgDn alone reserved for overlay scroll)
+* Mode indicator in prompt context zone (grey token: `mode: nu` / `mode: unix`)
+
+Rationale for **collapsed toggle** vs `Ctrl+1`/`Ctrl+2` side by side: two adjacent mode keys imply parity weight; a selector communicates one session, one parser active.
+
+== Reserved always-on chords (OSO defaults)
+
+Subject to xref:shell-keybindings.adoc[shell keybindings comparison] — these aim for unused defaults:
+
+[cols="1,2"]
+|===
+| Chord | Action
+
+| `Ctrl+PgUp` / `Ctrl+PgDn`
+| Cycle syntax mode (UNIX vs structured)
+
+| `Ctrl+1`
+| Mode selector (click or menu) — primary always-on slot
+
+| `Ctrl+2` … `Ctrl+0`
+| Reserved for future always-on toggles (context pin, overlay pin, etc.)
+
+| `Ctrl+` + backtick
+| Return-to-home — reset cwd to session home (not `Ctrl+H` — taken)
+
+| `Ctrl+/`
+| Command palette / chord help
+
+| `PgUp` / `PgDn` (overlay open)
+| Scroll paste preview
+
+| `Ctrl+Enter` (structured mode)
+| Insert line *above* current line in multiline buffer (bash does this; Nu currently no-ops — reclaim)
+|===
+
+== Startup layout document
+
+Replace ad-hoc profile echo chains with a **startup layout document** (SDL or AsciiDoc subset):
+
+* Rendered on the *display overlay* at session start
+* Disappears after first command or timeout — not part of stdout log
+* User-editable file (`~/.config/open-shell/startup.adoc` or similar)
+* Supports columns, links, context summary, env-health banner (pairs with env-refresh)
+
+Profile scripts still run for side effects (PATH, env); layout doc is **presentation only**.
+
+== Relationship to prohelp
+
+Prohelp integrates at the **base + context** layers:
+
+* `help` / `?` routes through prohelp for PATH topics
+* Context token focused → prohelp scopes help to that namespace
+
+Prohelp does **not** require Open Shell.
+Open Shell does **not** require prohelp (degraded `help` falls back to man).
+
+== Repositories
+
+Same fork strategy as xref:persistent-shell-context.adoc[persistent shell context]:
+
+* `openshellorg/nushell` — layers, control plane, paste preview, mode swap
+* `openshellorg/terminal` — host chrome for toggles and GUI promotion
+* HCI Nerdz demo — overlay interaction mockups
+
+== Related
+
+* xref:persistent-shell-context.adoc[Persistent shell context]
+* xref:shell-keybindings.adoc[Shell keybindings comparison]
+* xref:shell-landscape.adoc[Shell landscape]
+* xref:layers.adoc[Layers]
+* xref:future.adoc[Future topics]
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-layer-chrome.html[Shell layer chrome @ HCI Nerdz]

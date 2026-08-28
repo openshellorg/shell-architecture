@@ -1,4 +1,4 @@
-* xref:index.adoc[Overview]
+﻿* xref:index.adoc[Overview]
 * xref:thesis.adoc[Thesis]
 * xref:layers.adoc[Layers]
 * xref:sos-and-structured.adoc[SOS and Structured Shells]
@@ -10,6 +10,10 @@
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
 ** xref:persistent-shell-context.adoc[Persistent Shell Context]
+** xref:shell-display-layers.adoc[Display and Control Layers]
+* Reference
+** xref:shell-landscape.adoc[Shell Landscape]
+** xref:shell-keybindings.adoc[Keybindings Comparison]
 * PlayTime (cousin in Dev-Centr)
 ** xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary]
 ** xref:argv-as-execution-currency.adoc[Argv as execution currency]

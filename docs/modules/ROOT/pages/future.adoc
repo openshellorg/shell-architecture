@@ -1,4 +1,4 @@
-= Future topics
+﻿= Future topics
 :description: Speculative and deferred OpenShellOrg research topics.
 
 Speculative or deferred work. None of this requires reinventing Nushell.
@@ -7,8 +7,8 @@ Speculative or deferred work. None of this requires reinventing Nushell.
 ====
 **Committed product plans (not speculative):**
 
-* Stale PATH/env refresh via planned `env-refresh` + `shell-host` — xref:shell-host-and-env-refresh.adoc[Shell Host and Environment Refresh]
-* Persistent session context (CLI ↔ shell negotiation, prompt tokens) — xref:persistent-shell-context.adoc[Persistent Shell Context]
+* Stale PATH/env refresh via planned `env-refresh` + `shell-host` â€” xref:shell-host-and-env-refresh.adoc[Shell Host and Environment Refresh]
+* Persistent session context (CLI â†” shell negotiation, prompt tokens) â€” xref:persistent-shell-context.adoc[Persistent Shell Context]
 
 The sections below remain research / deferred topics.
 ====
@@ -22,7 +22,7 @@ TUIs often abandon stdout for layout control. Research directions:
 * Terminal protocols that reflow without the child process redrawing
 
 Interactive TUIs and machine-readable pipelines often fight for the same fd.
-Research patterns where tools can offer both: structured data for scripts, rich UI when a human is present — without lying about which mode is active.
+Research patterns where tools can offer both: structured data for scripts, rich UI when a human is present â€” without lying about which mode is active.
 
 == Display vs transport decoupling
 
@@ -36,9 +36,9 @@ Document how those interact with structured stdout, images, and progress without
 
 == Mixed fonts (speculative)
 
-Explore whether shell or terminal protocol can mark spans with font roles (for example monospace vs sans) in one output stream for readability—without breaking pipes.
+Explore whether shell or terminal protocol can mark spans with font roles (for example monospace vs sans) in one output stream for readabilityâ€”without breaking pipes.
 Likely needs terminal-emulator cooperation; fish/Nushell hacks alone are insufficient long-term.
-Exploratory only — no implementation planned here.
+Exploratory only â€” no implementation planned here.
 
 == PlayTime (not speculative, not ours to build)
 

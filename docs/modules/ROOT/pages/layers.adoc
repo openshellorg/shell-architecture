@@ -1,4 +1,4 @@
-= Layers
+﻿= Layers
 
 Think in stacked concerns. Do not collapse them into one mega-project.
 
@@ -18,6 +18,10 @@ Think in stacked concerns. Do not collapse them into one mega-project.
 | ANSI grid vs reflowable / semantic blocks
 | Notes here; implement in terminal emulators upstream
 
+
+| Shell display / control layers
+| stdout polluted by TUIs; paste runs blind; no input routing
+| xref:shell-display-layers.adoc[Open Shell layers plan]; Nushell fork + shell-host
 | Session env freshness
 | Stale PATH/env after installs; host inheritance; broken `refreshenv`
 | Planned `env-refresh` + `shell-host` (xref:shell-host-and-env-refresh.adoc[plan]); DevCentr consumes
