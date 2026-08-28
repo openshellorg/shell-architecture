@@ -1,6 +1,5 @@
 = Changelog
 
-* 2026-08-28 -- xref:layout-demos.adoc[Layout demos] catalog (try-it index) linked from open-terminal-host.
 :toc:
 
 All notable changes to this project will be documented here.
@@ -9,6 +8,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-08-28 -- xref:layout-demos.adoc[Layout demos] catalog (try-it index) linked from open-terminal-host.
 * 2026-08-28 -- Demo screenshots embedded on open-terminal-host, nested-tiling-zones, session-association, devcentr-terminal-manager, cli-app-icons (from HCI-Nerdz shell-context-demo).
 * 2026-08-28 -- xref:nested-tiling-zones.adoc[Nested zones] (contained tiling inside dedicated UI; HCI owns abstract pattern). See link:changelog-details/2026-08-28 - nested-tiling-zones.adoc[detailed changelog].
 * 2026-08-28 -- xref:devcentr-terminal-manager.adoc[DevCentr terminal manager] (`projectGroupedManager`): vertical tab groups by spawn-project; highlight+dull grid link default; xref:cli-app-icons.adoc[CLI app icons] (`app.icon` / assets). See link:changelog-details/2026-08-28 - project-grouped-manager-cli-icons.adoc[detailed changelog].

@@ -1,6 +1,6 @@
 = Layout demos (try it)
 :navtitle: Layout demos
-:description: Interactive facsimile desks for Open Terminal layout modes — try the ideas before the native host.
+:description: Interactive facsimile desks for Open Terminal layout modes -- try the ideas before the native host.
 
 == Intent
 
