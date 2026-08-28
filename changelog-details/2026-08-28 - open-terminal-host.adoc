@@ -1,0 +1,7 @@
+= 2026-08-28 -- open-terminal host
+
+Recorded the greenfield D terminal host plan and scaffold link.
+
+* Product model: calling/index window (tabs / thumbnail grid) decoupled from session OS windows.
+* Prior dlangui "window piping" implementation: NOT FOUND (search logged in open-terminal docs).
+* Related-stack inventory updated: scaffold exists; WT fork remains committed for env-refresh.

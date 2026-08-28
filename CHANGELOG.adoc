@@ -7,6 +7,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-08-28 -- xref:open-terminal-host.adoc[open-terminal host]: greenfield D host scaffold (decoupled session index); window-piping prior art NOT FOUND; WT fork remains near-term env-refresh host.
 * 2026-08-28 — Related-stack inventory: link:https://github.com/dlang-supplemental/vt-d[`vt-d`] (VT/ANSI → cell grid, DUB) + `pty-d` landed as libraries; shell-host wiring (ConPTY + vt-d + dew) still open; WT fork remains committed host.
 * 2026-08-28 — xref:typography.adoc[Typography]: **Consolas** as curated default terminal/cell monospace; override allowed; fallback Consolas → Cascadia Mono → Courier New → monospace. Cross-links Open Shell, display layers, HCI shell-layer-chrome.
 * 2026-08-28 — Related-stack inventory: whole-UI DPI/content scale marked addressed in dew (`dew.scale`).

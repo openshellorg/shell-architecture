@@ -9,6 +9,7 @@
 ** xref:division-of-labor.adoc[Division of Labor]
 * Products (planned)
 ** xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
+** xref:open-terminal-host.adoc[open-terminal Host]
 ** xref:host-chrome-negotiation.adoc[Host Chrome Negotiation]
 ** xref:host-native-widgets.adoc[Host Native Widgets]
 ** xref:open-shell.adoc[Open Shell]

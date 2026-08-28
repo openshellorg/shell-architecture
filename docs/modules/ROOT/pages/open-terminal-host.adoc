@@ -1,0 +1,65 @@
+= open-terminal host (greenfield)
+:navtitle: open-terminal Host
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Role
+
+https://github.com/openshellorg/open-terminal[`openshellorg/open-terminal`] is the **greenfield D terminal host** for OpenShellOrg:
+
+* Session surfaces in **separate OS windows**
+* Calling window = **session index** (tabs and/or thumbnail preview grid)
+* Tabs **decoupled** from the PTY surface (unlike classic Windows Terminal)
+
+Near-term **env-refresh** and first-class **host-chrome negotiation** remain on the Windows Terminal fork (`openshellorg/terminal`). Do not retire the fork until open-terminal reaches parity on those slices.
+
+== Product model
+
+----
++---------------------------+          +------------------+
+|  CALLING / INDEX WINDOW   |          | SESSION WINDOW B |
+|  tabs  and/or  thumb grid |  owns    |  PTY + vt cells  |
+|  (chrome / session index) | -------> |  (live surface)  |
++---------------------------+          +------------------+
+----
+
+Detail lives in the host repo: link:https://github.com/openshellorg/open-terminal/blob/main/docs/PRODUCT-MODEL.adoc[PRODUCT-MODEL.adoc].
+
+== Window piping prior art
+
+**NOT FOUND** in the hive (dlangui or otherwise). Search record: link:https://github.com/openshellorg/open-terminal/blob/main/docs/WINDOW-PIPING.adoc[WINDOW-PIPING.adoc]. The user clarification above is the canonical seed.
+
+Closest cousins (different products): `Desktop-Tooling/activity-map-shell` and `AMDphreak/activity-map-dlangui` (desktop activity map + thumbnails).
+
+== Stack wiring
+
+|===
+| Library | Use
+
+| `pty-d`
+| ConPTY / POSIX PTY
+
+| `vt-d`
+| VT/ANSI to cell grid
+
+| `dew` + `vello-d`
+| Windows, DPI (`dew.scale`), paint
+
+| `dui`
+| Index chrome app-kit as it grows
+
+| Consolas
+| Curated cell font (xref:typography.adoc[typography])
+|===
+
+== Readiness (2026-08-28)
+
+**Ready to spike a pane.** Not prime-time to replace WT. See link:https://github.com/openshellorg/open-terminal/blob/main/docs/READINESS.adoc[READINESS.adoc].
+
+== Related
+
+* xref:shell-host-and-env-refresh.adoc[Shell host and env refresh] (committed WT fork)
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation]
+* xref:typography.adoc[Typography]
