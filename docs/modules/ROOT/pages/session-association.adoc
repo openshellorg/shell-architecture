@@ -23,6 +23,9 @@ Protocol sketch for **re-associating** Open Terminal sessions (or whole multi-ta
 | **Project-grouped manager**
 | Dedicated manager; tabs grouped by DevCentr spawn-project; vertical tabs default. See xref:devcentr-terminal-manager.adoc[DevCentr terminal manager].
 
+| **Nested zones**
+| Optional contained tiling; group registers to zone for display. See xref:nested-tiling-zones.adoc[Nested zones].
+
 | **Other**
 | Future OK; do not over-specify.
 |===
@@ -111,4 +114,5 @@ SessionRegistration
 * xref:open-terminal-host.adoc[open-terminal Host]
 * xref:devcentr-terminal-manager.adoc[DevCentr terminal manager]
 * xref:cli-app-icons.adoc[CLI app icons]
+* xref:nested-tiling-zones.adoc[Nested zones]
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation]

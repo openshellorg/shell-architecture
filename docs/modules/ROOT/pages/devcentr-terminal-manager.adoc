@@ -28,6 +28,9 @@ Leave the **grid-based project browser inside DevCentr**. Do not move the projec
 | **Project-grouped manager** (this page)
 | Single dedicated manager window; **tabs grouped by the DevCentr project that spawned them**; **vertical tabs** are the ideal **default** (groups down the side). Live PTY surfaces remain session windows (or co-located panes) per association rules.
 
+| **Nested zones**
+| Optional contained tiling inside the dedicated manager UI / per-monitor zone windows. See xref:nested-tiling-zones.adoc[Nested zones].
+
 | **Other**
 | Future OK; do not over-specify.
 |===
@@ -94,6 +97,16 @@ Document both. Ship **B** first. Treat **A** as an optional flourish once associ
 
 HCI note (highlight vs pipe): link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/highlight-vs-pipe-linking.adoc[highlight-vs-pipe-linking] @ HCI-Nerdz.
 
+
+== Nested zones (optional)
+
+Inside the dedicated manager, optionally embed **contained tiling** -- scratch the Linux/dev tiling itch **without** hijacking the OS DE/WM.
+
+* Spawn faded/empty **zones** (e.g. one per monitor).
+* Place groups/sessions into zones; **group membership stays stable**; groups **register** to zones for display.
+* Vertical tab rail and DevCentr project grid remain the identity surfaces; zones are placement only.
+
+Pattern (HCI): link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/contained-tiling.adoc[contained-tiling]. Product: xref:nested-tiling-zones.adoc[Nested zones].
 == Last-used CLI app icon
 
 On each session/tab in the manager:
@@ -124,6 +137,7 @@ Full handshake: xref:session-association.adoc[Session association].
 * Full visual-pipe implementation in v0
 * Exclusive manager role that hides all session taskbar windows (still deferred per session-association)
 * Full UI implementation (spec only)
+* OS-level tiling WM replacement (nested zones stay inside the dedicated UI)
 
 == Related
 

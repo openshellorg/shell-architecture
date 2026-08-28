@@ -1,0 +1,4 @@
+= 2026-08-28 -- nested zones / contained tiling
+
+* xref:nested-tiling-zones.adoc[Nested zones]: Open Terminal application of HCI contained tiling; group registers to zone; membership stable.
+* Cross-links: project-grouped manager, open-terminal-host, session-association, division-of-labor.

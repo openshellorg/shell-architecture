@@ -1,0 +1,121 @@
+= Nested zones (Open Terminal)
+:navtitle: Nested Zones
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+Apply the HCI **contained tiling** pattern inside Open Terminal's dedicated UI -- especially the xref:devcentr-terminal-manager.adoc[project-grouped manager] -- so users can tile terminal surfaces **without** replacing the OS window manager.
+
+**Recommended names:**
+
+* Pattern (HCI): **contained tiling**
+* Product composition: **nested zones** (`nestedZones`)
+
+Open Terminal is the **first product home**, not the exclusive owner of the idea.
+Abstract pattern: link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/contained-tiling.adoc[contained-tiling @ HCI-Nerdz].
+
+== Abstraction boundary
+
+|===
+| Layer | Owner | Owns
+
+| Contained tiling / nested zones **pattern**
+| **HCI-Nerdz**
+| How humans manage regions inside app chrome; vocabulary; group vs zone registration; not-OS-WM stance.
+
+| Terminal **application** of nested zones
+| **OpenShellOrg** / open-terminal
+| PTY surfaces in zones; manager chrome; association fields; first implementation home.
+
+| Project-spawned zones / grid orchestration
+| **DevCentr** (consume)
+| Spawn zones tied to projects; highlight linking; does not redefine the tiling essay.
+|===
+
+== Layout modes (context)
+
+|===
+| Mode / composition | Summary
+
+| **Standalone**
+| Classic Terminal-like.
+
+| **Decoupled index**
+| Index + separate session windows.
+
+| **Project-grouped manager**
+| Vertical tabs by DevCentr spawn-project.
+
+| **Nested zones** (`nestedZones`)
+| Optional **contained tiling** inside the dedicated UI (or dedicated zone windows per monitor). Combinable with project-grouped manager (or standalone chrome).
+
+| **Other**
+| Future OK.
+|===
+
+Nested zones is a **composition option**, not a replacement for group membership or the DevCentr project grid.
+
+== Behaviors (terminal product)
+
+* Spawn a **new terminal zone** (e.g. zone window on monitor 1 and monitor 2). Zones may be **faded/empty** until a group or session is placed.
+* User places which **terminal group/session** appears in which **zone**.
+* **Sessions keep group membership** regardless of display zone; a **group registers itself to a zone** (display binding).
+* Classic: one shell top-right of a zone, another below -- tiling chaos stays inside the dedicated UI.
+
+== Group <-> window/zone registration
+
+----
+  Membership (stable)                 Display (mutable)
+  -------------------                 -----------------
+
+  Group "proj-A"                      Zone "mon1" (OS window of OT mgr)
+    Session s1  --register--------->    +-------------+-------------+
+    Session s2  --register--------->    | s1 (top-rt) |   faded     |
+                                        +-------------+   empty     |
+  Group "proj-B"                        | s2 (below)  |   cell      |
+    Session s3  --register---\          +-------------+-------------+
+                              \
+                               \-----> Zone "mon2"
+                                         +---------------------------+
+                                         | s3                        |
+                                         +---------------------------+
+
+  Moving s2 to mon2 does NOT remove s2 from Group "proj-A".
+  Vertical tab rail still lists groups; zones only answer "where shown".
+----
+
+Association sketch fields:
+
+----
+ZoneRegistration
+  zoneId
+  monitorHint          // optional
+  fadedUntilPopulated  // bool
+  tileLayout           // product-defined; BSP/grid TBD
+
+GroupDisplayBinding
+  groupId              // same as spawn / project group
+  zoneId               // where the group (or its sessions) currently show
+  sessionPlacements[]  // sessionId -> tile slot inside zone
+----
+
+Full handshake remains xref:session-association.adoc[session association]; zone bindings are an additive layout facet.
+
+== What we do not do
+
+* Hijack or replace i3 / sway / Windows FancyZones / the OS DE
+* Move DevCentr's project grid into the tiling surface
+* Require nested zones for every Open Terminal launch (optional)
+
+== Related
+
+* HCI pattern: link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/contained-tiling.adoc[contained-tiling]
+* xref:devcentr-terminal-manager.adoc[DevCentr terminal manager]
+* xref:cli-app-icons.adoc[CLI app icons]
+* xref:open-terminal-host.adoc[open-terminal Host]
+* xref:session-association.adoc[Session association]
+* xref:division-of-labor.adoc[Division of Labor]
+* Product model: link:https://github.com/openshellorg/open-terminal/blob/main/docs/PRODUCT-MODEL.adoc[PRODUCT-MODEL.adoc]
