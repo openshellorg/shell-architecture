@@ -1,0 +1,7 @@
+= 2026-09-02 -- tool runs and command channels
+
+Published architecture for compilers and long tools as structured **Tool Runs** (bus, daemon, embeddable library, wrappers) and per-command **channel** capture (stdout / stderr / diagnostics switcher).
+
+* New pages: xref:tool-run-diagnostics.adoc[Tool runs and diagnostics], xref:command-channels.adoc[Command channels]
+* Cross-links: session association, display layers (retro-interactivity), future topics (promoted), division of labor, index / nav
+* Stakeholders named: HCI Nerdz (programmer-POV), Desktop Tooling (OS flash/tray helpers), Dev-Centr (agent embed)

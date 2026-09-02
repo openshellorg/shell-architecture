@@ -7,8 +7,9 @@ Speculative or deferred work. None of this requires reinventing Nushell.
 ====
 **Committed product plans (not speculative):**
 
-* Stale PATH/env refresh via planned `env-refresh` + `shell-host` â€” xref:shell-host-and-env-refresh.adoc[Shell Host and Environment Refresh]
-* Persistent session context (CLI â†” shell negotiation, prompt tokens) â€” xref:persistent-shell-context.adoc[Persistent Shell Context]
+* Stale PATH/env refresh via planned `env-refresh` + `shell-host` — xref:shell-host-and-env-refresh.adoc[Shell Host and Environment Refresh]
+* Persistent session context (CLI ↔ shell negotiation, prompt tokens) — xref:persistent-shell-context.adoc[Persistent Shell Context]
+* Tool runs + command channels (compile UX as bus / daemon / embed library) — xref:tool-run-diagnostics.adoc[Tool runs and diagnostics], xref:command-channels.adoc[Command channels]
 
 The sections below remain research / deferred topics.
 ====
@@ -22,12 +23,15 @@ TUIs often abandon stdout for layout control. Research directions:
 * Terminal protocols that reflow without the child process redrawing
 
 Interactive TUIs and machine-readable pipelines often fight for the same fd.
-Research patterns where tools can offer both: structured data for scripts, rich UI when a human is present â€” without lying about which mode is active.
+Research patterns where tools can offer both: structured data for scripts, rich UI when a human is present — without lying about which mode is active.
+
+**Promoted (no longer only speculative):** compilers and long tools as xref:tool-run-diagnostics.adoc[Tool Runs] on a bus (daemon + embeddable library + wrappers), plus xref:command-channels.adoc[command channels] so hosts stop painting stderr into the only visual channel.
 
 == Display vs transport decoupling
 
 Push further on separating "what the pipeline carries" from "what the terminal shows."
 Structured shells already help; terminal and protocol work can reinforce the split.
+Per-command channel capture and tool-run subscribers are the concrete product face of this split.
 
 == Terminal protocol notes
 

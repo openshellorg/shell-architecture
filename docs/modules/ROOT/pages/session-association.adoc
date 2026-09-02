@@ -9,6 +9,8 @@
 
 Protocol sketch for **re-associating** Open Terminal sessions (or whole multi-tab UIs) with another process, and for **live thumbnail** subscription. Complements xref:open-terminal-host.adoc[open-terminal host] layout modes. **No full IPC in v0** -- types/stubs only in the host repo.
 
+**Tool Runs** (xref:tool-run-diagnostics.adoc[tool-run diagnostics]) register as additional surfaces on the same association bus: a compile run collapses to a tile, keeps `shellSessionId`, and asks the host to `focusSurface` / flash when the user follows a magic link from the CLI stub.
+
 == Layout modes (context)
 
 |===

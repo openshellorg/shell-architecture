@@ -11,6 +11,7 @@ Standards and explanation for OpenShellOrg's *structured-shell* direction — no
 . *SOS* (flag syntax) and structured shells are *complementary layers* — spelling options consistently does not replace typed pipelines, and vice versa.
 . *DevCentr* recommends and configures; *OpenShellOrg* standardizes and builds companion tooling.
 . Future topics include display vs transport decoupling, terminal protocol notes, TUI vs structured stdout, and speculative mixed-fonts research.
+. *Tool runs* — compilers and long tools as structured runs on a bus (daemon + embeddable library + wrappers), not stderr-as-product; see xref:tool-run-diagnostics.adoc[Tool runs and diagnostics] and xref:command-channels.adoc[Command channels].
 . *Open Shell in D* — default OSO syntax mode; Nushell reproduced as `nu` compatibility baseline (xref:open-shell.adoc[Open Shell]).
 
 == Documents
@@ -25,6 +26,8 @@ Standards and explanation for OpenShellOrg's *structured-shell* direction — no
 * xref:open-terminal-host.adoc[open-terminal host] -- greenfield D host (decoupled session index)
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation] — insert top context bar into host chrome
 * xref:host-native-widgets.adoc[Host native widgets] — app top bars + hover GUI channel
+* xref:tool-run-diagnostics.adoc[Tool runs and diagnostics] — compile UX as bus + daemon + embed library
+* xref:command-channels.adoc[Command channels] — per-command stdout/stderr/diagnostics switcher
 * xref:stance.adoc[Stance] — do not reinvent Nushell
 * xref:future.adoc[Future topics] -- TUI vs stdout, mixed fonts
 * xref:playtime-at-the-shell-boundary.adoc[PlayTime at the shell boundary] -- Dev-Centr cousin; argv runner; not moved yet

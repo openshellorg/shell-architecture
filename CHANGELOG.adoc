@@ -8,6 +8,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
+* 2026-09-02 -- xref:tool-run-diagnostics.adoc[Tool runs and diagnostics] + xref:command-channels.adoc[Command channels]: compilers as structured runs on a bus; per-command channel switcher; stakeholder map. See link:changelog-details/2026-09-02 - tool-runs-and-command-channels.adoc[detailed changelog].
 * 2026-08-28 -- xref:layout-demos.adoc[Layout demos] catalog (try-it index) linked from open-terminal-host.
 * 2026-08-28 -- Demo screenshots embedded on open-terminal-host, nested-tiling-zones, session-association, devcentr-terminal-manager, cli-app-icons (from HCI-Nerdz shell-context-demo).
 * 2026-08-28 -- xref:nested-tiling-zones.adoc[Nested zones] (contained tiling inside dedicated UI; HCI owns abstract pattern). See link:changelog-details/2026-08-28 - nested-tiling-zones.adoc[detailed changelog].

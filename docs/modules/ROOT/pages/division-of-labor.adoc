@@ -20,6 +20,8 @@ DevCentr should not fork or reimplement Nushell. OpenShellOrg should not become 
 
 **Contained tiling / nested zones:** HCI-Nerdz owns the abstract xref via link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/contained-tiling.adoc[contained-tiling] pattern. OpenShellOrg applies it to terminals (xref:nested-tiling-zones.adoc[nested zones]). DevCentr consumes for project-spawned zones -- do not fork a second tiling essay.
 
+**Tool runs / diagnostics:** OpenShellOrg owns the bus, wrappers, session ids, and host capture (xref:tool-run-diagnostics.adoc[Tool runs and diagnostics], xref:command-channels.adoc[Command channels]). HCI Nerdz owns programmer-POV wording and switcher/attention patterns. Desktop Tooling may help when attention is an OS-desktop concern (tray / flash). DevCentr owns agentic harness embedding (`embed` / timeline mounts) and points practitioners here — do not fork a second diagnostics protocol.
+
 == Environment refresh
 
 Stale PATH after installs is a shared pain. **OpenShellOrg** ships the reusable CLI and full terminal host; **DevCentr** orchestrates and embeds a minimal inject path until those products exist. Do not wait on VS Code. Details: xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh].

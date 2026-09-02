@@ -1,0 +1,85 @@
+= Command channels
+:navtitle: Command Channels
+:description: Keep stdout, stderr, and diagnostics as separate host-captured channels with a switcher — not one interleaved scrollback.
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+After a command finishes (or while it runs), the **host** should expose a list of channels for that command — at minimum `stdout` and `stderr`, plus extras when present (`diagnostics`, structured Nushell pipeline, tool-run bus, …).
+
+Default: a component in the host app to **swap** which channel is primary. Fallback: interleaved print in the shell scrollback (classic terminals, CI, SSH).
+
+This is display-vs-transport applied to **per-command capture**, not a new shell language.
+
+Pairs with xref:tool-run-diagnostics.adoc[Tool runs and diagnostics] (compilers as Tool Runs) and xref:shell-display-layers.adoc[display layers].
+
+== stdout vs stderr (facts)
+
+They **are** separate fds: fd 1 = stdout, fd 2 = stderr. Compilers usually put diagnostics on **stderr** and program output on **stdout**.
+
+They only become one stream when something **joins** them:
+
+* `2>&1` / pipes that merge
+* hosts/CI capturing both into one buffer
+* the terminal **painting** both into one interleaved scrollback (separate fds, one visual channel)
+
+The UX bug is that the **display** pretends they are not separate. Artificial joins should stay opt-in (`merged` view or explicit `2>&1`), not the only way to see errors.
+
+== Placement
+
+| Situation | Chrome |
+|---|---|
+| Few channels (2–3) | Top bar chips (`out` · `err` · `diag`) — cheap, always visible |
+| Many / long names / nested runs | Left-hand rail list |
+
+**Latest command** is the default focus. History can attach the same channel set per command card in scrollback or in the tool-run daemon.
+
+Same negotiation pattern as the top context bar: prefer **native host chrome** when the parent accepts it; otherwise overlay; otherwise fallback interleaved text (xref:host-chrome-negotiation.adoc[host chrome negotiation]).
+
+== Capture contract
+
+. Host keeps per-channel buffers for the active (and recent) commands.
+. UI swaps which buffer is primary; optional explicit **`merged`** channel.
+. Structured extras (`diagnostics` SARIF/JSONL, Nu table payload) register as named channels when present.
+. Piping to a file still records **transport** honestly — channel chrome is presentation, not a rewrite of the pipe.
+
+== How this meets Tool Runs
+
+Once the host keeps **stderr** (and later a **diagnostics** side channel) distinct:
+
+* Compilers stop “weaving” into the mental model of the pipeline
+* The tool-run daemon can subscribe to diagnostics without scraping mixed text
+* Agents embed the same channel widgets in a timeline
+
+== Retro-interactivity (sibling, not substitute)
+
+Nushell-style **formatting at display time** plus **retro-interactivity** (after the command exits, the result block stays a live region — horizontal scroll, expand row, filter) solves multiline pain for **structured data that belongs in the shell**.
+
+Compilers are different: jargon-heavy, multi-span, not a table. Prefer Tool Run surfaces for them; use retro-interactive results for `ls`-like / API / table output.
+
+| Approach | Best for |
+|---|---|
+| Structured format + retro-interactive result | Data that belongs in the shell |
+| Per-command channels (`out` / `err` / …) | Keeping streams un-weaved in the host |
+| Tool-run GUI / library / daemon | Compilers, long jobs, agent timelines |
+
+Upstream Nu already leans toward live tables (`table`, `explore`). “Stay interactive in-place after the run” as **default host behavior** is the OSO-shaped extension if it is not fully there yet — see xref:shell-display-layers.adoc[display layers].
+
+== Stakeholders
+
+| Org | Interest |
+|---|---|
+| **OpenShellOrg** | Capture contract, open-terminal / open-shell chrome, channel names |
+| **HCI Nerdz** | Switcher placement, attention, demo mockups |
+| **Dev-Centr** | Agent hosts that mount channel widgets instead of merging buffers |
+
+== Related
+
+* xref:tool-run-diagnostics.adoc[Tool runs and diagnostics]
+* xref:shell-display-layers.adoc[Display and control layers]
+* xref:host-chrome-negotiation.adoc[Host chrome negotiation]
+* xref:session-association.adoc[Session association]
+* xref:future.adoc[Future topics]

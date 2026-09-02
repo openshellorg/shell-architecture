@@ -265,10 +265,18 @@ See xref:host-chrome-negotiation.adoc[host chrome negotiation] (probe / offer / 
 
 App top bars and hover widgets (color picker, GUI editor, file upload, ...) are a separate channel: xref:host-native-widgets.adoc[host native widgets].
 
+== Retro-interactive results (structured data)
+
+When the base layer paints **structured** rows (Nushell tables, API lists), prefer **format at display time** and keep the result block **retro-interactive** after the command exits: horizontal scroll, expand row, filter — not frozen VT text.
+
+That upgrades shell *data*. Compilers and long adversarial diagnostics belong on xref:tool-run-diagnostics.adoc[Tool Runs] instead. Per-command xref:command-channels.adoc[channel switchers] keep stdout / stderr un-weaved while either path runs.
+
 == Related
 
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation]
 * xref:host-native-widgets.adoc[Host native widgets]
+* xref:tool-run-diagnostics.adoc[Tool runs and diagnostics]
+* xref:command-channels.adoc[Command channels]
 
 * xref:typography.adoc[Typography]
 * xref:prompt-spatial-layout.adoc[Prompt spatial layout]
@@ -279,3 +287,4 @@ App top bars and hover widgets (color picker, GUI editor, file upload, ...) are 
 * xref:layers.adoc[Layers]
 * xref:future.adoc[Future topics]
 * link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-layer-chrome.html[Shell layer chrome @ HCI Nerdz]
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/programmer-pov-diagnostics.html[Programmer-POV diagnostics @ HCI Nerdz]

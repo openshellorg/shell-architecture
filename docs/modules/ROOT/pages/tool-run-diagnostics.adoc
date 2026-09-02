@@ -1,0 +1,126 @@
+= Tool runs and diagnostics surfaces
+:navtitle: Tool Runs and Diagnostics
+:description: Compilers and long tools as structured runs — bus, daemon, embeddable library, wrappers — instead of stderr as the product.
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+Compilers (and other long tools) still treat **stderr as the product**. Humans get jargon-first, wrap-hostile dumps in the scrollback. Agentic workflows multiply the damage: fifty overlapping compile windows, or fifty walls of text buried in chat.
+
+This page names a first-class **Tool Run** object and the surfaces that consume it. Compile is the loudest case; the shape applies to any tool that should not own the terminal as its UI.
+
+Sibling: xref:command-channels.adoc[Command channels] (keep stdout / stderr / diagnostics un-weaved in the host). Related HCI face: link:https://hci-nerdz.github.io/docs/hci-nerdz/programmer-pov-diagnostics.html[Programmer-POV diagnostics @ HCI Nerdz].
+
+== What is broken
+
+| Failure | Why it hurts |
+|---|---|
+| Diagnostics written for the compiler author | Programmer POV (“what do I change?”) is secondary to internal codes and AST jargon |
+| Terminal scrollback as the only surface | Multiline noise, no horizontal scroll, hostile to agents and to re-reading |
+| Every run opens its own GUI (or none) | Agent batches spam the desktop; finished runs leave no index |
+| No stable link back to the shell that spawned the run | Hosts cannot focus / flash the right session |
+
+The radiator analogy: a driver who needs “why is it overheating?” should not be forced to read raw ECU hex.
+
+== What you do *not* rewrite first
+
+| Layer | Job | Reality |
+|---|---|---|
+| **Structured diagnostics** | Machine-readable events (file, span, code, message, related) | Already exists: SARIF, `rustc --error-format=json`, clang/LLVM tooling JSON, MSVC SARIF |
+| **Programmer-POV copy** | Human wording / next action | Often a **presentation** layer over codes — HCI concern; not a full frontend rewrite |
+| **Run bus + daemon UI** | Index runs, collapse finished ones, link shell ↔ UI | **OpenShellOrg job** |
+| **Shell session identity** | Stable id in env + chrome | Adjacent to xref:session-association.adoc[session association]; expose in open-shell / open-terminal |
+
+LLVM is a high-leverage **adapter** target (`DiagnosticConsumer` / JSON), not the whole ecosystem. Non-LLVM tools plug in via SARIF/JSON wrappers the same way.
+
+== Tool Run model
+
+----
+shell session (id) ──spawns──► tool run (id)
+                     │
+                     ├─► log file (full transcript / SARIF)
+                     ├─► short CLI stub + magic link
+                     └─► notify run daemon (live panel → collapse to tile)
+                              │
+                              └─► focusShell(sessionId) / focusRun(runId)
+                                    ▲
+                                    └── host (Cursor / VS Code / open-terminal) honors it
+----
+
+A Tool Run is **not** “the compiler opened a window.” It is a durable object on a bus. UIs are subscribers.
+
+== Communication surfaces (one bus, many mounts)
+
+| Surface | Role |
+|---|---|
+| **Daemon / bus** | Source of truth: register, progress, diagnostics, collapse, history. Lives whether or not any window is visible. |
+| **Standalone GUI** | Default for raw terminal / no host: popup or docked run viewer (OpenShellOrg / open-terminal family). |
+| **Embeddable library** | Same run model + widgets (timeline row, run chip, diagnostic panel) for agent hosts to mount *inside* their chrome. |
+| **Wrappers / CLI** | Spawn tools, tee logs, emit bus events, print stub + magic link. Humans and harnesses both enter here. |
+
+Treat the standalone app as a thin shell over the **same library** the harness embeds.
+
+== Invocation modes
+
+| Mode | Behavior |
+|---|---|
+| **`auto`** | If host embeds the library, no popup; else open standalone GUI; **always** talk to the daemon |
+| **`embed`** | Suppress popup; bus-only (+ optional in-process library mount) |
+| **`gui`** | Force standalone window even if a host could embed |
+| **`headless`** | Bus + log only (CI / pure agent, no human surface) |
+
+Suppressing the popup ≠ suppressing the run. An agentic harness can:
+
+. Invoke with `embed` (or `auto` when registered as an embedding host)
+. Render the run on its **timeline / tool card** via the library
+. Still push the same run into the **daemon** so the user has a second index for past compiles
+
+== Pragmatic CLI contract
+
+When a GUI/daemon is present:
+
+. Child emits **structured** diagnostics to a side channel or log (SARIF/JSON preferred).
+. Stdout/stderr stay **quiet**: one summary line + OSC-8 / `opensh://run/<id>` link (or `opensh run open <id>`).
+. Daemon owns scrolling, horizontal overflow, history, agent attribution (`agentSessionId` / shell id).
+. If no daemon: fall back to classic text (CI/SSH stay honest).
+
+Magic links: OSC-8 in capable hosts; else plain `opensh://…`. Host flash/focus reuses the association API in xref:session-association.adoc[session association] — Cursor/VS Code become another **subscriber**.
+
+== Session identity
+
+Expose a stable **`OPENSH_SESSION_ID`** (and optional agent correlation) in open-shell / open-terminal chrome — inside the shell render area or in host chrome when the host cooperates (xref:host-chrome-negotiation.adoc[host chrome negotiation]).
+
+Finished runs collapse to a small tile in the daemon index (“open” restores the full panel). Mentally link the run to the shell that spawned it; `focusShell` / border flash is the host’s job when buried in tabs.
+
+== Build order (OSO-controlled)
+
+. **`OPENSH_SESSION_ID`** (+ optional agent correlation) in open-shell / open-terminal chrome
+. **Run daemon** as a session-association subscriber (runs as surfaces that collapse)
+. **Wrapper / library** (`opensh-run` or similar): spawn tool, tee log, post events, print stub+link — works on *today’s* `rustc`/`clang` JSON
+. **LLVM / adapter plugins** later for nicer POV messages and zero-wrapper paths
+. **Host extensions** (Cursor / VS Code): `focusSession` / attention flash
+
+Framework yes; “refactor every compiler around a GUI” no — refactor them around **structured runs + a bus**. The GUI is a subscriber.
+
+== Stakeholder map
+
+| Org | Owns |
+|---|---|
+| **OpenShellOrg** | Protocol, wrappers, bus, session ids, open-terminal / open-shell hosts, this canon |
+| **HCI Nerdz** | Programmer-POV wording patterns; channel switcher / attention as interaction research; demos |
+| **Desktop Tooling** | OS-level attention helpers when the host is the desktop itself (flash, focus, tray index) — not the shell protocol |
+| **Dev-Centr** | Agentic harness embedding: timeline mounts, `embed`/`headless` defaults, toolchain advice pointing here |
+
+Division detail: xref:division-of-labor.adoc[DevCentr and OpenShellOrg]; HCI face link:https://hci-nerdz.github.io/docs/hci-nerdz/division-of-labor.html[HCI division of labor].
+
+== Related
+
+* xref:command-channels.adoc[Command channels]
+* xref:session-association.adoc[Session association]
+* xref:shell-display-layers.adoc[Display and control layers]
+* xref:persistent-shell-context.adoc[Persistent shell context]
+* xref:future.adoc[Future topics] — “have your stdout and eat it too”
+* xref:open-terminal-host.adoc[open-terminal host]
