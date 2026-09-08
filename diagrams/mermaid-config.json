@@ -1,6 +1,8 @@
 {
   "theme": "base",
   "htmlLabels": false,
+  "deterministicIds": true,
+  "deterministicIDSeed": "shell-architecture-themed-svg-v1",
   "themeVariables": {
     "primaryColor": "#e8f0ea",
     "primaryTextColor": "#1a1a1a",

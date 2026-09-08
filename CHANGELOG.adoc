@@ -8,7 +8,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
-* 2026-09-08 -- Migrated the four Entrypoint Dispatch diagrams to deterministic Mermaid sources and explicit Themed SVG v1 manifests, with committed standalone-adaptive and host artifacts plus stale-output verification.
+* 2026-09-08 -- Migrated the four Entrypoint Dispatch and eight PlayTime diagrams to deterministic Mermaid sources and explicit per-diagram Themed SVG v1 manifests, with committed standalone-adaptive and host artifacts, stale-output verification, and warning-free cross-platform Mermaid CLI invocation.
 * 2026-09-02 -- xref:tool-run-diagnostics.adoc[Tool runs and diagnostics] + xref:command-channels.adoc[Command channels]: compilers as structured runs on a bus; per-command channel switcher; stakeholder map. See link:changelog-details/2026-09-02 - tool-runs-and-command-channels.adoc[detailed changelog].
 * 2026-08-28 -- xref:layout-demos.adoc[Layout demos] catalog (try-it index) linked from open-terminal-host.
 * 2026-08-28 -- Demo screenshots embedded on open-terminal-host, nested-tiling-zones, session-association, devcentr-terminal-manager, cli-app-icons (from HCI-Nerdz shell-context-demo).
