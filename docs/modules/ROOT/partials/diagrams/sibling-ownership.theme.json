@@ -3,7 +3,7 @@
   "namespace": "openshell-diagram",
   "source": {
     "kind": "diagram-generator",
-    "uri": "docs/modules/ROOT/partials/diagrams",
+    "uri": "sibling-ownership.mmd",
     "generator": "@mermaid-js/mermaid-cli 11.9.0 + @dev-centr/mermaid-svg-css-vars 0.1.2"
   },
   "tokens": [
@@ -32,9 +32,9 @@
   },
   "bindings": [
     { "kind": "stylesheet", "selector": "#my-svg", "property": "fill", "token": "color.text.primary" },
-    { "kind": "stylesheet", "selector": "#my-svg .label text,#my-svg span", "property": "fill", "token": "color.text.primary" },
-    { "kind": "stylesheet", "selector": "#my-svg .node rect,#my-svg .node circle,#my-svg .node ellipse,#my-svg .node polygon,#my-svg .node path", "property": "fill", "token": "color.surface.primary" },
-    { "kind": "stylesheet", "selector": "#my-svg .node rect,#my-svg .node circle,#my-svg .node ellipse,#my-svg .node polygon,#my-svg .node path", "property": "stroke", "token": "color.border.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .label text", "property": "fill", "token": "color.text.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .node rect", "property": "fill", "token": "color.surface.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .node rect", "property": "stroke", "token": "color.border.primary" },
     { "kind": "stylesheet", "selector": "#my-svg .cluster rect", "property": "fill", "token": "color.surface.secondary" },
     { "kind": "stylesheet", "selector": "#my-svg .cluster rect", "property": "stroke", "token": "color.border.primary" },
     { "kind": "stylesheet", "selector": "#my-svg .marker", "property": "fill", "token": "color.edge" },
@@ -42,8 +42,5 @@
     { "kind": "stylesheet", "selector": "#my-svg .edgePaths .path", "property": "stroke", "token": "color.edge" },
     { "kind": "stylesheet", "selector": "#my-svg .flowchart-link", "property": "stroke", "token": "color.edge" }
   ],
-  "fallback": {
-    "missingTarget": "warn",
-    "unresolvedToken": "error"
-  }
+  "fallback": { "unresolvedToken": "error", "missingTarget": "warn" }
 }

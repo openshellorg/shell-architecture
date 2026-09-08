@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "namespace": "openshell-diagram",
+  "source": { "kind": "diagram-generator", "uri": "honest-entrypoint-dispatch.mmd", "generator": "@mermaid-js/mermaid-cli 11.9.0 + @dev-centr/mermaid-svg-css-vars 0.1.2" },
+  "tokens": [{ "id": "color.surface.primary" }, { "id": "color.surface.secondary" }, { "id": "color.text.primary" }, { "id": "color.text.muted" }, { "id": "color.border.primary" }, { "id": "color.edge" }, { "id": "color.status.warning" }],
+  "defaultPreset": "light",
+  "presets": {
+    "light": { "color.surface.primary": "#e8f0ea", "color.surface.secondary": "#f7f3e8", "color.text.primary": "#1a1a1a", "color.text.muted": "#333333", "color.border.primary": "#1f3a2e", "color.edge": "#2c2c2c", "color.status.warning": "#fff5ad" },
+    "dark": { "color.surface.primary": "#294438", "color.surface.secondary": "#332f27", "color.text.primary": "#f7f3e8", "color.text.muted": "#d1d5db", "color.border.primary": "#7dcea0", "color.edge": "#d1d5db", "color.status.warning": "#594b16" }
+  },
+  "bindings": [
+    { "kind": "stylesheet", "selector": "#my-svg", "property": "fill", "token": "color.text.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .actor", "property": "fill", "token": "color.surface.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .actor", "property": "stroke", "token": "color.border.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg text.actor>tspan", "property": "fill", "token": "color.text.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .actor-line", "property": "stroke", "token": "color.border.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .messageLine0", "property": "stroke", "token": "color.edge" },
+    { "kind": "stylesheet", "selector": "#my-svg .messageLine1", "property": "stroke", "token": "color.edge" },
+    { "kind": "stylesheet", "selector": "#my-svg [id$=\"-arrowhead\"] path", "property": "fill", "token": "color.edge" },
+    { "kind": "stylesheet", "selector": "#my-svg [id$=\"-arrowhead\"] path", "property": "stroke", "token": "color.edge" },
+    { "kind": "stylesheet", "selector": "#my-svg .messageText", "property": "fill", "token": "color.text.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .labelBox", "property": "fill", "token": "color.surface.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .labelBox", "property": "stroke", "token": "color.border.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .labelText", "property": "fill", "token": "color.text.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .loopText", "property": "fill", "token": "color.text.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .loopLine", "property": "stroke", "token": "color.border.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .loopLine", "property": "fill", "token": "color.border.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .note", "property": "fill", "token": "color.status.warning" },
+    { "kind": "stylesheet", "selector": "#my-svg .noteText", "property": "fill", "token": "color.text.muted" },
+    { "kind": "stylesheet", "selector": "#my-svg .activation0", "property": "fill", "token": "color.surface.secondary" },
+    { "kind": "stylesheet", "selector": "#my-svg .activation1", "property": "fill", "token": "color.surface.secondary" },
+    { "kind": "stylesheet", "selector": "#my-svg .activation2", "property": "fill", "token": "color.surface.secondary" }
+  ],
+  "fallback": { "unresolvedToken": "error", "missingTarget": "warn" }
+}

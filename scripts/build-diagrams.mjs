@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process"
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { prepareThemedMermaidSvgDualOutput } from "@dev-centr/mermaid-svg-css-vars"
@@ -7,9 +8,8 @@ import { prepareThemedMermaidSvgDualOutput } from "@dev-centr/mermaid-svg-css-va
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const sourceDir = path.join(root, "docs", "modules", "ROOT", "partials", "diagrams")
 const outputDir = path.join(root, "docs", "modules", "ROOT", "images")
-const cacheDir = path.join(root, "diagrams", ".cache")
+const cacheDir = mkdtempSync(path.join(tmpdir(), "shell-architecture-diagrams-"))
 const config = path.join(root, "diagrams", "mermaid-config.json")
-const sharedManifestPath = path.join(root, "diagrams", "diagrams.theme.json")
 const check = process.argv.includes("--check")
 
 const diagrams = {
@@ -29,15 +29,14 @@ const diagrams = {
 
 mkdirSync(cacheDir, { recursive: true })
 mkdirSync(outputDir, { recursive: true })
-const mmdc = path.join(root, "node_modules", ".bin", process.platform === "win32" ? "mmdc.cmd" : "mmdc")
+const mermaidCli = fileURLToPath(new URL("cli.js", import.meta.resolve("@mermaid-js/mermaid-cli")))
 let stale = false
 
 for (const [name, [title, description]] of Object.entries(diagrams)) {
   const rawPath = path.join(cacheDir, `${name}.raw.svg`)
-  execFileSync(mmdc, ["-i", path.join(sourceDir, `${name}.mmd`), "-o", rawPath, "-c", config, "-b", "transparent", "-q"], {
+  execFileSync(process.execPath, [mermaidCli, "-i", path.join(sourceDir, `${name}.mmd`), "-o", rawPath, "-c", config, "-b", "transparent", "-q"], {
     cwd: root,
     stdio: "inherit",
-    shell: process.platform === "win32",
   })
   let raw = readFileSync(rawPath, "utf8")
   raw = raw.replace(/\srole="[^"]*"/, "").replace(/\saria-roledescription="[^"]*"/, "")
@@ -46,7 +45,8 @@ for (const [name, [title, description]] of Object.entries(diagrams)) {
     `<svg$1 role="img" preserveAspectRatio="xMidYMid meet" aria-labelledby="${name}-title ${name}-desc"><title id="${name}-title">${title}</title><desc id="${name}-desc">${description}</desc>`,
   )
   const diagramManifestPath = path.join(sourceDir, `${name}.theme.json`)
-  const manifest = JSON.parse(readFileSync(existsSync(diagramManifestPath) ? diagramManifestPath : sharedManifestPath, "utf8"))
+  if (!existsSync(diagramManifestPath)) throw new Error(`Missing explicit manifest ${diagramManifestPath}`)
+  const manifest = JSON.parse(readFileSync(diagramManifestPath, "utf8"))
   const result = prepareThemedMermaidSvgDualOutput(raw, manifest)
   const errors = result.diagnostics.filter((item) => item.severity === "error")
   if (errors.length || !result.standaloneSvg || !result.hostSvg) {
