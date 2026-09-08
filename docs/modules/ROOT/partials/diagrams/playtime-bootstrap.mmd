@@ -1,5 +1,0 @@
-flowchart LR
-  os["Deadlock: ask EE for os.family"] --> method["EE needs os.family to choose the probe"]
-  method --> os
-  binary["PlayTime binary knows NT vs POSIX"] --> snapshot["Freeze Host Identity Record"]
-  snapshot --> bind["EE binds cli.install"]

@@ -17,6 +17,9 @@ importers:
       '@mermaid-js/mermaid-cli':
         specifier: 11.9.0
         version: 11.9.0(puppeteer@23.11.1)(tailwindcss@4.3.3)
+      '@xmldom/xmldom':
+        specifier: 0.9.12
+        version: 0.9.12
 
 packages:
 
@@ -340,6 +343,10 @@ packages:
   '@xmldom/xmldom@0.8.15':
     resolution: {integrity: sha512-/5NV/vDALVFDXgLmfsy9TRCBlKwO2LNBFzpzvb9iIj+jR+eSc6DLYYvVOdivT/jm7MtU6TebYuRmzEOI7w40UA==}
     engines: {node: '>=10.0.0'}
+
+  '@xmldom/xmldom@0.9.12':
+    resolution: {integrity: sha512-5AXjrcMClTryPe9LgZrygpB1lj7s0S9E0+W+AHaVKAVyHanafK86iPSvG5xHVSp/jC+VH1UXu0TAEmY279xH7A==}
+    engines: {node: '>=14.6'}
 
   '@zenuml/core@3.50.1':
     resolution: {integrity: sha512-Q18BXvIfhRuGw0JfO4e+pltG04Phhv2E7n35EWTNSZKKH/HEkyE4Sh7KERb9dqaOfjOdRdKvLG0YekjK3fcDXw==}
@@ -1497,6 +1504,8 @@ snapshots:
       d3-transition: 3.0.1(d3-selection@3.0.0)
 
   '@xmldom/xmldom@0.8.15': {}
+
+  '@xmldom/xmldom@0.9.12': {}
 
   '@zenuml/core@3.50.1(tailwindcss@4.3.3)':
     dependencies:

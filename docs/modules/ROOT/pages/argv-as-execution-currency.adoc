@@ -29,6 +29,7 @@ The student asked: MSI or bash?
 Those are not alternatives. One is a package. One is a parser. A questionnaire that offers both is lying about the universe.
 
 .Two doors is not a questionnaire
+[.themed-svg]
 image::playtime-two-doors.svg[alt="Doors labeled MSI and bash"]
 
 **Runtime** is the rare honest exception: this method *is* a script (`curl | bash`). Then `runtime bash` is a constraint on the row. Filter it out if bash is missing. Do not multiply it by format. You still never ask "MSI or bash?"

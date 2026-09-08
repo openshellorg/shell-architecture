@@ -52,6 +52,7 @@ Dev-Centr owns the practitioner document: Scriptbook the app, the `.cmk` playboo
 Moving the kitchen while dinner is on the stove would split the build. The library is `scriptbook` today. The binary stays `scriptbook`. Spec says do not fork a repo yet.
 
 .Aligned, not moved
+[.themed-svg]
 image::playtime-sibling-home.svg[alt="PlayTime in the Dev-Centr workshop; dotted maybe-later path to OpenShellOrg"]
 
 Rule of thumb, same as xref:division-of-labor.adoc[division of labor]:

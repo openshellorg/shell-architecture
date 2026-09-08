@@ -17,14 +17,6 @@ const diagrams = {
   "honest-entrypoint-dispatch": ["Honest entrypoint dispatch", "The entrypoint resolves, installs, verifies, and re-executes the requested tool version."],
   "sibling-ownership": ["Sibling project ownership", "DevCentr owns lifecycle policy while OpenShellOrg owns honest entrypoint dispatch."],
   "toolchain-architecture": ["Toolchain architecture", "The official entrypoint owns pin resolution, installation, re-execution, and lifecycle handoff."],
-  "playtime-argv": ["Install methods are argv", "A winget install is an argument vector and needs no shell costume."],
-  "playtime-overlays": ["Overlays are host facets", "WSL, Cygwin, and containers overlay an operating-system family instead of creating new families."],
-  "playtime-venn": ["Ask only the runnable overlap", "The questionnaire contains only catalog methods that this host can run."],
-  "playtime-bootstrap": ["Bootstrap from a host snapshot", "PlayTime snapshots the host before asking the equivalence engine to bind intents."],
-  "playtime-growth-ratchet": ["Build-time growth ratchet", "Catalog improvements bake into PlayTime releases and support more hosts and playbooks."],
-  "playtime-facets-not-lattice": ["Facets do not form a lattice", "Operating system, format, and runtime remain independent catalog columns."],
-  "playtime-bind-flow": ["Play-time binding flow", "PlayTime snapshots, filters, optionally asks, binds, and runs an argument vector."],
-  "playtime-layers": ["CentrMark, PlayTime, and Scriptbook", "CentrMark stores the book, PlayTime executes it, and Scriptbook opens it for the reader."]
 }
 
 mkdirSync(cacheDir, { recursive: true })

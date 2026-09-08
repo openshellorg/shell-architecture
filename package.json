@@ -5,12 +5,16 @@
   "packageManager": "pnpm@10.28.2",
   "scripts": {
     "diagrams": "node scripts/build-diagrams.mjs",
-    "diagrams:check": "node scripts/build-diagrams.mjs --check"
+    "diagrams:check": "node scripts/build-diagrams.mjs --check",
+    "playtime:sync": "node scripts/sync-playtime-diagrams.mjs --sync",
+    "playtime:check": "node scripts/sync-playtime-diagrams.mjs",
+    "test": "pnpm diagrams:check && pnpm playtime:check"
   },
   "devDependencies": {
     "@dev-centr/mermaid-svg-css-vars": "0.1.2",
     "@dev-centr/themed-svg": "0.1.1",
-    "@mermaid-js/mermaid-cli": "11.9.0"
+    "@mermaid-js/mermaid-cli": "11.9.0",
+    "@xmldom/xmldom": "0.9.12"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

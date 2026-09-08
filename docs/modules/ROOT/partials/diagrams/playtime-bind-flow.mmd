@@ -1,6 +1,0 @@
-flowchart LR
-  snapshot["1. Snapshot family / PATH / formats"] --> filter["2. Filter runnable catalog rows"]
-  filter --> ask{"3. Ask?"}
-  ask -->|"one: skip"| bind["4. Bind intent to argv"]
-  ask -->|"several: choose"| bind
-  bind --> run["5. Run argv / write sidecar"]
