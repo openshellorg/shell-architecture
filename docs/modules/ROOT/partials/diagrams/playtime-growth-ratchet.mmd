@@ -1,0 +1,6 @@
+flowchart LR
+  rules["Rules catalogs: probes + intents"] --> bake["CI bake: EE as compiler"]
+  bake --> shipped["Shipped PlayTime cascade"]
+  shipped --> books["Playbooks on more hosts"]
+  books -. new methods .-> rows["New probes / methods / formats"]
+  rows --> rules

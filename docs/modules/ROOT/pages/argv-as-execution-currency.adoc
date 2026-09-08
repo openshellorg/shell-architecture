@@ -19,6 +19,7 @@ A GUI "Install" button does not pick a shell. It calls `CreateProcess` / `execve
 `winget install GitHub.cli` is argv. It is not a bash program. It is not a pwsh program. Any shell *can* spawn it. Prefer spawning it with no shell.
 
 .One suitcase, no costumes
+[.themed-svg]
 image::playtime-argv.svg[alt="argv box for winget install; dashed bash, pwsh, and nu coats are not needed"]
 
 == The koan
@@ -37,6 +38,7 @@ image::playtime-two-doors.svg[alt="Doors labeled MSI and bash"]
 Dev-Centr's Equivalence Engine has a `code` domain that *is* a path (version hops). Its `cli` domain is already a catalog lookup. If `shell` joined the context path (`windows/pwsh/msi`), lookup would become a lattice of `(format x shell)` nodes. That is a tensor product, not equivalence.
 
 .Columns, not a cube
+[.themed-svg]
 image::playtime-facets-not-lattice.svg[alt="Catalog table versus a forbidden path-segment lattice"]
 
 OpenShellOrg's job here is the stance, not the catalog:

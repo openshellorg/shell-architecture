@@ -5,6 +5,13 @@
 !README.md
 !README.adoc
 !CHANGELOG.adoc
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!diagrams/
+!diagrams/**
+!scripts/
+!scripts/**
 !docs/
 !docs/**
 !changelog-details/

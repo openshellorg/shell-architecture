@@ -17,6 +17,7 @@ OpenShellOrg cares what happens at `argv[0]`. Entrypoint Dispatch: the process y
 That last sentence is a shell-boundary sentence.
 
 .Cookbook, kitchen, waiter -- the kitchen is the boundary
+[.themed-svg]
 image::playtime-layers.svg[alt="CentrMark book, PlayTime stage, Scriptbook app"]
 
 == Why it sounds like us
@@ -39,6 +40,7 @@ image::playtime-layers.svg[alt="CentrMark book, PlayTime stage, Scriptbook app"]
 |===
 
 .One suitcase, no costumes
+[.themed-svg]
 image::playtime-argv.svg[alt="argv box; dashed shell coats are not needed"]
 
 A questionnaire that asks "MSI or bash?" collapses a package format and a parser into one hallway. We refuse that here too. See xref:argv-as-execution-currency.adoc[Argv as execution currency].

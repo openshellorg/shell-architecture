@@ -1,4 +1,4 @@
-﻿= Shell keybindings comparison
+= Shell keybindings comparison
 :navtitle: Keybindings Comparison
 :description: Cross-shell default chords — common ground, exceptions, and OSO Open Shell reservations.
 

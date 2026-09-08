@@ -1,0 +1,80 @@
+import { execFileSync } from "node:child_process"
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+import { prepareThemedMermaidSvgDualOutput } from "@dev-centr/mermaid-svg-css-vars"
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
+const sourceDir = path.join(root, "docs", "modules", "ROOT", "partials", "diagrams")
+const outputDir = path.join(root, "docs", "modules", "ROOT", "images")
+const cacheDir = path.join(root, "diagrams", ".cache")
+const config = path.join(root, "diagrams", "mermaid-config.json")
+const sharedManifestPath = path.join(root, "diagrams", "diagrams.theme.json")
+const check = process.argv.includes("--check")
+
+const diagrams = {
+  "declaration-without-dispatch": ["Declaration without dispatch", "A launcher declares a version but starts the unverified command already on PATH."],
+  "honest-entrypoint-dispatch": ["Honest entrypoint dispatch", "The entrypoint resolves, installs, verifies, and re-executes the requested tool version."],
+  "sibling-ownership": ["Sibling project ownership", "DevCentr owns lifecycle policy while OpenShellOrg owns honest entrypoint dispatch."],
+  "toolchain-architecture": ["Toolchain architecture", "The official entrypoint owns pin resolution, installation, re-execution, and lifecycle handoff."],
+  "playtime-argv": ["Install methods are argv", "A winget install is an argument vector and needs no shell costume."],
+  "playtime-overlays": ["Overlays are host facets", "WSL, Cygwin, and containers overlay an operating-system family instead of creating new families."],
+  "playtime-venn": ["Ask only the runnable overlap", "The questionnaire contains only catalog methods that this host can run."],
+  "playtime-bootstrap": ["Bootstrap from a host snapshot", "PlayTime snapshots the host before asking the equivalence engine to bind intents."],
+  "playtime-growth-ratchet": ["Build-time growth ratchet", "Catalog improvements bake into PlayTime releases and support more hosts and playbooks."],
+  "playtime-facets-not-lattice": ["Facets do not form a lattice", "Operating system, format, and runtime remain independent catalog columns."],
+  "playtime-bind-flow": ["Play-time binding flow", "PlayTime snapshots, filters, optionally asks, binds, and runs an argument vector."],
+  "playtime-layers": ["CentrMark, PlayTime, and Scriptbook", "CentrMark stores the book, PlayTime executes it, and Scriptbook opens it for the reader."]
+}
+
+mkdirSync(cacheDir, { recursive: true })
+mkdirSync(outputDir, { recursive: true })
+const mmdc = path.join(root, "node_modules", ".bin", process.platform === "win32" ? "mmdc.cmd" : "mmdc")
+let stale = false
+
+for (const [name, [title, description]] of Object.entries(diagrams)) {
+  const rawPath = path.join(cacheDir, `${name}.raw.svg`)
+  execFileSync(mmdc, ["-i", path.join(sourceDir, `${name}.mmd`), "-o", rawPath, "-c", config, "-b", "transparent", "-q"], {
+    cwd: root,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  })
+  let raw = readFileSync(rawPath, "utf8")
+  raw = raw.replace(/\srole="[^"]*"/, "").replace(/\saria-roledescription="[^"]*"/, "")
+  raw = raw.replace(
+    /<svg\b([^>]*)>/,
+    `<svg$1 role="img" preserveAspectRatio="xMidYMid meet" aria-labelledby="${name}-title ${name}-desc"><title id="${name}-title">${title}</title><desc id="${name}-desc">${description}</desc>`,
+  )
+  const diagramManifestPath = path.join(sourceDir, `${name}.theme.json`)
+  const manifest = JSON.parse(readFileSync(existsSync(diagramManifestPath) ? diagramManifestPath : sharedManifestPath, "utf8"))
+  const result = prepareThemedMermaidSvgDualOutput(raw, manifest)
+  const errors = result.diagnostics.filter((item) => item.severity === "error")
+  if (errors.length || !result.standaloneSvg || !result.hostSvg) {
+    throw new Error(`${name}: ${JSON.stringify(result.diagnostics, null, 2)}`)
+  }
+  for (const [suffix, generated] of [[".svg", result.standaloneSvg], [".host.svg", result.hostSvg]]) {
+    const value = generated.replace(/\sheight="auto"/g, "")
+    const target = path.join(outputDir, `${name}${suffix}`)
+    if (check) {
+      if (!existsSync(target) || readFileSync(target, "utf8") !== value) {
+        console.error(`stale ${path.relative(root, target)}`)
+        stale = true
+      }
+    } else {
+      writeFileSync(target, value, "utf8")
+      console.log(`wrote ${path.relative(root, target)}`)
+    }
+  }
+  const combined = result.standaloneSvg + result.hostSvg
+  if (/foreignObject|<script\b|\son[a-z]+\s*=|<(?:animate|set)\b|(?:href|src)=["']https?:|url\(\s*["']?https?:/i.test(combined)) {
+    throw new Error(`${name}: unsafe or non-portable SVG content`)
+  }
+  for (const required of ['xmlns="http://www.w3.org/2000/svg"', "viewBox=", 'preserveAspectRatio="xMidYMid meet"', 'role="img"', "<title", "<desc"]) {
+    if (!result.standaloneSvg.includes(required) || !result.hostSvg.includes(required)) {
+      throw new Error(`${name}: generated SVG is missing ${required}`)
+    }
+  }
+}
+
+rmSync(cacheDir, { recursive: true, force: true })
+if (stale) process.exitCode = 3

@@ -21,7 +21,11 @@ Then the default entrypoint cheerfully ignores them. Soft warnings (`EBADENGINE`
 **Declaration without dispatch is worse than no declaration.** It looks like a contract and behaves like decoration.
 
 .Declaration without dispatch
-[source,mermaid]
+[.themed-svg]
+image::declaration-without-dispatch.svg[Declaration without dispatch,width=100%]
+
+.Mermaid source
+[source,mermaid,role=diagram-source]
 ----
 include::partial$diagrams/declaration-without-dispatch.mmd[]
 ----
@@ -35,19 +39,31 @@ When the invoked process is the wrong host or wrong version for the project, the
 . **Re-exec** the same command under that version for *this* process tree only — without rewriting the machine’s global default toolchain
 
 .Honest entrypoint dispatch
-[source,mermaid]
+[.themed-svg]
+image::honest-entrypoint-dispatch.svg[Honest entrypoint dispatch,width=100%]
+
+.Mermaid source
+[source,mermaid,role=diagram-source]
 ----
 include::partial$diagrams/honest-entrypoint-dispatch.mmd[]
 ----
 
 .Official toolchain architecture
-[source,mermaid]
+[.themed-svg]
+image::toolchain-architecture.svg[Official toolchain architecture,width=100%]
+
+.Mermaid source
+[source,mermaid,role=diagram-source]
 ----
 include::partial$diagrams/toolchain-architecture.mmd[]
 ----
 
 .Sibling ownership (DevCentr lifecycle vs OpenShellOrg dispatch)
-[source,mermaid]
+[.themed-svg]
+image::sibling-ownership.svg[Sibling ownership between DevCentr lifecycle and OpenShellOrg dispatch,width=100%]
+
+.Mermaid source
+[source,mermaid,role=diagram-source]
 ----
 include::partial$diagrams/sibling-ownership.mmd[]
 ----

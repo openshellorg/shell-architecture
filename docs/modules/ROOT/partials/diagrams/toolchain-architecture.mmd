@@ -1,28 +1,13 @@
-%%{init: {"flowchart": {"htmlLabels": false}, "theme": "base"}}%%
+%%{init: {"htmlLabels": false, "flowchart": {"htmlLabels": false}, "theme": "base"}}%%
 flowchart TB
-  subgraph actors [Actors]
-    U[Dev / IDE / CI]
-  end
-
-  subgraph pin [Project declares]
-    P[engines / pin file]
-  end
-
-  subgraph entry [Official entrypoint TCoP]
-    R[Resolve project pin]
-    I[Install if needed]
-    X[Re-exec]
-    L[Health / repair / upgrade]
-  end
-
-  subgraph runtime [Correct major for this tree]
-    S[Runtime / SDK]
-  end
-
-  subgraph machine [Machine default]
-    M[May stay on latest - not mutated]
-  end
-
+  U[Actors: Dev / IDE / CI]
+  P[Project declares engines / pin file]
+  R[Official entrypoint resolves project pin]
+  I[Install if needed]
+  X[Re-exec]
+  L[Health / repair / upgrade]
+  S[Correct runtime / SDK for this tree]
+  M[Machine default stays unchanged]
   App[Project / app]
 
   U --> R

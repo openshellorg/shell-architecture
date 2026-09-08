@@ -31,6 +31,7 @@ PlayTime is a compiled binary. It already knows NT vs POSIX. It walks a **baked*
 PowerShell-on-Linux does not save that first step. `$IsLinux` works only inside pwsh. The engine is not inside pwsh.
 
 .Snapshot, then dereference
+[.themed-svg]
 image::playtime-bootstrap.svg[alt="Deadlock crossed out; snapshot then bind"]
 
 == Overlays, not planets
@@ -38,6 +39,7 @@ image::playtime-bootstrap.svg[alt="Deadlock crossed out; snapshot then bind"]
 WSL is Linux plus overlay `wsl`. Cygwin/MSYS are Windows plus a POSIX hat. A container is an overlay on whatever family. Caps and format filters read the stickers. Do not invent a new `family` for each hat.
 
 .Overlays are stickers
+[.themed-svg]
 image::playtime-overlays.svg[alt="Family circles with wsl, cygwin, container stickers"]
 
 == Bake loop, not a runtime cycle
