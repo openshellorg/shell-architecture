@@ -62,6 +62,17 @@ Published docs: https://openshellorg.github.io/docs/shell-architecture/
 ++++
 == Usage
 
+=== Webview run surface demo
+
+Companion demo for the link:docs/modules/ROOT/pages/webview-run-surface.adoc[Webview run surface] architecture page — flicker-free zoned live updates over an append-only `ops.jsonl` (filesystem I/O, not `document.write`):
+
+[source,bash]
+----
+pnpm demo:webview-run-surface
+----
+
+Open `http://localhost:3847/`. Details: link:demos/webview-run-surface/README.md[`demos/webview-run-surface/README.md`].
+
 === Documents
 
 Antora component under `docs/` (assembled into the org docs site):

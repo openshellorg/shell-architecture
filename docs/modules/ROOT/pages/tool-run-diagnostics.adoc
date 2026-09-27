@@ -119,6 +119,7 @@ Division detail: xref:division-of-labor.adoc[DevCentr and OpenShellOrg]; HCI fac
 == Related
 
 * xref:command-channels.adoc[Command channels]
+* xref:webview-run-surface.adoc[Webview run surface] — HTML layout shell + op log as rich output mode
 * xref:session-association.adoc[Session association]
 * xref:shell-display-layers.adoc[Display and control layers]
 * xref:persistent-shell-context.adoc[Persistent shell context]

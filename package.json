@@ -8,7 +8,8 @@
     "diagrams:check": "node scripts/build-diagrams.mjs --check",
     "playtime:sync": "node scripts/sync-playtime-diagrams.mjs --sync",
     "playtime:check": "node scripts/sync-playtime-diagrams.mjs",
-    "test": "pnpm diagrams:check && pnpm playtime:check"
+    "test": "pnpm diagrams:check && pnpm playtime:check",
+    "demo:webview-run-surface": "node demos/webview-run-surface/demo-run.mjs"
   },
   "devDependencies": {
     "@dev-centr/mermaid-svg-css-vars": "0.1.2",
