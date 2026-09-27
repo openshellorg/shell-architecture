@@ -8,7 +8,7 @@ For longer narratives, see link:changelog-details/[changelog-details/] (when pre
 
 == Timeline
 
-* 2026-09-27 -- xref:entrypoint-dispatch.adoc[Shell pains]: human-facing rewrite of entrypoint/dispatch essay (stable URL); nav and in-repo link labels updated.
+* 2026-09-27 -- xref:entrypoint-dispatch.adoc[Shell pains]: human-facing rewrite (concrete Node pin scene before jargon; stable URL); nav and in-repo link labels updated.
 * 2026-09-27 -- xref:webview-run-surface.adoc[Webview run surface]: architecture page (display vs transport via `layout.html` + `ops.jsonl`), companion demo under `demos/webview-run-surface/`, cross-links from Tool Runs and command channels.
 * 2026-09-08 -- Kept the four OpenShell-native diagrams under local deterministic Mermaid generation. Synchronized all twelve PlayTime standalone-adaptive and host artifacts from canonical Scriptbook commit `9753437`, preserved their fixed originals, removed duplicate PlayTime source ownership, and added pinned checksum, XML, safety, accessibility, and light/dark validation.
 * 2026-09-02 -- xref:tool-run-diagnostics.adoc[Tool runs and diagnostics] + xref:command-channels.adoc[Command channels]: compilers as structured runs on a bus; per-command channel switcher; stakeholder map. See link:changelog-details/2026-09-02 - tool-runs-and-command-channels.adoc[detailed changelog].

@@ -1,26 +1,28 @@
 = Shell pains
 :navtitle: Shell pains
-:description: When the wrong Node or SDK runs, native modules break and tutorials blame you. Projects can pin versions—but the command you type still uses whatever is on PATH unless something dispatches to the right one.
+:description: When the project asks for Node 18 but Node 22 runs, native modules break and tutorials blame you. This page is about making the command you type actually start the right version—without rewriting your machine default.
 
-You clone a repo, run `pnpm install`, and everything looks fine until you hit `node` or start the dev server. The wrong major is running. Native addons were compiled for a different ABI and now explode with errors that sound like *you* broke something. Someone on Slack says “just `nvm use` and rebuild better-sqlite3.” You were not careless. The shell simply started the wrong program.
+You clone a repo, run `pnpm install`, and everything looks fine until you hit `node` or start the dev server. `package.json` says Node 18 (or there is an `.nvmrc` with `18`). You type `node --version` and get 22—or the IDE launches its own `node` from an absolute path and you never even see the mismatch until something crashes. Native addons were built for a different ABI. Errors make it sound like *you* broke something. Someone on Slack says “just `nvm use` and rebuild better-sqlite3.” You were not careless. The program that started when you ran the command was simply the wrong one.
 
-That failure is common, predictable, and fixable at the boundary where a command becomes a process. This page explains what should happen there—and how OpenShellOrg’s work fits next to DevCentr’s broader toolchain docs.
+That failure is common and predictable. It is also fixable at the moment a shell or CLI turns your keystroke into a running process. This page walks through what should happen there—and how OpenShellOrg’s work sits next to DevCentr’s broader toolchain docs.
 
-== Pins on paper, wrong binary on PATH
+== The project says one version; your machine runs another
 
-Teams and ecosystems already *declare* what they need:
+Projects leave hints about which runtime they expect:
 
-* `engines.node` in `package.json`
+* `engines.node` in `package.json` (for example `"node": "18"`)
 * `.node-version` or `.nvmrc`
 * SDK channel pins (“use Flutter 3.x”), and similar files
 
-Those declarations are useful. They tell humans and tools what the project expects. They do **not**, by themselves, change which executable runs when you type `node`, open the IDE’s integrated terminal, or double-click a script.
+Those files are useful. They tell humans and CI what to install. They do **not**, by themselves, change which `node` binary runs when you press Enter, when VS Code’s terminal spawns `node`, or when a GUI runs a script by full path.
 
-Soft warnings (`EBADENGINE`) arrive after the damage is done. Rebuild folklore treats the symptom after the wrong binary already compiled native code. A pin that nothing enforces is worse than no pin—it looks like a promise and behaves like decoration.
+You still get soft warnings (`EBADENGINE`) after native code already compiled against the wrong major. “Delete `node_modules` and rebuild” fixes the symptom long after the wrong binary did the damage. A version file that nothing honors is worse than no file—it looks like a promise and behaves like decoration.
 
-.Pins declared, wrong version still runs
+Some doc sets call that kind of pin a *declaration* (what the project asks for). What was missing in the scene above is *dispatch*: actually installing if needed and **starting the right version** for this one command, without you manually switching the whole machine.
+
+.Project pin on disk, wrong `node` still runs
 [.themed-svg]
-image::declaration-without-dispatch.svg[Pins declared but the shell still runs the wrong version,width=100%]
+image::declaration-without-dispatch.svg[package.json asks for Node 18 but the shell still runs Node 22,width=100%]
 
 .Mermaid source
 [source,mermaid,role=diagram-source]
@@ -30,20 +32,20 @@ include::partial$diagrams/declaration-without-dispatch.mmd[]
 
 == What should happen when you press Enter
 
-Imagine a small set of steps that run automatically for *this* command only:
+Picture the same repo. You type `node` (or `pnpm dev`, or your SDK’s launcher). Before your script runs, something trustworthy should:
 
-. Read the project’s required version (from `engines`, a pin file, or equivalent).
-. If that version is not installed yet, fetch it through a known manager or installer.
-. Start **the same command again** under that version, for this process tree only.
-. Leave the machine’s default toolchain alone—you should not have to “switch globals” just to open an old repo.
+. Notice the version the project asked for (`engines`, `.nvmrc`, or equivalent).
+. Install that version if it is not on the machine yet (through a manager or installer you already trust).
+. Run **the same command again** under that version—for this process tree only.
+. Leave your global default alone. Opening an old repo should not mean “switch the whole laptop to Node 18.”
 
-In this docs set we call the program that actually starts when you type a command the **entrypoint** (`node`, your shell, an SDK launcher, and so on). **Dispatch** is the work of picking (and if needed installing) the right version, then re-running the entrypoint so the right binary handles *this* invocation.
+When that loop works, you are not stuck in a ritual of `nvm use`, hand-edited PATH, or rebuilding native modules because Node 22 ran first.
 
-When dispatch works, opening a pinned project does not require a ritual of `nvm use`, manual PATH edits, or rebuilding native modules because the wrong Node ran first.
+Docs here sometimes call `node`, your shell, or an SDK launcher the **entrypoint**—the program the OS actually starts for that command. The install-and-re-run loop is what those docs mean by **dispatch**.
 
-.Honest dispatch at the entrypoint
+.Read the pin, install if needed, run the same command under the right version
 [.themed-svg]
-image::honest-entrypoint-dispatch.svg[Read the pin, install if needed, re-run the same command under the right version,width=100%]
+image::honest-entrypoint-dispatch.svg[Read the project pin, install if missing, re-run the same command under the matching version,width=100%]
 
 .Mermaid source
 [source,mermaid,role=diagram-source]
@@ -51,9 +53,9 @@ image::honest-entrypoint-dispatch.svg[Read the pin, install if needed, re-run th
 include::partial$diagrams/honest-entrypoint-dispatch.mmd[]
 ----
 
-.Toolchain pieces (lifecycle vs moment of invocation)
+.Toolchain pieces (team lifecycle vs the moment you hit Enter)
 [.themed-svg]
-image::toolchain-architecture.svg[How pinning, health checks, and the shell entrypoint fit together,width=100%]
+image::toolchain-architecture.svg[How pinning, health checks, and the shell fit together when you invoke a command,width=100%]
 
 .Mermaid source
 [source,mermaid,role=diagram-source]
@@ -71,35 +73,35 @@ image::sibling-ownership.svg[DevCentr covers toolchain lifecycle; OpenShellOrg c
 include::partial$diagrams/sibling-ownership.mmd[]
 ----
 
-The system default may stay on “latest.” A hard error should be the **last resort**—when install or re-run is impossible (no network, policy block, no manager registered). The bar we aim for is **install if needed, then run**, not “stop and lecture.”
+Your system default can stay on “latest.” A hard error should be the **last resort**—when install or re-run is impossible (no network, policy block, no installer registered). The bar we aim for is **install if needed, then run**, not “stop and lecture.”
 
 == Why “run nvm use when you cd” is not enough
 
 Shell hooks that switch versions on `cd` help some people, sometimes. They are easy to miss:
 
-* **IDEs and GUIs** often launch tools by absolute path, bypassing the shell profile that ran `nvm use`.
-* **CI images** start clean; they need the same dispatch story, not a forgotten hook.
-* **New teammates** should not have to join a particular shell “priesthood” before `node` tells the truth.
+* **IDEs and GUIs** often launch `node` by absolute path, bypassing the shell profile that ran `nvm use`.
+* **CI images** start clean; they need the same install-and-re-run behavior, not a forgotten hook.
+* **New teammates** should not have to join a particular shell setup before `node --version` matches the repo.
 
-Dispatch belongs at the **entrypoint**—the binary or wrapper your OS actually executes—not only in optional shell configuration.
+That behavior belongs on the command people actually run (`node`, your wrapper, the SDK shim)—not only in optional shell configuration.
 
 == A worked example: wrong shell host
 
-OpenShellOrg’s https://github.com/openshellorg/nu-require[`nu-require`] applies the same pattern to **host shell** mismatch: if the project expects Nushell and you invoked something else, it can offer to install Nushell and **re-launch** under it. Toolchain version mismatch at `node` or an SDK launcher is the same idea with a different pin source.
+OpenShellOrg’s https://github.com/openshellorg/nu-require[`nu-require`] uses the same pattern for a different mismatch: the project expects **Nushell** but you started **bash**. It can offer to install Nushell and **re-launch** the same invocation under it. Wrong Node major at the `node` entrypoint is the same idea with a different pin file.
 
 == How this relates to DevCentr
 
-**DevCentr** writes for teams and environments: how you pin toolchains, check health, repair broken installs, and plan upgrades over time. Their link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern] is the long-form philosophy; the link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-control-plane.html[Toolchain Control Plane] essay describes the control-plane shape in more detail.
+**DevCentr** writes for teams and environments: how you pin toolchains, check health, repair broken installs, and plan upgrades over time. Their link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern] is the long-form philosophy; the link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-control-plane.html[Toolchain Control Plane] essay goes deeper on the control-plane shape.
 
-**OpenShellOrg** focuses on the moment you hit Enter in a shell or CLI: the invoked program should be the right host and version, or it should fetch what is missing and try again—without rewriting your global defaults.
+**OpenShellOrg** focuses on the moment you hit Enter: the program that starts should match the project’s pin, or it should fetch what is missing and try again—without rewriting your global defaults.
 
-The two doc sets are siblings, not competing rulebooks. Read both when you care about “always the right toolchain”; start here when the pain is “I typed the command and the wrong thing ran.”
+The two doc sets are siblings, not competing rulebooks. Read both when you care about “always the right toolchain”; start here when the pain is “I typed `node` and the wrong thing ran.”
 
 * link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/devcentr-and-openshellorg.html[Dev-Centr and OpenShellOrg] (DevCentr’s overview of the partnership)
 * xref:devcentr.adoc[Relationship] · xref:division-of-labor.adoc[Division of labor]
 * xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] (stale PATH after installs—a related shell pain)
 * xref:nu-require::index.adoc[nu-require]
-* xref:open-shell-org::index.adoc[open-shell-org] (SOS flag-syntax certification—complementary to dispatch, not a substitute)
+* xref:open-shell-org::index.adoc[open-shell-org] (SOS flag-syntax certification—complementary, not a substitute for install-and-re-run)
 
 === Who writes what (plain version)
 
@@ -119,10 +121,10 @@ The two doc sets are siblings, not competing rulebooks. Read both when you care 
 
 == If you ship a version pin
 
-Short checklist for CLI and runtime authors—not a substitute for the diagrams above, but a sanity pass before you publish:
+Short checklist for CLI and runtime authors:
 
-* [ ] If you document a pin file or `engines`-style field, the default **entrypoint** installs (when needed) and re-runs under that version for the current command.
+* [ ] When a user runs your command, the program that starts (`node`, your binary, or your shim) installs the pinned version if needed and re-runs the same invocation under it.
 * [ ] Global defaults may stay on “latest”; one project must not require mutating the whole machine.
 * [ ] Absolute-path and IDE launches get the same behavior as an interactive terminal.
-* [ ] Show progress: which pin was read, what is downloading, which version is actually running.
-* [ ] If you must fail hard, say which pin source blocked you—not “rebuild the native module.”
+* [ ] Show progress: which pin file was read, what is downloading, which version is actually running.
+* [ ] If you must fail hard, say which pin blocked you—not “rebuild the native module.”
