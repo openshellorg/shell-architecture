@@ -214,7 +214,7 @@ Ship gutter auto-detect in Open Shell first; extend the standalone prohelp wrapp
 
 * xref:future.adoc[Future topics] — promoted from speculative once env-refresh ships
 * xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh]
-* xref:entrypoint-dispatch.adoc[Entrypoint Dispatch]
+* xref:entrypoint-dispatch.adoc[Shell pains]
 * link:https://hci-nerdz.github.io/docs/hci-nerdz/shell-context-chrome.html[Shell context chrome @ HCI Nerdz]
 * xref:prohelp-gutter.adoc[Prohelp and prompt gutter]
 * link:https://hci-nerdz.github.io/docs/hci-nerdz/context-bound-settings.html[Context-bound settings] — same *dependent context* pattern for GUI admin surfaces

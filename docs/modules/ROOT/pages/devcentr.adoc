@@ -24,4 +24,4 @@ PlayTime (play a `.cmk` by binding intents to argv) is currently Dev-Centr. The 
 
 Stale PATH/env after installs is a shared UX debt: OpenShellOrg ships the durable fix; DevCentr consumes it. See xref:shell-host-and-env-refresh.adoc[Shell Host and Env Refresh] and xref:division-of-labor.adoc[Division of Labor].
 
-Wrong-host / wrong-version execution is a **shell entrypoint** failure: OpenShellOrg owns xref:entrypoint-dispatch.adoc[Entrypoint Dispatch] (auto-install + re-exec; `nu-require` is the exemplar). DevCentr owns the broader link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern] (control plane / TCF).
+Wrong-host / wrong-version execution is a shell pain at the command line: OpenShellOrg documents the fix in xref:entrypoint-dispatch.adoc[Shell pains] (install if needed, re-run; `nu-require` is one example). DevCentr owns the broader link:https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management.html[Toolchain Management Pattern] for team toolchain lifecycle.
