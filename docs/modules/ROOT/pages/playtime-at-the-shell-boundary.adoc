@@ -10,7 +10,7 @@ Curiosity about where a "play the document" engine belongs. You do not need to i
 
 == The cousin
 
-OpenShellOrg cares what happens at `argv[0]`. Entrypoint Dispatch: the process you launched should be the right host and version, or it should stop. SOS: flags should not lie. Structured pipelines: stdout should not have to be both a pipe and a canvas.
+OpenShellOrg cares what happens at `argv[0]`. See xref:entrypoint-dispatch.adoc[Shell pains]: the process you launched should be the right host and version, or it should stop. SOS: flags should not lie. Structured pipelines: stdout should not have to be both a pipe and a canvas.
 
 **PlayTime** is a Dev-Centr engine that *plays* a CentrMark playbook. It detects the host, asks Equivalence Engine to bind an intent to a command, and **spawns argv with no shell** unless the catalog row is honestly a script.
 
