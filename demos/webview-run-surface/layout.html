@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenShellOrg — Webview run surface (demo)</title>
+    <style>
+      :root {
+        color-scheme: dark light;
+        --bg: #0f1419;
+        --panel: #1a2332;
+        --border: #2d3a4f;
+        --text: #e7ecf3;
+        --muted: #8b9cb3;
+        --accent: #3d9eff;
+        --ok: #3dd68c;
+        --warn: #f0b429;
+        --err: #f56565;
+        font-family: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f4f6f9;
+          --panel: #fff;
+          --border: #c5d0de;
+          --text: #1a2332;
+          --muted: #5a6b82;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+        align-items: center;
+      }
+      header h1 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      header p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--muted);
+        flex: 1 1 12rem;
+      }
+      .toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .toolbar label {
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        cursor: pointer;
+      }
+      #filter {
+        min-width: 14rem;
+        padding: 0.35rem 0.5rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--panel);
+        color: var(--text);
+      }
+      main.grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: minmax(12rem, 22%) 1fr;
+        grid-template-rows: 1fr;
+        min-height: 0;
+      }
+      @media (max-width: 720px) {
+        main.grid {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto 1fr;
+        }
+      }
+      section.panel {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        border-right: 1px solid var(--border);
+      }
+      section.panel:last-child {
+        border-right: none;
+      }
+      section.panel h2 {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin: 0;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+      }
+      .zone {
+        flex: 1;
+        overflow: auto;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+        line-height: 1.45;
+      }
+      #zone-progress {
+        white-space: pre-wrap;
+      }
+      #zone-detail {
+        white-space: nowrap;
+      }
+      [data-log-line] {
+        padding: 0.15rem 0;
+        border-bottom: 1px solid transparent;
+      }
+      [data-log-line]:hover {
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+      }
+      [data-log-line][data-level="warn"] {
+        color: var(--warn);
+      }
+      [data-log-line][data-level="err"] {
+        color: var(--err);
+      }
+      [data-log-line][data-level="ok"] {
+        color: var(--ok);
+      }
+      .diag-block {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0.25rem 0.5rem 0.25rem 0;
+        padding: 0.35rem 0.5rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--panel);
+        max-width: 100%;
+      }
+      .diag-block code {
+        color: var(--accent);
+      }
+      footer {
+        font-size: 0.7rem;
+        color: var(--muted);
+        padding: 0.35rem 0.75rem;
+        border-top: 1px solid var(--border);
+      }
+      #status {
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Webview run surface</h1>
+      <p>
+        Layout shell loads once; <code>ops.jsonl</code> is append-only filesystem I/O —
+        not <code>document.write</code> or full page reload.
+      </p>
+      <div class="toolbar">
+        <input
+          id="filter"
+          type="search"
+          placeholder="Filter detail log…"
+          aria-label="Filter detail log"
+        />
+        <label title="Contrast demo: rewrites whole zone HTML each op (flicker)">
+          <input type="checkbox" id="flicker-mode" />
+          Flicker contrast mode
+        </label>
+      </div>
+    </header>
+    <main class="grid">
+      <section class="panel" aria-labelledby="progress-heading">
+        <h2 id="progress-heading">Progress</h2>
+        <div id="zone-progress" class="zone" data-zone="progress"></div>
+      </section>
+      <section class="panel" aria-labelledby="detail-heading">
+        <h2 id="detail-heading">Detail / diagnostics</h2>
+        <div id="zone-detail" class="zone" data-zone="detail"></div>
+      </section>
+    </main>
+    <footer>
+      <span id="status">Connecting…</span>
+      · zones: <code>progress</code>, <code>detail</code>
+      · canon:
+      <a href="https://openshellorg.github.io/docs/shell-architecture/tool-run-diagnostics.html"
+        >Tool runs</a
+      >,
+      <a href="https://openshellorg.github.io/docs/shell-architecture/command-channels.html"
+        >Command channels</a
+      >
+    </footer>
+    <script type="module">
+      import {
+        createRunSurface,
+        filterZoneLines,
+      } from './lib/run-surface.js';
+
+      const zones = {
+        progress: document.getElementById('zone-progress'),
+        detail: document.getElementById('zone-detail'),
+      };
+
+      let opCount = 0;
+      const statusEl = document.getElementById('status');
+
+      const surface = createRunSurface({
+        zones,
+        streamUrl: '/ops/stream',
+        onOp: () => {
+          opCount += 1;
+          statusEl.textContent = `Live · ${opCount} ops applied`;
+        },
+      });
+
+      document.getElementById('filter').addEventListener('input', (ev) => {
+        filterZoneLines(zones.detail, ev.target.value);
+      });
+
+      document.getElementById('flicker-mode').addEventListener('change', (ev) => {
+        surface.setFlickerContrast(ev.target.checked);
+        statusEl.textContent = ev.target.checked
+          ? 'Contrast mode ON (whole-zone HTML rewrite per op)'
+          : `Live · ${opCount} ops applied`;
+      });
+    </script>
+  </body>
+</html>

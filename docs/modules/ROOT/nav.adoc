@@ -14,6 +14,7 @@
 ** xref:session-association.adoc[Session Association]
 ** xref:tool-run-diagnostics.adoc[Tool Runs and Diagnostics]
 ** xref:command-channels.adoc[Command Channels]
+** xref:webview-run-surface.adoc[Webview Run Surface]
 ** xref:devcentr-terminal-manager.adoc[DevCentr Terminal Manager]
 ** xref:cli-app-icons.adoc[CLI App Icons]
 ** xref:nested-tiling-zones.adoc[Nested Zones]

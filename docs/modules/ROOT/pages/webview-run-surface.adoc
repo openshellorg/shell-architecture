@@ -1,0 +1,169 @@
+= Webview run surface
+:navtitle: Webview Run Surface
+:description: HTML layout shell + append-only op log as a flicker-free rich output mode for Tool Runs and command channels — display vs transport on disk.
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+Terminal scrollback is a poor display layer for long, wide, or structured tool output.
+A **webview** (embedded browser or system webview) gives horizontal scroll, real typography, DOM operations, and tiling — without asking every compiler to ship its own GUI.
+
+This page names an OpenShellOrg **surface**: not a second shell language, not a Scriptbook engine, and not a greenfield product island.
+It is the HTML face of the same thesis as xref:tool-run-diagnostics.adoc[Tool runs and diagnostics] and xref:command-channels.adoc[Command channels]:
+
+* **Transport** stays honest (pipes, fds, log files, bus events).
+* **Display** is a subscriber that can mount rich layout without reloading the world on every line.
+
+Future Scriptbook or agent hosts may offer this as an alternate **rich output mode**; the canon and companion demo live here in shell-architecture.
+
+== Display vs transport (filesystem, not document.write)
+
+The anti-pattern is treating “write bytes somewhere” as “repaint the whole document”:
+
+* Reloading the layout page on every log line.
+* Calling `document.write` for streaming stdout.
+* Replacing the entire `<body>` from a producer on each tick.
+
+The OSO-shaped path:
+
+. A stable **`layout.html`** (or equivalent) is loaded **once** in the webview.
+. A separate **append-only op log** (this demo uses `ops.jsonl`) receives filesystem writes from the CLI, wrapper, or daemon.
+. The viewer **tails** the log and applies **DOM patches** to named zones (`appendHtml`, `setText`, `update`, `clear`).
+. Optional **channel** semantics align with command channels: progress vs stderr-style detail can land in different zones without interleaving in one scrollback buffer.
+
+Writing `layout.html` / `ops.jsonl` is normal **filesystem I/O**.
+It is not `document.write` and not a full navigation per update.
+
+----
+  CLI / wrapper                webview (load once)
+       │                              │
+       │  append JSONL ops            │  SSE / watch / mmap tail
+       ▼                              ▼
+  ops.jsonl  ──────────────────►  applyOp → zone DOM
+       ▲
+       │  stable on disk
+  layout.html (shell, zones, filter UI)
+----
+
+== File roles
+
+[cols="1,2",options="header"]
+|===
+| Artifact | Role
+
+| **`layout.html`**
+| Stable chrome: zone grid, search/filter UI, styles, script entry.
+  Loaded once; never replaced by the producer.
+
+| **`ops.jsonl`** (or bus equivalent)
+| Append-only **operation log**.
+  Each line is one JSON object (`op`, `zone`, payload).
+  Producers never embed the full page — only ops.
+
+| **Zone ids**
+| Named containers in the layout (`progress`, `detail`, `diagnostics`, …).
+  Maps cleanly to xref:command-channels.adoc[per-command channels] and Tool Run panels (summary vs transcript).
+
+| **Filter UI**
+| Client-side search over detail lines (demo: `[data-log-line]`).
+  Retro-interactive filtering without re-running the tool.
+
+| **Virtualized loader** (production)
+| For huge transcripts, range-load HTML chunks with **node-boundary** splitting (never tear a diagram or diagnostic block mid-element).
+  Inspired by large-file strategies in editors such as Zed and Lapce.
+  The companion library exposes `chunkHtmlAtNodeBoundaries` as a documented stub; production hosts add viewport windowing on top.
+
+|===
+
+== Op vocabulary (minimal)
+
+| Op | Effect |
+|---|---|
+| `setText` | Replace zone text (sparse progress / status) |
+| `setHtml` | Replace zone HTML (use sparingly; prefer incremental ops) |
+| `appendHtml` | Append parsed HTML fragment (high-frequency detail) |
+| `update` | Patch a node matched by `selector` inside a zone |
+| `clear` | Remove children of a zone |
+| `batch` | Apply an array of child ops in order |
+
+Producers may emit **HTML chunks** in `appendHtml`, not only escaped plaintext — diagnostics blocks, tables, and diagrams stay structured at the DOM level.
+
+== Relationship to Tool Runs and command channels
+
+=== Tool Runs
+
+xref:tool-run-diagnostics.adoc[Tool runs] already assume:
+
+* A **log file** (full transcript / SARIF) beside a quiet CLI stub.
+* **Subscribers** (daemon GUI, embeddable library, host timeline) that are not the compiler window.
+
+The webview run surface is one subscriber mount:
+
+* **Progress zone** ≈ run header / phase / collapse tile summary.
+* **Detail zone** ≈ horizontal-scroll-friendly transcript or diagnostic HTML.
+* Same **run id** and session association as the bus; only the **renderer** changes.
+
+=== Command channels
+
+xref:command-channels.adoc[Command channels] keep stdout, stderr, and extras **un-weaved** in the host.
+In webview mode, channels can map to **zones** or **tabs inside the layout shell** instead of a single interleaved scrollback.
+The capture contract is unchanged — channel chrome is presentation.
+
+Retro-interactive result blocks (Nu tables) and compiler Tool Runs differ in content, but both benefit from **display-time** layout and filter without rewriting transport.
+
+== Large volumes
+
+| Strategy | Notes |
+|---|---|
+| Append-only log | Producers never rewrite megabytes of HTML; they append ops or external chunk files. |
+| Node-boundary chunks | Split incoming HTML at top-level nodes before inserting; never split mid-`<svg>` / mid-diagnostic. |
+| Virtualized DOM | Host keeps a window of nodes; evict far-above-viewport siblings (Zed/Lapce-style). |
+| Sidecar assets | Heavy diagrams reference files; ops insert placeholders by id. |
+
+The demo intentionally stays small; the library documents chunk boundaries for implementers.
+
+== Companion demo
+
+Runnable code lives at `demos/webview-run-surface/` in this repo:
+
+* `layout.html` — two-zone tile (progress vs detail), filter box, optional flicker contrast toggle.
+* `lib/run-surface.js` — watch SSE, `applyOp`, filter helper, chunk stub.
+* `server.mjs` + `producer.mjs` — zero npm dependencies; Node 18+.
+
+From the repo root:
+
+[source,bash]
+----
+pnpm demo:webview-run-surface
+----
+
+Then open `http://localhost:3847/`.
+See link:https://github.com/openshellorg/shell-architecture/blob/main/demos/webview-run-surface/README.md[`demos/webview-run-surface/README.md`].
+
+Toggle **Flicker contrast mode** only to see why whole-zone `innerHTML` rewrite per op is unsuitable for live runs.
+
+== Library API (sketch)
+
+The demo exports a small browser module (`createRunSurface`, `applyOp`, `watchOpsViaSse`, `filterZoneLines`, `chunkHtmlAtNodeBoundaries`).
+Production wrappers would:
+
+. Open or create `ops.jsonl` beside the run log.
+. Ship or reference a layout pack per tool class (compile, test, agent trace).
+. Bridge bus events ↔ the same op vocabulary so daemon and webview stay aligned.
+
+== Out of scope (here)
+
+* A second PlayTime / Scriptbook execution engine.
+* Replacing the Tool Run daemon — this is a **display surface** spec + demo.
+* Mandating a single webview engine (Electron, Tauri, MS WebView2, etc.) — hosts choose.
+
+== Related
+
+* xref:tool-run-diagnostics.adoc[Tool runs and diagnostics]
+* xref:command-channels.adoc[Command channels]
+* xref:shell-display-layers.adoc[Display and control layers]
+* xref:future.adoc[Future topics] — display vs transport
+* xref:layout-demos.adoc[Layout demos] — HCI facsimile desks (sibling pattern: try ideas before native host)

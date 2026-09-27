@@ -79,6 +79,7 @@ Upstream Nu already leans toward live tables (`table`, `explore`). “Stay inter
 == Related
 
 * xref:tool-run-diagnostics.adoc[Tool runs and diagnostics]
+* xref:webview-run-surface.adoc[Webview run surface] — zoned HTML display over append-only ops (demo)
 * xref:shell-display-layers.adoc[Display and control layers]
 * xref:host-chrome-negotiation.adoc[Host chrome negotiation]
 * xref:session-association.adoc[Session association]
