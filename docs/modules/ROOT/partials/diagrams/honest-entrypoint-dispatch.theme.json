@@ -10,6 +10,7 @@
   },
   "bindings": [
     { "kind": "stylesheet", "selector": "#my-svg", "property": "fill", "token": "color.text.primary" },
+    { "kind": "stylesheet", "selector": "#my-svg .label", "property": "color", "token": "color.text.primary" },
     { "kind": "stylesheet", "selector": "#my-svg .actor", "property": "fill", "token": "color.surface.primary" },
     { "kind": "stylesheet", "selector": "#my-svg .actor", "property": "stroke", "token": "color.border.primary" },
     { "kind": "stylesheet", "selector": "#my-svg text.actor>tspan", "property": "fill", "token": "color.text.primary" },
