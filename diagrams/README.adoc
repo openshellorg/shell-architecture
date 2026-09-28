@@ -1,6 +1,23 @@
 = Diagram ownership and synchronization
 
 The four OpenShell-native diagrams remain generated from the `.mmd` and Themed SVG manifests under `docs/modules/ROOT/partials/diagrams/`.
+Committed outputs live in `docs/modules/ROOT/images/` as `*.svg` and `*.host.svg` pairs.
+
+== OpenShell-native bake (local)
+
+If your change touches `docs/modules/ROOT/partials/diagrams/*.mmd` or the matching `*.theme.json` files:
+
+. Run `pnpm install` once per clone (`@mermaid-js/mermaid-cli` uses Puppeteer/Chromium).
+. Run `pnpm diagrams` to regenerate the four SVG pairs.
+. Run `pnpm diagrams:check`, or `pnpm test` if you also want PlayTime artifact validation.
+
+Commit the updated SVGs in the same PR as the source edits.
+
+The org docs hub (https://github.com/openshellorg/docs[openshellorg/docs]) does **not** run `pnpm diagrams:check`, mermaid-cli, or Puppeteer in CI.
+Stale baked SVGs will not be caught there; this repo owns bake freshness.
+
+Run the check on a normal developer machine.
+Chromium/Puppeteer expects a typical desktop environment — GitHub Actions sandboxes are not the supported path for this workflow.
 
 The twelve PlayTime diagrams are fixed consumer artifacts owned by https://github.com/dev-centr/scriptbook/tree/97534371f0da8d81e495cb4cc069704902dbdd69[Scriptbook commit `9753437`]. This repository preserves:
 
