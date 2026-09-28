@@ -73,6 +73,12 @@ pnpm demo:webview-run-surface
 
 Open `http://localhost:3847/`. Details: link:demos/webview-run-surface/README.md[`demos/webview-run-surface/README.md`].
 
+=== Mermaid diagram sources
+
+Four entrypoint-dispatch figures are authored as Mermaid under `docs/modules/ROOT/partials/diagrams/` and baked to SVG in `docs/modules/ROOT/images/`.
+After editing `.mmd` or `.theme.json` sources, regenerate and check locally before merge — see link:diagrams/README.adoc[diagrams/README.adoc] (`pnpm diagrams`, then `pnpm diagrams:check` or `pnpm test`).
+Hub CI in link:https://github.com/openshellorg/docs[openshellorg/docs] does not re-run that bake.
+
 === Documents
 
 Antora component under `docs/` (assembled into the org docs site):
