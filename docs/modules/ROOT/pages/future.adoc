@@ -40,9 +40,9 @@ Document how those interact with structured stdout, images, and progress without
 
 == Mixed fonts (speculative)
 
-Explore whether shell or terminal protocol can mark spans with font roles (for example monospace vs sans) in one output stream for readabilityâ€”without breaking pipes.
+Explore whether shell or terminal protocol can mark spans with font roles (for example monospace vs sans) in one output stream for readability—without breaking pipes.
 Likely needs terminal-emulator cooperation; fish/Nushell hacks alone are insufficient long-term.
-Exploratory only â€” no implementation planned here.
+Exploratory only — no implementation planned here.
 
 == PlayTime (not speculative, not ours to build)
 
