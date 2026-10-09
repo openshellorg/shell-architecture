@@ -2,8 +2,10 @@
 :navtitle: open-terminal Host
 :page-audience: builders
 :page-usage-context: architecture
-:page-orig-author: agent on behalf of AMDphreak
-:page-last-author: agent on behalf of AMDphreak
+:page-orig-author: Ryan Johnson
+:page-orig-author-github: AMDphreak
+:page-last-author: Ryan Johnson
+:page-last-author-github: AMDphreak
 
 == Role
 
