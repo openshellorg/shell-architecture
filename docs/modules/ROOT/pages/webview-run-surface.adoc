@@ -3,8 +3,10 @@
 :description: HTML layout shell + append-only op log as a flicker-free rich output mode for Tool Runs and command channels — display vs transport on disk.
 :page-audience: builders
 :page-usage-context: architecture
-:page-orig-author: agent on behalf of AMDphreak
-:page-last-author: agent on behalf of AMDphreak
+:page-orig-author: Ryan Johnson
+:page-orig-author-github: AMDphreak
+:page-last-author: Ryan Johnson
+:page-last-author-github: AMDphreak
 
 == Intent
 
