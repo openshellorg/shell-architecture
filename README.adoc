@@ -1,5 +1,6 @@
 ifndef::env-github[:icons: font]
-:toc: preamble
+:toc: macro
+:toc-title:
 :toclevels: 2
 :sectanchors:
 
@@ -41,6 +42,15 @@ link:https://openshellorg.github.io/docs/shell-architecture/[Explore the docs] Â
 link:https://github.com/openshellorg/shell-architecture/issues[Report Bug] Â·
 link:https://github.com/openshellorg/shell-architecture/issues[Request Feature]
 endif::[]
+
+++++
+<details>
+<summary>Table of Contents</summary>
+++++
+toc::[]
+++++
+</details>
+++++
 
 == About The Project
 
