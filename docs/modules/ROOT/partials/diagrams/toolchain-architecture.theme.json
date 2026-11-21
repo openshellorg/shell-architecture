@@ -38,7 +38,6 @@
     { "kind": "stylesheet", "selector": "#my-svg .node rect", "property": "stroke", "token": "color.border.primary" },
     { "kind": "stylesheet", "selector": "#my-svg .node .node-icon path", "property": "stroke", "token": "color.text.primary" },
     { "kind": "stylesheet", "selector": "#my-svg .untouched rect", "property": "fill", "token": "color.surface.secondary" },
-    { "kind": "inline-style", "selector": ".untouched rect", "property": "fill", "token": "color.surface.secondary" },
     { "kind": "stylesheet", "selector": "#my-svg .untouched polygon", "property": "fill", "token": "color.surface.secondary" },
     { "kind": "stylesheet", "selector": "#my-svg .untouched ellipse", "property": "fill", "token": "color.surface.secondary" },
     { "kind": "stylesheet", "selector": "#my-svg .untouched circle", "property": "fill", "token": "color.surface.secondary" },
