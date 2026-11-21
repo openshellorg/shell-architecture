@@ -1,14 +1,18 @@
-%%{init: {"htmlLabels": false, "flowchart": {"htmlLabels": false}, "theme": "base"}}%%
+%%{init: {"htmlLabels": false, "themeVariables": {"fontSize": "18px"}, "flowchart": {"htmlLabels": false, "nodeSpacing": 36, "rankSpacing": 44, "wrappingWidth": 230}, "theme": "base"}}%%
 flowchart TB
-  U[Actors: Dev / IDE / CI]
-  P[Project declares engines / pin file]
-  R[Official entrypoint resolves project pin]
-  I[Install if needed]
-  X[Re-exec]
-  L[Health / repair / upgrade]
-  S[Correct runtime / SDK for this tree]
-  M[Machine default stays unchanged]
-  App[Project / app]
+  U("Actors: Dev / IDE / CI")
+  P@{ shape: notch-rect, label: "Project declares\nengines / pin file" }
+  R@{ shape: hex, label: "Official entrypoint\nresolves project pin" }
+  I@{ shape: cyl, label: "Install if needed\n(version cache)" }
+  X("Re-exec")
+  L@{ shape: trap-t, label: "Health / repair /\nupgrade" }
+  S@{ shape: fr-rect, label: "Correct runtime / SDK\nfor this tree" }
+  M("Machine default\nstays unchanged")
+  App@{ shape: folder, label: "Project / app" }
+
+  classDef trigger rx:28px,ry:28px,stroke-width:1.5px
+  classDef role stroke-width:1.5px
+  classDef untouched fill:#f7f3e8,stroke-dasharray:6 4,stroke-width:1.5px,rx:28px,ry:28px
 
   U --> R
   P --> R
@@ -18,3 +22,7 @@ flowchart TB
   S --> App
   L -.-> S
   M -.->|left alone| S
+
+  class U trigger
+  class P,R,I,X,L,S,App role
+  class M untouched

@@ -1,13 +1,28 @@
-%%{init: {"htmlLabels": false, "flowchart": {"htmlLabels": false}, "theme": "base"}}%%
+%%{init: {"htmlLabels": false, "themeVariables": {"fontSize": "18px"}, "flowchart": {"htmlLabels": false, "nodeSpacing": 36, "rankSpacing": 42, "wrappingWidth": 230}, "theme": "base"}}%%
 flowchart LR
-  TM[DevCentr: Toolchain Management]
-  PP[Pattern / Protocol / TCoP / TCF]
-  LC[Pin / health / repair / upgrade]
-  LO[Lifecycle ownership]
-  TM --> PP --> LC --> LO
-  ED[OpenShellOrg: Entrypoint Dispatch]
-  RI[Resolve / install / re-exec]
-  SB[Shell / CLI process boundary]
-  IH[Invocation honesty]
-  ED --> RI --> SB --> IH
-  LO ~~~ ED
+  subgraph DC["DevCentr"]
+    direction TB
+    TM("Toolchain Management")
+    PP@{ shape: notch-rect, label: "Pattern / Protocol\nTCoP / TCF" }
+    LC@{ shape: trap-t, label: "Pin / health /\nrepair / upgrade" }
+    LO("Lifecycle ownership")
+    TM --> PP --> LC --> LO
+  end
+
+  subgraph OS["OpenShellOrg"]
+    direction TB
+    ED("Entrypoint Dispatch")
+    RI@{ shape: hex, label: "Resolve / install /\nre-exec" }
+    SB@{ shape: fr-rect, label: "Shell / CLI\nprocess boundary" }
+    IH("Invocation honesty")
+    ED --> RI --> SB --> IH
+  end
+
+  DC ~~~ OS
+
+  classDef pillar rx:28px,ry:28px,stroke-width:1.5px
+  classDef role stroke-width:1.5px
+  classDef outcome rx:10px,ry:10px,stroke-width:1.5px
+  class TM,ED pillar
+  class PP,LC,RI,SB role
+  class LO,IH outcome
